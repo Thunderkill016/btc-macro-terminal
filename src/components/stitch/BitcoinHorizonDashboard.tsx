@@ -359,12 +359,24 @@ export const BitcoinHorizonDashboard: React.FC = () => {
       <div className="flex-1 ml-20 sm:ml-24 mr-4 sm:mr-6 my-5 max-w-[1440px] flex flex-col gap-6">
         {/* TOP BAR */}
         <header className="flex flex-wrap items-center justify-between gap-4 py-1" data-purpose="top-navigation">
-          {/* Logo & Live BTC Spot Ticker */}
+          {/* Brand Logo & Live BTC Spot Ticker */}
           <div className="flex items-center gap-4 sm:gap-6">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNavChange('home')}>
-              <div className="flex items-center tracking-tighter text-2xl font-black text-[#111827]">
-                <span className="inline-block border-[3.5px] border-[#111827] rounded-full w-6 h-6 mr-1.5 bg-gradient-to-tr from-amber-400 to-amber-500"></span>
-                <span className="tracking-tight">LOQO</span>
+            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => handleNavChange('home')}>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 font-black text-lg flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform border border-amber-300/80 shrink-0">
+                ₿
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm font-extrabold tracking-tight text-[#111827] uppercase">
+                    BITCOIN MACRO
+                  </span>
+                  <span className="text-[10px] px-2 py-0.2 rounded-full bg-purple-50 text-[#7C3AED] font-mono font-bold border border-purple-200">
+                    TERMINAL
+                  </span>
+                </div>
+                <div className="text-[10px] text-gray-400 font-medium">
+                  {locale === 'vi' ? 'Định lượng Chu kỳ On-Chain' : 'Quantitative Cycle Intelligence'}
+                </div>
               </div>
             </div>
 
