@@ -355,7 +355,7 @@ export const useTerminalStore = create<TerminalState>((set, get) => {
   const initialBacktestResult = runBacktest(initialBacktestParams, initialCandles);
 
   return {
-    activeTab: 'dashboard',
+    activeTab: 'valuation',
     realCyclePoints: [],
     realFutures: null,
     realMining: null,

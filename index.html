@@ -1,34 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="color-scheme" content="light dark" />
-    <script>
-      (function() {
-        const stored = localStorage.getItem("color-scheme");
-        if (stored === "dark" || stored === "light") {
-          document.querySelector('meta[name="color-scheme"]').setAttribute("content", stored);
-          if (stored === "dark") {
-            document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-          }
-        } else {
-          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            document.documentElement.classList.add("dark");
-          }
-        }
-      })();
-    </script>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231E6BFF'><circle cx='12' cy='12' r='10' fill='%231E6BFF'/><path d='M3 17l6-6 4 4 8-8' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/><path d='M14 7h7v7' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+    <meta name="color-scheme" content="light" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%233C75D5'><circle cx='12' cy='12' r='10' fill='%233C75D5'/><path d='M14.5 10.5c.3-.5.5-1.1.5-1.8 0-1.8-1.5-2.7-3.7-2.7H8v12h3.8c2.4 0 4.2-.9 4.2-3.1 0-1.1-.5-2.1-1.5-2.6v-.1c.7-.4 1.1-1.1 1.5-1.7zm-4.3-2.5h1.2c1.2 0 1.9.4 1.9 1.4 0 .9-.7 1.5-2 1.5h-1.1V8zm1.6 8H10.2v-3.3h1.6c1.3 0 2.2.6 2.2 1.7 0 1.1-.9 1.6-2.2 1.6z' fill='%23FFFFFF'/></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BTC Signal AI & Macro Intelligence Terminal</title>
-    <!-- Google Fonts: Plus Jakarta Sans, Inter & JetBrains Mono -->
+    <title>Bitcoin: Multi-Cycle Valuation & Macro Intelligence</title>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#ECEEF2] dark:bg-[#0B0F19] text-[#1E2024] dark:text-[#E2E8F0] font-sans antialiased overflow-x-hidden transition-colors duration-300">
+  <body class="bg-white text-[#343B43] font-sans antialiased overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

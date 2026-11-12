@@ -1,6 +1,6 @@
 export type Locale = 'vi' | 'en';
 
-export type ActiveTab = 'dashboard' | 'market' | 'signals' | 'risk' | 'valuation' | 'portfolio' | 'research';
+export type ActiveTab = 'valuation' | 'portfolio' | 'research';
 
 export type ExecutionFrequency = 'daily' | 'weekly' | 'monthly';
 
