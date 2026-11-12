@@ -7,6 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
+        appBg: '#F3F5F9',
+        brandDark: '#111827',
+        cardBg: '#FFFFFF',
+        cardBorder: '#EEF0F5',
+        brandPurple: '#8B5CF6',
+        brandViolet: '#7C3AED',
+        brandGreen: '#10B981',
+        brandRed: '#EF4444',
+        brandOrange: '#F97316',
         terminal: {
           bg: '#05070B',
           surface: '#0A0E17',
@@ -44,10 +53,13 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       boxShadow: {
+        'card': '0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02)',
+        'float-pill': '0 12px 30px -5px rgba(139, 92, 246, 0.18), 0 8px 16px -6px rgba(15, 23, 42, 0.08)',
+        'elevated-tooltip': '0 10px 25px -3px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.06)',
         'specular': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08)',
         'specular-lg': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.7)',
       },
