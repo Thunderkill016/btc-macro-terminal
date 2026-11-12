@@ -156,31 +156,31 @@ export const AddTransactionModal: React.FC = () => {
       onClick={(e) => {
         if (e.target === e.currentTarget) setIsOpen(false);
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn text-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn text-xs"
     >
-      <div className="bg-[#0D1322] border border-emerald-500/30 rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
+      <div className="bg-white border border-[#EEF0F5] rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative space-y-4">
         {/* Close Button */}
         <button
           type="button"
           aria-label={isVi ? 'Đóng cửa sổ' : 'Close modal'}
           onClick={() => setIsOpen(false)}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-400 focus-visible:outline-none"
+          className="absolute top-5 right-5 text-gray-400 hover:text-[#111827] p-2 rounded-xl hover:bg-gray-100 transition-colors focus-visible:ring-2 focus-visible:ring-[#7C3AED] focus-visible:outline-none"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-200 text-[#7C3AED] flex items-center justify-center font-bold shadow-xs">
             {editingTx ? <Edit3 className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
           </div>
           <div>
-            <h3 id="add-tx-title" className="text-base font-extrabold text-white tracking-wide flex items-center gap-2">
+            <h3 id="add-tx-title" className="text-base font-extrabold text-[#111827] tracking-wide flex items-center gap-2">
               {editingTx
                 ? isVi ? 'Chỉnh Sửa Lệnh Mua Spot' : 'Edit Spot Buy Order'
                 : isVi ? 'Nhập Lệnh Mua Bitcoin Thật' : 'Add Real Spot Buy Order'}
             </h3>
-            <span className="text-xs text-slate-400 font-medium">
+            <span className="text-xs text-gray-500 font-medium">
               {isVi
                 ? 'Ghi nhận vào sổ cái nội bộ 100% riêng tư (LocalStorage trình duyệt)'
                 : 'Recorded to 100% private local ledger (Browser LocalStorage)'}
@@ -189,7 +189,7 @@ export const AddTransactionModal: React.FC = () => {
         </div>
 
         {error && (
-          <div className="p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs">
+          <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
             {error}
           </div>
         )}
@@ -198,8 +198,8 @@ export const AddTransactionModal: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Ngày Mua */}
             <div className="space-y-1">
-              <label htmlFor="tx-date-input" className="text-[10px] text-slate-400 uppercase font-semibold flex items-center gap-1 cursor-pointer">
-                <Calendar className="w-3 h-3 text-cyan-400" />
+              <label htmlFor="tx-date-input" className="text-[10px] text-gray-500 uppercase font-semibold flex items-center gap-1 cursor-pointer">
+                <Calendar className="w-3 h-3 text-[#7C3AED]" />
                 <span>{isVi ? 'Ngày Mua *' : 'Purchase Date *'}</span>
               </label>
               <input
@@ -208,14 +208,14 @@ export const AddTransactionModal: React.FC = () => {
                 required
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-slate-100 text-xs font-mono focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
 
             {/* Giá Khớp USD */}
             <div className="space-y-1">
-              <label htmlFor="tx-price-input" className="text-[10px] text-slate-400 uppercase font-semibold flex items-center gap-1 cursor-pointer">
-                <DollarSign className="w-3 h-3 text-emerald-400" />
+              <label htmlFor="tx-price-input" className="text-[10px] text-gray-500 uppercase font-semibold flex items-center gap-1 cursor-pointer">
+                <DollarSign className="w-3 h-3 text-emerald-600" />
                 <span>{isVi ? 'Giá Khớp BTC ($) *' : 'Execution Price ($) *'}</span>
               </label>
               <input
@@ -226,14 +226,14 @@ export const AddTransactionModal: React.FC = () => {
                 placeholder="75925"
                 value={priceUsd}
                 onChange={(e) => handlePriceChange(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-slate-100 text-xs font-mono font-bold focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono font-bold focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
 
             {/* Số Lượng BTC */}
             <div className="space-y-1">
-              <label htmlFor="tx-btc-input" className="text-[10px] text-slate-400 uppercase font-semibold flex items-center gap-1 cursor-pointer">
-                <Coins className="w-3 h-3 text-amber-400" />
+              <label htmlFor="tx-btc-input" className="text-[10px] text-gray-500 uppercase font-semibold flex items-center gap-1 cursor-pointer">
+                <Coins className="w-3 h-3 text-amber-600" />
                 <span>{isVi ? 'Số Lượng BTC *' : 'Amount BTC *'}</span>
               </label>
               <input
@@ -244,14 +244,14 @@ export const AddTransactionModal: React.FC = () => {
                 placeholder="0.025"
                 value={amountBtc}
                 onChange={(e) => handleBtcChange(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-amber-300 text-xs font-mono font-bold focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono font-bold focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
 
             {/* Hoặc Số Tiền USD Đã Mua */}
             <div className="space-y-1">
-              <label htmlFor="tx-usd-input" className="text-[10px] text-slate-400 uppercase font-semibold flex items-center gap-1 cursor-pointer">
-                <DollarSign className="w-3 h-3 text-slate-400" />
+              <label htmlFor="tx-usd-input" className="text-[10px] text-gray-500 uppercase font-semibold flex items-center gap-1 cursor-pointer">
+                <DollarSign className="w-3 h-3 text-gray-400" />
                 <span>{isVi ? 'Hoặc Tổng Tiền (USD)' : 'Or Total Paid (USD)'}</span>
               </label>
               <input
@@ -261,15 +261,15 @@ export const AddTransactionModal: React.FC = () => {
                 placeholder="1898.12"
                 value={amountUsd}
                 onChange={(e) => handleUsdChange(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-slate-200 text-xs font-mono focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
           </div>
 
           {/* Nơi Lưu Trữ (Storage Location) */}
           <div className="space-y-1.5">
-            <label className="text-[10px] text-slate-400 uppercase font-semibold flex items-center gap-1">
-              <HardDrive className="w-3 h-3 text-cyan-400" />
+            <label className="text-[10px] text-gray-500 uppercase font-semibold flex items-center gap-1">
+              <HardDrive className="w-3 h-3 text-[#7C3AED]" />
               <span>{isVi ? 'Nơi Lưu Trữ BTC *' : 'Storage Location *'}</span>
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -278,8 +278,8 @@ export const AddTransactionModal: React.FC = () => {
                 onClick={() => setStorageLocation('binance_spot')}
                 className={`p-2.5 rounded-xl border text-left transition-all ${
                   storageLocation === 'binance_spot'
-                    ? 'bg-amber-500/20 border-amber-500/60 text-amber-300'
-                    : 'bg-[#070A12] border-white/[0.1] text-slate-400 hover:text-slate-200'
+                    ? 'bg-purple-50 border-purple-300 text-[#7C3AED] shadow-xs'
+                    : 'bg-[#F4F6F9] border-[#EEF0F5] text-gray-600 hover:text-[#111827] hover:bg-gray-100'
                 }`}
               >
                 <div className="font-bold text-[11px]">Binance Spot</div>
@@ -291,8 +291,8 @@ export const AddTransactionModal: React.FC = () => {
                 onClick={() => setStorageLocation('binance_earn')}
                 className={`p-2.5 rounded-xl border text-left transition-all ${
                   storageLocation === 'binance_earn'
-                    ? 'bg-cyan-500/20 border-cyan-500/60 text-cyan-300'
-                    : 'bg-[#070A12] border-white/[0.1] text-slate-400 hover:text-slate-200'
+                    ? 'bg-cyan-50 border-cyan-300 text-cyan-700 shadow-xs'
+                    : 'bg-[#F4F6F9] border-[#EEF0F5] text-gray-600 hover:text-[#111827] hover:bg-gray-100'
                 }`}
               >
                 <div className="font-bold text-[11px]">Binance Earn</div>
@@ -304,8 +304,8 @@ export const AddTransactionModal: React.FC = () => {
                 onClick={() => setStorageLocation('cold_wallet')}
                 className={`p-2.5 rounded-xl border text-left transition-all ${
                   storageLocation === 'cold_wallet'
-                    ? 'bg-emerald-500/20 border-emerald-500/60 text-emerald-300'
-                    : 'bg-[#070A12] border-white/[0.1] text-slate-400 hover:text-slate-200'
+                    ? 'bg-emerald-50 border-emerald-300 text-emerald-700 shadow-xs'
+                    : 'bg-[#F4F6F9] border-[#EEF0F5] text-gray-600 hover:text-[#111827] hover:bg-gray-100'
                 }`}
               >
                 <div className="font-bold text-[11px]">Ví Lạnh (Cold)</div>
@@ -317,7 +317,7 @@ export const AddTransactionModal: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {/* Phí Giao Dịch */}
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-400 uppercase font-semibold">
+              <label className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Phí Giao Dịch ($)' : 'Fee ($)'}
               </label>
               <input
@@ -326,13 +326,13 @@ export const AddTransactionModal: React.FC = () => {
                 placeholder={totalUsd > 0 ? (totalUsd * 0.001).toFixed(2) : '0.1%'}
                 value={feeUsd}
                 onChange={(e) => setFeeUsd(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-slate-200 text-xs font-mono focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
 
             {/* Ghi Chú */}
             <div className="space-y-1">
-              <label className="text-[10px] text-slate-400 uppercase font-semibold">
+              <label className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Ghi Chú Chiến Lược' : 'Strategic Notes'}
               </label>
               <input
@@ -340,17 +340,17 @@ export const AddTransactionModal: React.FC = () => {
                 placeholder={isVi ? 'DCA hàng tuần / Bắt đáy F&G 28' : 'Weekly DCA / Dip buy'}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-2.5 text-slate-200 text-xs font-mono focus:border-emerald-400 outline-none"
+                className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-2.5 text-[#111827] text-xs font-mono focus:bg-white focus:border-[#7C3AED] focus:ring-1 focus:ring-[#7C3AED] outline-none transition-colors"
               />
             </div>
           </div>
 
           {/* Quick Summary Pill */}
           {totalUsd > 0 && (
-            <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between text-xs">
-              <span className="text-slate-400 font-sans">{isVi ? 'Quy đổi tổng vốn đầu tư:' : 'Capital Summary:'}</span>
-              <span className="font-bold text-slate-100 tabular-nums">
-                {formatUSD(totalUsd)} <span className="text-emerald-400 font-medium">(≈ {formatVND(totalVnd)})</span>
+            <div className="p-3 rounded-xl bg-[#F8FAFC] border border-[#EEF0F5] flex items-center justify-between text-xs">
+              <span className="text-gray-500 font-sans">{isVi ? 'Quy đổi tổng vốn đầu tư:' : 'Capital Summary:'}</span>
+              <span className="font-bold text-[#111827] tabular-nums">
+                {formatUSD(totalUsd)} <span className="text-emerald-600 font-medium">(≈ {formatVND(totalVnd)})</span>
               </span>
             </div>
           )}
@@ -360,14 +360,14 @@ export const AddTransactionModal: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="py-3 px-4 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] text-slate-300 font-bold text-xs transition-colors"
+              className="py-3 px-4 rounded-xl bg-[#F4F6F9] hover:bg-gray-200 border border-[#EEF0F5] text-gray-700 font-bold text-xs transition-colors"
             >
               {isVi ? 'Hủy' : 'Cancel'}
             </button>
 
             <button
               type="submit"
-              className="flex-1 py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all active:scale-[0.98]"
+              className="flex-1 py-3 px-4 rounded-xl bg-[#7C3AED] hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98]"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>{editingTx ? (isVi ? 'Lưu Thay Đổi' : 'Save Changes') : (isVi ? 'Lưu Lệnh Mua Vào Sổ Cái' : 'Record Order to Ledger')}</span>

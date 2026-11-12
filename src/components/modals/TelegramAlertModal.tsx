@@ -76,41 +76,41 @@ export const TelegramAlertModal: React.FC = () => {
       onClick={(e) => {
         if (e.target === e.currentTarget) setIsOpen(false);
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn"
     >
-      <div className="bg-[#0B101D] border border-white/[0.12] rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative font-sans text-xs max-h-[92vh] overflow-y-auto custom-scrollbar">
+      <div className="bg-white border border-[#EEF0F5] rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl relative font-sans text-xs max-h-[92vh] overflow-y-auto custom-scrollbar">
         {/* Close button */}
         <button
           type="button"
           aria-label={isVi ? 'Đóng cửa sổ' : 'Close modal'}
           onClick={() => setIsOpen(false)}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-xl hover:bg-white/[0.08] transition-colors focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:outline-none"
+          className="absolute top-5 right-5 text-gray-400 hover:text-[#111827] p-2 rounded-xl hover:bg-gray-100 transition-colors focus-visible:ring-2 focus-visible:ring-[#7C3AED] focus-visible:outline-none"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-2xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center shadow-sm">
+          <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-200 text-[#7C3AED] flex items-center justify-center shadow-xs">
             <Send className="w-5 h-5" />
           </div>
           <div>
-            <h3 id="telegram-modal-title" className="text-base font-bold text-white tracking-tight">
+            <h3 id="telegram-modal-title" className="text-base font-extrabold text-[#111827] tracking-tight">
               {isVi ? 'Đăng Ký Báo Động Định Lượng Qua Telegram' : 'Quantitative Telegram Alerts'}
             </h3>
-            <span className="text-xs text-purple-300 font-medium">
+            <span className="text-xs text-gray-500 font-medium">
               {isVi ? 'Nhận tín hiệu tức thì khi thị trường tạo cơ hội gom hàng lớn' : 'Instant institutional notifications on market shifts'}
             </span>
           </div>
         </div>
 
         {isSubmitted ? (
-          <div className="py-8 text-center space-y-3 bg-purple-500/10 border border-purple-500/30 rounded-2xl p-5">
-            <CheckCircle2 className="w-12 h-12 text-purple-400 mx-auto animate-bounce" />
-            <h4 className="text-sm font-bold text-white">
+          <div className="py-8 text-center space-y-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-5">
+            <CheckCircle2 className="w-12 h-12 text-emerald-600 mx-auto animate-bounce" />
+            <h4 className="text-sm font-bold text-gray-900">
               {isVi ? 'Đăng Ký Nhận Báo Động Thành Công!' : 'Alert Subscription Confirmed!'}
             </h4>
-            <p className="text-xs text-slate-300 leading-relaxed font-mono">
+            <p className="text-xs text-gray-600 leading-relaxed font-mono">
               {isVi
                 ? `Bot @BTCMacroTerminalBot đã liên kết với ${telegramHandle}. Bạn sẽ nhận thông báo tức thời khi xuất hiện cơ hội gom hàng lớn.`
                 : `Bot @BTCMacroTerminalBot linked to ${telegramHandle}. Instant institutional notifications active.`}
@@ -119,7 +119,7 @@ export const TelegramAlertModal: React.FC = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4 mt-2">
             <div>
-              <label htmlFor="telegram-handle" className="text-xs font-semibold text-slate-300 uppercase block mb-1.5">
+              <label htmlFor="telegram-handle" className="text-xs font-semibold text-gray-700 uppercase block mb-1.5">
                 {isVi ? 'TÀI KHOẢN HOẶC ID TELEGRAM CỦA BẠN' : 'YOUR TELEGRAM USERNAME OR CHAT ID'}
               </label>
               <div className="relative">
@@ -130,66 +130,66 @@ export const TelegramAlertModal: React.FC = () => {
                   required
                   value={telegramHandle}
                   onChange={(e) => setTelegramHandle(e.target.value)}
-                  className="w-full bg-[#070A12] border border-white/[0.1] rounded-xl p-3 text-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400 text-xs font-mono font-bold"
+                  className="w-full bg-[#F4F6F9] border border-[#EEF0F5] rounded-xl p-3 text-[#111827] focus:outline-none focus:bg-white focus:border-[#7C3AED] text-xs font-mono font-bold"
                 />
               </div>
-              <span className="text-[11px] text-slate-400 mt-1 block">
+              <span className="text-[11px] text-gray-500 mt-1 block">
                 {isVi ? 'Không cần mật khẩu hay quyền truy cập. 100% riêng tư và bảo mật.' : 'No credentials required. 100% private & secure.'}
               </span>
             </div>
 
             {/* Alert Channel Toggles */}
             <div className="space-y-2 pt-1 font-sans">
-              <span className="text-xs font-semibold text-slate-300 uppercase block mb-1">
+              <span className="text-xs font-semibold text-gray-700 uppercase block mb-1">
                 {isVi ? 'TÙY CHỌN CÁC LOẠI BÁO ĐỘNG BẠN MUỐN NHẬN:' : 'SELECT ALERT CHANNELS:'}
               </span>
 
-              <label className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:bg-white/[0.06] transition-colors">
+              <label className="flex items-center gap-3 p-3 rounded-2xl bg-[#F8FAFC] border border-[#EEF0F5] cursor-pointer hover:bg-[#F4F6F9] transition-colors">
                 <input
                   type="checkbox"
                   checked={alertBearTrap}
                   onChange={(e) => setAlertBearTrap(e.target.checked)}
-                  className="w-4 h-4 accent-purple-500 rounded cursor-pointer"
+                  className="w-4 h-4 accent-[#7C3AED] rounded cursor-pointer"
                 />
                 <div className="text-xs">
-                  <div className="font-bold text-slate-200">
+                  <div className="font-bold text-[#111827]">
                     🛡️ {isVi ? 'Bẫy Giá Gấu Địa Chính Trị (Bear-Trap Alert)' : 'Geopolitical Bear-Trap Alert'}
                   </div>
-                  <div className="text-[11px] text-slate-400 font-normal">
+                  <div className="text-[11px] text-gray-500 font-normal">
                     {isVi ? 'Báo động tức thì khi chiến tranh/tin xấu tạo cú sập rũ hàng quá bán (Oversold Panic)' : 'Instant alert on high-leverage panic flush'}
                   </div>
                 </div>
               </label>
 
-              <label className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:bg-white/[0.06] transition-colors">
+              <label className="flex items-center gap-3 p-3 rounded-2xl bg-[#F8FAFC] border border-[#EEF0F5] cursor-pointer hover:bg-[#F4F6F9] transition-colors">
                 <input
                   type="checkbox"
                   checked={alertMempoolFee}
                   onChange={(e) => setAlertMempoolFee(e.target.checked)}
-                  className="w-4 h-4 accent-purple-500 rounded cursor-pointer"
+                  className="w-4 h-4 accent-[#7C3AED] rounded cursor-pointer"
                 />
                 <div className="text-xs">
-                  <div className="font-bold text-slate-200">
+                  <div className="font-bold text-[#111827]">
                     ⛏️ {isVi ? 'Bắn Tỉa Phí Rút Ví Lạnh (Mempool Fee Sniper)' : 'Mempool Fee Sniper (Low Fee Notice)'}
                   </div>
-                  <div className="text-[11px] text-slate-400 font-normal">
+                  <div className="text-[11px] text-gray-500 font-normal">
                     {isVi ? 'Báo ngay khi phí mạng Bitcoin rơi xuống dưới 10 sat/vB để rút về ví cứng' : 'Notification when on-chain fees drop under 10 sat/vB'}
                   </div>
                 </div>
               </label>
 
-              <label className="flex items-center gap-3 p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08] cursor-pointer hover:bg-white/[0.06] transition-colors">
+              <label className="flex items-center gap-3 p-3 rounded-2xl bg-[#F8FAFC] border border-[#EEF0F5] cursor-pointer hover:bg-[#F4F6F9] transition-colors">
                 <input
                   type="checkbox"
                   checked={alertDcaSignal}
                   onChange={(e) => setAlertDcaSignal(e.target.checked)}
-                  className="w-4 h-4 accent-purple-500 rounded cursor-pointer"
+                  className="w-4 h-4 accent-[#7C3AED] rounded cursor-pointer"
                 />
                 <div className="text-xs">
-                  <div className="font-bold text-slate-200">
+                  <div className="font-bold text-[#111827]">
                     ⚡ {isVi ? 'Tín Hiệu Khớp Lệnh DCA Hàng Tuần (Smart DCA)' : 'Weekly Smart DCA Execution Signal'}
                   </div>
-                  <div className="text-[11px] text-slate-400 font-normal">
+                  <div className="text-[11px] text-gray-500 font-normal">
                     {isVi ? 'Nhận khuyến nghị hệ số nhân lệnh (1.0x - 2.0x) và vùng giá Limit theo ATR vào sáng thứ Hai' : 'Institutional multiplier and ATR entry levels on Monday morning'}
                   </div>
                 </div>
@@ -197,18 +197,18 @@ export const TelegramAlertModal: React.FC = () => {
             </div>
 
             {/* Anti-Duplicate & Cooldown Protection Chip */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 p-3 rounded-2xl bg-purple-500/[0.08] border border-purple-500/20 text-[11px] font-mono">
-              <span className="text-slate-300">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 p-3 rounded-2xl bg-purple-50 border border-purple-200 text-[11px] font-mono">
+              <span className="text-gray-700">
                 {isVi ? 'Khóa chống lặp (Dedup Key):' : 'Anti-Duplicate Key:'}{' '}
-                <strong className="text-purple-300">{dedupKey}</strong>
+                <strong className="text-[#7C3AED]">{dedupKey}</strong>
               </span>
-              <span className="text-slate-400">
+              <span className="text-gray-500">
                 {cooldownRemainingHours > 0 ? (
-                  <span className="text-amber-400 font-bold">
+                  <span className="text-amber-700 font-bold">
                     ⏳ Cooldown: {cooldownRemainingHours.toFixed(1)}h
                   </span>
                 ) : (
-                  <span className="text-emerald-400 font-semibold">
+                  <span className="text-emerald-700 font-semibold">
                     ✓ {isVi ? 'Sẵn sàng gửi (Giới hạn 6h/lần)' : 'Ready (6h rate limit)'}
                   </span>
                 )}
@@ -217,19 +217,19 @@ export const TelegramAlertModal: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-3.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-600/25 transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:outline-none"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#7C3AED] hover:bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[#7C3AED] focus-visible:outline-none"
             >
               <Bell className="w-4 h-4" />
               <span>{isVi ? 'Kích Hoạt Nhận Báo Động Ngay' : 'Activate Free Alerts'}</span>
             </button>
 
             {/* Live Institutional Alert Preview Box */}
-            <div className="mt-4 p-3.5 rounded-2xl bg-black/60 border border-white/[0.08] space-y-2 text-xs font-mono">
-              <div className="flex items-center gap-2 text-purple-300 font-bold uppercase tracking-wider">
-                <MessageSquare className="w-4 h-4 text-purple-400" />
+            <div className="mt-4 p-3.5 rounded-2xl bg-[#F8FAFC] border border-[#EEF0F5] space-y-2 text-xs font-mono">
+              <div className="flex items-center gap-2 text-[#7C3AED] font-bold uppercase tracking-wider">
+                <MessageSquare className="w-4 h-4 text-[#7C3AED]" />
                 <span>{isVi ? 'Mẫu Báo Động Định Lượng v6.0 (Live Preview)' : 'Live Alert Format Preview v6.0'}</span>
               </div>
-              <div className="text-slate-300 leading-relaxed bg-[#070A12] p-3 rounded-xl border border-white/[0.06] whitespace-pre-line text-[11px] custom-scrollbar overflow-x-auto">
+              <div className="text-gray-800 leading-relaxed bg-white p-3 rounded-xl border border-[#EEF0F5] whitespace-pre-line text-[11px] custom-scrollbar overflow-x-auto">
                 {`🚨 [BTC MACRO TERMINAL] TÍN HIỆU ĐỊNH LƯỢNG INSTITUTIONAL v6.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎯 ĐIỂM HỘI TỤ: ${confluence.totalScore}/100 (${confluence.totalScoreExact}/100) • ${confluence.zoneLabel}

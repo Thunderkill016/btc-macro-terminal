@@ -373,12 +373,12 @@ export const CommandPalette: React.FC = () => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-black/75 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] px-4 bg-slate-900/60 backdrop-blur-sm animate-fadeIn"
       onClick={() => setIsOpen(false)}
       data-testid="command-palette-backdrop"
     >
       <div
-        className="w-full max-w-2xl rounded-2xl bg-[#0A0E17] border border-white/[0.10] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.12),0_25px_70px_-15px_rgba(0,0,0,0.9)] overflow-hidden"
+        className="w-full max-w-2xl rounded-2xl bg-white border border-[#EEF0F5] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -386,8 +386,8 @@ export const CommandPalette: React.FC = () => {
         data-testid="command-palette-dialog"
       >
         {/* Top Search Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/[0.06] bg-[#0F1522]/60">
-          <Search className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#EEF0F5] bg-[#F4F6F9]/60">
+          <Search className="w-4 h-4 text-[#7C3AED] shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -398,17 +398,17 @@ export const CommandPalette: React.FC = () => {
                 ? 'Tìm nhanh chỉ báo, chuyển phân hệ (Tab 1/2/3, Radar A/B/C/D), mở công thức hoặc đồng bộ ví...'
                 : 'Type a command or search indicators (Tab 1/2/3, Radar A/B/C/D, Vault, Formulas)...'
             }
-            className="w-full bg-transparent text-sm text-[#F8FAFC] placeholder-[#64748B] focus:outline-none font-sans"
+            className="w-full bg-transparent text-sm text-[#111827] placeholder-gray-400 focus:outline-none font-sans"
             data-testid="command-palette-input"
           />
           <div className="flex items-center gap-1.5 shrink-0">
-            <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold text-slate-400 bg-white/[0.05] border border-white/[0.08] rounded">
+            <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-semibold text-gray-500 bg-white border border-gray-200 rounded shadow-xs">
               ESC
             </kbd>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors cursor-pointer"
+              className="p-1 rounded-lg text-gray-400 hover:text-[#111827] hover:bg-gray-100 transition-colors cursor-pointer"
               aria-label={isVi ? 'Đóng bảng lệnh' : 'Close command palette'}
             >
               <X className="w-4 h-4" />
@@ -419,7 +419,7 @@ export const CommandPalette: React.FC = () => {
         {/* Command List */}
         <div className="max-h-[60vh] overflow-y-auto p-2 space-y-1 custom-scrollbar">
           {filteredCommands.length === 0 ? (
-            <div className="py-10 text-center text-xs text-slate-500 font-sans">
+            <div className="py-10 text-center text-xs text-gray-500 font-sans">
               {isVi
                 ? `Không tìm thấy lệnh phù hợp với "${query}".`
                 : `No commands matching "${query}".`}
@@ -439,24 +439,24 @@ export const CommandPalette: React.FC = () => {
                   }}
                   className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between gap-3 transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-[#141C2E] border border-emerald-500/30 text-white shadow-sm'
-                      : 'border border-transparent text-slate-300 hover:bg-[#0F1522]'
+                      ? 'bg-purple-50 border border-purple-200 text-[#7C3AED] shadow-xs'
+                      : 'border border-transparent text-gray-700 hover:bg-[#F4F6F9]'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-[#05070B] border border-white/[0.06] flex items-center justify-center shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-[#F4F6F9] border border-[#EEF0F5] flex items-center justify-center shrink-0">
                       {cmd.icon}
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-[#F8FAFC] truncate">
+                        <span className="text-xs font-semibold text-[#111827] truncate">
                           {isVi ? cmd.titleVi : cmd.titleEn}
                         </span>
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.04] text-[#64748B] font-medium hidden sm:inline-block">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 font-medium hidden sm:inline-block">
                           {isVi ? cmd.categoryVi : cmd.categoryEn}
                         </span>
                       </div>
-                      <div className="text-[11px] text-[#64748B] truncate mt-0.5">
+                      <div className="text-[11px] text-gray-500 truncate mt-0.5">
                         {isVi ? cmd.subtitleVi : cmd.subtitleEn}
                       </div>
                     </div>
@@ -464,13 +464,13 @@ export const CommandPalette: React.FC = () => {
 
                   <div className="flex items-center gap-2 shrink-0">
                     {cmd.shortcut && (
-                      <kbd className="px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-[#05070B] border border-white/[0.08] rounded">
+                      <kbd className="px-1.5 py-0.5 text-[10px] font-mono text-gray-500 bg-white border border-gray-200 rounded shadow-xs">
                         {cmd.shortcut}
                       </kbd>
                     )}
                     <ArrowRight
                       className={`w-3.5 h-3.5 transition-transform ${
-                        isSelected ? 'text-emerald-400 translate-x-0.5' : 'text-slate-600'
+                        isSelected ? 'text-[#7C3AED] translate-x-0.5' : 'text-gray-300'
                       }`}
                     />
                   </div>
@@ -481,11 +481,11 @@ export const CommandPalette: React.FC = () => {
         </div>
 
         {/* Bottom Status Footer */}
-        <div className="px-4 py-2.5 border-t border-white/[0.06] bg-[#05070B]/90 flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#64748B]">
+        <div className="px-4 py-2.5 border-t border-[#EEF0F5] bg-[#F8FAFC] flex flex-wrap items-center justify-between gap-2 text-[11px] text-gray-500">
           <div className="flex items-center gap-3">
             <span className="flex items-center gap-1">
-              <Command className="w-3 h-3 text-emerald-400" />
-              <strong className="text-slate-300">Bitcoin Alpha v6.0 Apex</strong>
+              <Command className="w-3 h-3 text-[#7C3AED]" />
+              <strong className="text-gray-800">Bitcoin Alpha v6.0 Apex</strong>
             </span>
             <span>•</span>
             <span>
@@ -494,7 +494,7 @@ export const CommandPalette: React.FC = () => {
                 : '↑↓ Navigate • Enter Execute • Esc Close'}
             </span>
           </div>
-          <span className="font-mono text-[10px] text-slate-500">
+          <span className="font-mono text-[10px] text-gray-400">
             ⌘K / Ctrl+K
           </span>
         </div>

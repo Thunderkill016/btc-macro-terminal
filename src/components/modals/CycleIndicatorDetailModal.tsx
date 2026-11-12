@@ -80,45 +80,41 @@ export const CycleIndicatorDetailModal: React.FC<Props> = ({ indicator, onClose 
     >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-[#050811]/85 backdrop-blur-xl transition-opacity"
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       {/* Modal Box */}
-      <div className="relative w-full max-w-3xl rounded-3xl bg-[#0B101D] border border-white/[0.1] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] z-10 font-sans">
-        {/* Ambient Glow */}
-        <div className="absolute -top-32 -right-32 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="relative w-full max-w-3xl rounded-3xl bg-white border border-[#EEF0F5] shadow-2xl overflow-hidden flex flex-col max-h-[92vh] z-10 font-sans">
         {/* Modal Header */}
-        <div className="relative p-5 sm:p-6 pb-4 border-b border-white/[0.08] flex items-start justify-between gap-4 shrink-0">
+        <div className="relative p-5 sm:p-6 pb-4 border-b border-[#EEF0F5] bg-white flex items-start justify-between gap-4 shrink-0">
           <div className="space-y-1.5">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 text-[11px] font-semibold font-mono">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-50 border border-purple-200 text-[#7C3AED] text-[11px] font-semibold font-mono">
                 <Compass className="w-3 h-3" />
                 {indicator.author}
               </span>
               <span
                 className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold font-mono ${
                   indicator.triggered
-                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
-                    : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                    ? 'bg-rose-50 text-rose-700 border border-rose-200'
+                    : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                 }`}
               >
                 {indicator.triggered ? (
                   <>
-                    <AlertTriangle className="w-3 h-3 text-rose-400" />
+                    <AlertTriangle className="w-3 h-3 text-rose-600" />
                     {isVi ? 'ĐÃ KÍCH HOẠT CẢNH BÁO ĐỈNH' : 'CYCLE TOP TRIGGERED'}
                   </>
                 ) : (
                   <>
-                    <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                    <ShieldCheck className="w-3 h-3 text-emerald-600" />
                     {isVi ? 'DƯỚI NGƯỠNG CẢNH BÁO ĐỈNH' : 'BELOW PEAK THRESHOLD'}
                   </>
                 )}
               </span>
             </div>
-            <h2 id="indicator-modal-title" className="text-lg sm:text-xl font-black text-white tracking-tight">
+            <h2 id="indicator-modal-title" className="text-lg sm:text-xl font-black text-[#111827] tracking-tight">
               {isVi ? indicator.nameVi : indicator.nameEn}
             </h2>
           </div>
@@ -127,7 +123,7 @@ export const CycleIndicatorDetailModal: React.FC<Props> = ({ indicator, onClose 
             type="button"
             aria-label={isVi ? 'Đóng cửa sổ' : 'Close modal'}
             onClick={onClose}
-            className="w-9 h-9 rounded-2xl bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] text-slate-400 hover:text-white flex items-center justify-center transition-colors shrink-0 focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+            className="w-9 h-9 rounded-2xl bg-gray-100 hover:bg-gray-200 border border-[#EEF0F5] text-gray-500 hover:text-[#111827] flex items-center justify-center transition-colors shrink-0 focus-visible:ring-2 focus-visible:ring-[#7C3AED] focus-visible:outline-none"
             title="Đóng (ESC)"
           >
             <X className="w-4 h-4" />
@@ -138,8 +134,8 @@ export const CycleIndicatorDetailModal: React.FC<Props> = ({ indicator, onClose 
         <div className="p-5 sm:p-6 space-y-5 overflow-y-auto custom-scrollbar text-xs sm:text-sm">
           {/* Plain-Language Meaning Box for Everyday Users */}
           {(indicator.plainMeaningVi || indicator.plainMeaningEn) && (
-            <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 text-xs text-slate-200 leading-relaxed">
-              <strong className="text-emerald-300 font-bold">
+            <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-xs text-gray-800 leading-relaxed">
+              <strong className="text-emerald-700 font-bold">
                 {isVi ? '💡 Hiểu đơn giản cho người mới:' : '💡 Plain-Language Meaning:'}
               </strong>{' '}
               {isVi ? indicator.plainMeaningVi : indicator.plainMeaningEn}
@@ -147,85 +143,85 @@ export const CycleIndicatorDetailModal: React.FC<Props> = ({ indicator, onClose 
           )}
 
           {/* Key Metrics Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/[0.06]">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-[#F8FAFC] border border-[#EEF0F5]">
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-semibold">
+              <div className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Đáy Chu Kỳ (Floor)' : 'Cycle Floor'}
               </div>
-              <div className="text-base sm:text-lg font-bold text-cyan-400 font-mono mt-0.5">
+              <div className="text-base sm:text-lg font-bold text-[#7C3AED] font-mono mt-0.5">
                 {indicator.floorDisplay}
               </div>
             </div>
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-semibold">
+              <div className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Hiện Tại (Live)' : 'Current Reading'}
               </div>
-              <div className="text-base sm:text-lg font-extrabold text-white font-mono mt-0.5">
+              <div className="text-base sm:text-lg font-extrabold text-[#111827] font-mono mt-0.5">
                 {indicator.currentDisplay}
               </div>
             </div>
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-semibold">
+              <div className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Ngưỡng Đỉnh (Top)' : 'Peak Target'}
               </div>
-              <div className="text-base sm:text-lg font-bold text-rose-400 font-mono mt-0.5">
+              <div className="text-base sm:text-lg font-bold text-rose-600 font-mono mt-0.5">
                 {indicator.topDisplay}
               </div>
             </div>
             <div>
-              <div className="text-[10px] text-slate-400 uppercase font-semibold">
+              <div className="text-[10px] text-gray-500 uppercase font-semibold">
                 {isVi ? 'Tiến Trình Chu Kỳ' : 'Cycle Progress'}
               </div>
-              <div className="text-base sm:text-lg font-extrabold text-emerald-400 font-mono mt-0.5">
+              <div className="text-base sm:text-lg font-extrabold text-emerald-700 font-mono mt-0.5">
                 {indicator.progressPct}%
               </div>
             </div>
           </div>
 
           {/* Interactive 3-Stage Normalization Visual Gauge */}
-          <div className="space-y-2 p-4 rounded-2xl bg-gradient-to-r from-cyan-950/20 via-slate-900/60 to-rose-950/20 border border-white/[0.08]">
-            <div className="flex justify-between items-center text-xs font-semibold text-slate-300">
-              <span className="flex items-center gap-1.5 text-cyan-400">
+          <div className="space-y-2 p-4 rounded-2xl bg-[#F4F6F9] border border-[#EEF0F5]">
+            <div className="flex justify-between items-center text-xs font-semibold text-gray-700">
+              <span className="flex items-center gap-1.5 text-[#7C3AED]">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 {isVi ? 'Đáy Chu Kỳ' : 'Cycle Floor'} ({indicator.floorDisplay})
               </span>
-              <span className="text-slate-400 hidden sm:inline">
+              <span className="text-gray-500 hidden sm:inline">
                 {isVi ? 'Vùng Cân Bằng / Tích Sản' : 'Fair Accumulation'} ({indicator.neutralDisplay})
               </span>
-              <span className="flex items-center gap-1.5 text-rose-400">
+              <span className="flex items-center gap-1.5 text-rose-600">
                 <Target className="w-3.5 h-3.5" />
                 {isVi ? 'Đỉnh Bong Bóng' : 'Euphoria Top'} ({indicator.topDisplay})
               </span>
             </div>
 
             {/* Visual Multi-Segment Bar */}
-            <div className="relative h-4 w-full bg-slate-950 rounded-full border border-white/[0.1] overflow-hidden">
+            <div className="relative h-4 w-full bg-gray-200 rounded-full border border-gray-300 overflow-hidden">
               {/* Zone 1: Floor to Neutral (Green) */}
               <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-emerald-500/40 to-teal-500/40 border-r border-teal-500/50"
+                className="absolute inset-y-0 left-0 bg-emerald-400/50 border-r border-emerald-500"
                 style={{ width: '40%' }}
               />
               {/* Zone 2: Neutral to High (Yellow/Amber) */}
               <div
-                className="absolute inset-y-0 left-[40%] bg-gradient-to-r from-amber-500/30 to-orange-500/30 border-r border-orange-500/50"
+                className="absolute inset-y-0 left-[40%] bg-amber-400/50 border-r border-amber-500"
                 style={{ width: '35%' }}
               />
               {/* Zone 3: Euphoric Peak (Red) */}
               <div
-                className="absolute inset-y-0 left-[75%] bg-rose-500/30"
+                className="absolute inset-y-0 left-[75%] bg-rose-400/50"
                 style={{ width: '25%' }}
               />
 
               {/* Current Value Pointer */}
               <div
-                className="absolute top-0 bottom-0 w-2.5 bg-white shadow-[0_0_12px_rgba(255,255,255,0.9)] rounded-full -ml-1 transition-all duration-500 border border-slate-900"
+                className="absolute top-0 bottom-0 w-2.5 bg-[#111827] shadow-sm rounded-full -ml-1 transition-all duration-500 border border-white"
                 style={{ left: `${Math.max(2, Math.min(98, indicator.progressPct))}%` }}
               />
             </div>
 
-            <div className="flex justify-between text-[11px] text-slate-400 font-mono">
+            <div className="flex justify-between text-[11px] text-gray-500 font-mono">
               <span>0% (Đáy thực tế)</span>
-              <span className="text-emerald-400 font-bold">
+              <span className="text-emerald-700 font-bold">
                 {isVi ? 'Vị thế hiện tại:' : 'Current:'} {indicator.progressPct}%
               </span>
               <span>100% (Đỉnh chu kỳ)</span>
@@ -233,52 +229,52 @@ export const CycleIndicatorDetailModal: React.FC<Props> = ({ indicator, onClose 
           </div>
 
           {/* Mathematical Rigor Explanation */}
-          <div className="space-y-3 p-4 rounded-2xl bg-slate-900/70 border border-cyan-500/20">
-            <div className="flex items-center gap-2 text-cyan-400 font-bold text-xs uppercase tracking-wider">
+          <div className="space-y-3 p-4 rounded-2xl bg-purple-50/50 border border-purple-200">
+            <div className="flex items-center gap-2 text-[#7C3AED] font-bold text-xs uppercase tracking-wider">
               <Calculator className="w-4 h-4" />
               <span>{isVi ? 'Công Thức Toán Học Chuẩn Định Lượng' : 'Quantitative Mathematical Formula'}</span>
             </div>
 
-            <div className="p-3 rounded-xl bg-black/60 border border-white/[0.06] font-mono text-xs sm:text-sm text-cyan-200 overflow-x-auto">
+            <div className="p-3 rounded-xl bg-white border border-purple-200 font-mono text-xs sm:text-sm text-[#7C3AED] overflow-x-auto">
               {indicator.formula}
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed font-normal">
+            <p className="text-xs text-gray-700 leading-relaxed font-normal">
               {isVi ? indicator.whyMinMaxVi : indicator.whyMinMaxEn}
             </p>
           </div>
 
           {/* Historical Backtest Section */}
-          <div className="space-y-2 p-4 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
-            <div className="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
-              <Activity className="w-4 h-4" />
+          <div className="space-y-2 p-4 rounded-2xl bg-amber-50/60 border border-amber-200">
+            <div className="flex items-center gap-2 text-amber-800 font-bold text-xs uppercase tracking-wider">
+              <Activity className="w-4 h-4 text-amber-600" />
               <span>{isVi ? 'Kiểm Chứng Lịch Sử 3 Chu Kỳ (2013, 2017, 2021)' : 'Historical 3-Cycle Backtest'}</span>
             </div>
-            <p className="text-xs text-slate-300 leading-relaxed font-normal">
+            <p className="text-xs text-gray-700 leading-relaxed font-normal">
               {isVi ? indicator.backtestVi : indicator.backtestEn}
             </p>
           </div>
 
           {/* Actionable Strategy Advice */}
-          <div className="space-y-2 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30">
-            <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs uppercase tracking-wider">
-              <TrendingUp className="w-4 h-4" />
+          <div className="space-y-2 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+            <div className="flex items-center gap-2 text-emerald-800 font-bold text-xs uppercase tracking-wider">
+              <TrendingUp className="w-4 h-4 text-emerald-600" />
               <span>{isVi ? 'Khuyến Nghị Hành Động Thể Chế Hiện Tại' : 'Institutional Action Playbook'}</span>
             </div>
-            <p className="text-xs text-slate-200 leading-relaxed font-normal">
+            <p className="text-xs text-gray-700 leading-relaxed font-normal">
               {isVi ? indicator.actionVi : indicator.actionEn}
             </p>
           </div>
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-white/[0.08] bg-black/30 flex items-center justify-between shrink-0">
-          <div className="text-[11px] text-slate-400 font-mono">
+        <div className="p-4 border-t border-[#EEF0F5] bg-[#F8FAFC] flex items-center justify-between shrink-0">
+          <div className="text-[11px] text-gray-500 font-mono">
             {isVi ? 'Dữ liệu thời gian thực • Nguồn: Binance & On-Chain' : 'Real-time On-Chain & Binance Stream'}
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-white/[0.08] hover:bg-white/[0.15] text-white text-xs font-bold transition-colors"
+            className="px-4 py-2 rounded-xl bg-[#111827] hover:bg-black text-white text-xs font-bold transition-colors"
           >
             {isVi ? 'Đóng cửa sổ' : 'Close'}
           </button>
