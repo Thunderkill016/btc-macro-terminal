@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "primary-container": "#7c3aed", "tertiary-fixed-dim": "#ffb690", "surface-container-lowest": "#ffffff", "on-secondary-fixed": "#002113", "on-secondary-fixed-variant": "#005236", "on-tertiary-fixed": "#341100", "secondary-fixed": "#6ffbbe", "on-primary": "#ffffff", "outline-variant": "#ccc3d8", "tertiary-container": "#aa4900", "on-background": "#0b1c30", "surface-container": "#e5eeff", "secondary": "#006c49", "surface-container-highest": "#d3e4fe", "on-tertiary": "#ffffff", "outline": "#7b7487", "on-error-container": "#93000a", "on-primary-container": "#ede0ff", "inverse-primary": "#d2bbff", "on-secondary-container": "#00714d", "primary": "#630ed4", "surface": "#f8f9ff", "primary-fixed-dim": "#d2bbff", "surface-bright": "#f8f9ff", "background": "#f8f9ff", "on-secondary": "#ffffff", "on-tertiary-fixed-variant": "#783200", "surface-container-low": "#eff4ff", "surface-variant": "#d3e4fe", "surface-dim": "#cbdbf5", "inverse-on-surface": "#eaf1ff", "on-error": "#ffffff", "on-primary-fixed-variant": "#5a00c6", "secondary-container": "#6cf8bb", "secondary-fixed-dim": "#4edea3", "surface-tint": "#732ee4", "on-surface-variant": "#4a4455", "surface-container-high": "#dce9ff", "tertiary": "#843700", "primary-fixed": "#eaddff", "error-container": "#ffdad6", "error": "#ba1a1a", "tertiary-fixed": "#ffdbca", "on-primary-fixed": "#25005a", "on-surface": "#0b1c30", "inverse-surface": "#213145", "on-tertiary-container": "#ffdecf" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-md": "1.5rem", "space-xl": "2rem", "gutter": "1.25rem", "space-xs": "0.25rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "1rem", "space-sm": "0.5rem", "margin-lg": "2rem", "gutter-lg": "1.5rem" }, "fontFamily": { "body-lg": ["Inter"], "headline-lg": ["Plus Jakarta Sans"], "data-sm": ["JetBrains Mono"], "body-md": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "label-lg": ["Inter"], "data-md": ["JetBrains Mono"], "headline-md": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Inter"], "data-lg": ["JetBrains Mono"], "display-lg": ["Plus Jakarta Sans"] }, "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "400" }], "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "data-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "-0.005em", "fontWeight": "400" }], "display-lg-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500" }], "data-md": ["15px", { "lineHeight": "20px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "headline-md": ["22px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0em", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }], "data-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "700" }] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-gutter top-gutter bottom-gutter w-[72px] bg-surface-container-lowest rounded-xl z-50 flex flex-col items-center py-space-lg shadow-[0_1px_3px_rgba(15,23,42,0.03),0_8px_24px_-4px_rgba(15,23,42,0.04)] justify-between"><div class="flex flex-col items-center gap-space-lg w-full"><a class="w-11 h-11 rounded-full bg-primary-container flex items-center justify-center text-on-primary font-headline-md text-headline-md shadow-[0_4px_14px_rgba(124,58,237,0.35)] transition-transform active:scale-95" data-path="dashboard" href="#"><span class="leading-none">L</span></a><nav class="flex flex-col items-center gap-space-sm w-full" data-active-classes="bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(124,58,237,0.35)]"><a class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="dashboard" href="#" title="Dashboard"><span class="material-symbols-outlined text-[22px]">dashboard</span></a><a class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="cycle-models" href="#" title="Cycle Models &amp; Analytics"><span class="material-symbols-outlined text-[22px]">monitoring</span></a><a class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="dca-engine" href="#" title="DCA Engine &amp; Strategy"><span class="material-symbols-outlined text-[22px]">autorenew</span></a><a class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="portfolio" href="#" title="Portfolio &amp; Allocation"><span class="material-symbols-outlined text-[22px]">account_balance_wallet</span></a><a class="w-11 h-11 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" data-path="ai-insights" href="#" title="AI Insights &amp; Quant Hub"><span class="material-symbols-outlined text-[22px]">neurology</span></a><a aria-current="page" class="w-11 h-11 rounded-full flex items-center justify-center transition-all bg-primary-container text-on-primary shadow-[0_4px_14px_rgba(124,58,237,0.35)]" data-path="settings" href="#" title="Settings"><span class="material-symbols-outlined text-[22px]">settings</span></a></nav></div><div class="flex flex-col items-center gap-space-sm w-full"><button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" title="Operational Telemetry" type="button"><span class="material-symbols-outlined text-[20px]">hub</span></button><button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-all" title="Security Keys" type="button"><span class="material-symbols-outlined text-[20px]">shield</span></button></div></aside><div class="pl-[104px] pr-gutter"><header class="fixed top-0 left-[104px] right-gutter h-16 bg-surface/80 backdrop-blur-xl z-40 flex items-center justify-between px-space-lg"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">LOQO</span><span class="font-data-sm text-data-sm text-on-surface-variant px-space-xs py-0.5 rounded-full bg-surface-container">TERMINAL</span></div><div class="h-4 w-px bg-outline-variant hidden sm:block"></div><div class="hidden sm:flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md"><span class="material-symbols-outlined text-[16px]">currency_bitcoin</span><span class="font-data-sm text-data-sm text-on-surface font-semibold">BTC Spot Accumulation Workspace</span></div></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-low transition-colors shadow-[0_1px_3px_rgba(15,23,42,0.03)] font-label-md text-label-md" type="button"><span class="material-symbols-outlined text-[16px] text-on-surface-variant">calendar_today</span><span>Date range</span><span class="material-symbols-outlined text-[16px] text-on-surface-variant">expand_more</span></button><div class="flex items-center bg-surface-container-lowest p-0.5 rounded-full shadow-[0_1px_3px_rgba(15,23,42,0.03)]"><button class="px-space-sm py-1 rounded-full bg-primary-container text-on-primary font-data-sm text-data-sm" type="button">$</button><button class="px-space-sm py-1 rounded-full text-on-surface-variant hover:text-on-surface font-data-sm text-data-sm" type="button">₿</button></div><button class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors shadow-[0_1px_3px_rgba(15,23,42,0.03)]" type="button"><span class="material-symbols-outlined text-[18px]">tune</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="relative pt-16 pb-28 bg-surface min-h-screen"><div class="flex flex-col w-full">
+<div class="w-full max-w-[1600px] mx-auto px-space-md sm:px-space-lg lg:px-space-xl py-space-lg flex flex-col gap-space-lg">
+<!-- PAGE HEADER -->
+<div class="flex flex-col xl:flex-row xl:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs max-w-3xl">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded-full bg-surface-container text-primary font-data-sm text-data-sm uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            SYSTEM SETTINGS &amp; CUSTODY SECURITY
+          </span>
+<span class="text-outline-variant font-data-sm text-data-sm">•</span>
+<span class="inline-flex items-center gap-1 text-secondary font-data-sm text-data-sm">
+<span class="material-symbols-outlined text-[15px]">sensors</span>
+            NODE HEALTH: OPTIMAL (Latency 14ms)
+          </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-1">
+          Cài đặt &amp; Quản lý API Ví/Sàn <span class="text-on-surface-variant font-headline-md text-headline-md font-normal">(Settings &amp; Custody)</span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          Quản lý kết nối API sàn giao dịch, liên kết ví lạnh phần cứng (Hardware Vaults), chính sách bảo mật đa chữ ký và cấu hình webhook cảnh báo rủi ro chu kỳ tích lũy Bitcoin.
+        </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-sm flex-wrap self-start xl:self-auto">
+<button class="group flex items-center gap-space-xs px-space-md py-2.5 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-low transition-all duration-200 shadow-sm active:scale-95 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary group-hover:rotate-12 transition-transform">shield</span>
+<span>Kiểm toán Bảo mật <span class="text-on-surface-variant font-body-sm text-body-sm">(Security Audit)</span></span>
+</button>
+<button class="group flex items-center gap-space-xs px-space-lg py-2.5 rounded-full bg-primary-container text-on-primary hover:bg-primary transition-all duration-200 shadow-md active:scale-95 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">key</span>
+<span>+ Thêm Khóa API / Ví mới <span class="text-primary-fixed-dim font-body-sm text-body-sm">(+ Add API or Vault)</span></span>
+</button>
+</div>
+</div>
+<!-- SUB-NAVIGATION TABS -->
+<div class="flex items-center gap-space-xs overflow-x-auto pb-1 -mx-space-md px-space-md scrollbar-none">
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-full bg-surface-container-lowest text-primary font-label-lg text-label-lg shadow-sm shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">swap_horiz</span>
+<span>Quản lý API Sàn (Exchange APIs)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-primary-container text-on-primary font-data-sm text-data-sm text-[11px]">3 Active</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors shrink-0 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+<span>Ví Lạnh &amp; Lưu Ký (Cold Storage &amp; Vaults)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container text-on-surface-variant font-data-sm text-data-sm text-[11px]">2 Connected</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors shrink-0 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Hạn Mức &amp; Bảo Mật Giao Dịch (Execution &amp; IP Whitelist)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors shrink-0 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Thông Báo &amp; Webhook (Alerts &amp; Webhooks)</span>
+</button>
+<button class="flex items-center gap-space-xs px-space-md py-2 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors shrink-0 font-label-lg text-label-lg" type="button">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Tùy Chọn Hệ Thống (Terminal Preferences)</span>
+</button>
+</div>
+<!-- TOP KPI / STATUS ROW (4 CARDS) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="relative overflow-hidden rounded-[20px] bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">API Security Health</span>
+<span class="font-headline-lg text-headline-lg text-on-surface mt-1">98.5% <span class="font-headline-sm text-headline-sm text-secondary font-medium">Secure</span></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-fixed/50 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+</div>
+<div class="mt-space-md flex items-center justify-between pt-space-sm bg-surface-container-low/60 -mx-space-lg -mb-space-lg px-space-lg py-2">
+<span class="font-data-sm text-data-sm text-on-surface-variant">Tier-1 Enclave Active</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-data-sm text-data-sm font-semibold">Zero Exposure</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="relative overflow-hidden rounded-[20px] bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Auto-Execution Throttle</span>
+<span class="font-headline-lg text-headline-lg text-on-surface mt-1">$5,000 <span class="font-body-md text-body-md text-on-surface-variant font-normal">/ ngày</span></span>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-container text-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">speed</span>
+</div>
+</div>
+<div class="mt-space-md flex items-center justify-between pt-space-sm bg-surface-container-low/60 -mx-space-lg -mb-space-lg px-space-lg py-2">
+<span class="font-data-sm text-data-sm text-on-surface-variant">Daily Order Hard Cap</span>
+<span class="inline-flex items-center gap-1 font-data-sm text-data-sm text-secondary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> SAFE STATUS
+          </span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="relative overflow-hidden rounded-[20px] bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider truncate">Auto-Sweep Destination</span>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-1 truncate">Glacier Coldcard Vault</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<div class="mt-space-md flex items-center justify-between pt-space-sm bg-surface-container-low/60 -mx-space-lg -mb-space-lg px-space-lg py-2">
+<span class="font-data-sm text-data-sm text-on-surface-variant">3-of-5 Quorum Multisig</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-fixed/50 text-secondary font-data-sm text-data-sm">Sweep Active</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="relative overflow-hidden rounded-[20px] bg-surface-container-lowest p-space-lg shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="flex flex-col min-w-0 pr-2">
+<span class="text-on-surface-variant font-label-md text-label-md uppercase tracking-wider">Hardware Enclave &amp; 2FA</span>
+<span class="font-headline-sm text-headline-sm text-on-surface mt-1 truncate">YubiKey 5C NFC + TOTP</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">enhanced_encryption</span>
+</div>
+</div>
+<div class="mt-space-md flex items-center justify-between pt-space-sm bg-surface-container-low/60 -mx-space-lg -mb-space-lg px-space-lg py-2">
+<span class="font-data-sm text-data-sm text-on-surface-variant">Verified 2m ago</span>
+<span class="inline-flex items-center gap-1 font-data-sm text-data-sm text-secondary font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Hardware Key
+          </span>
+</div>
+</div>
+</div>
+<!-- MAIN TWO-COLUMN LAYOUT (65% LEFT / 35% RIGHT) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- ================= LEFT COLUMN (65% -> 8 of 12 cols) ================= -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- CARD A: CONNECTED INSTITUTIONAL EXCHANGES -->
+<div class="rounded-[22px] bg-surface-container-lowest p-space-lg sm:p-space-xl shadow-sm flex flex-col gap-space-md">
+<!-- Card Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">account_balance</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Sàn Giao Dịch Đã Kết Nối</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Connected Institutional Spot Exchanges &amp; OTC Execution Desks</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-start sm:self-auto">
+<span class="inline-flex items-center gap-1 px-space-sm py-1 rounded-full bg-secondary-fixed/40 text-on-secondary-fixed font-data-sm text-data-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span> 3 Sàn Kết Nối
+              </span>
+<button class="w-8 h-8 rounded-full hover:bg-surface-container-low text-on-surface-variant flex items-center justify-center transition-colors" title="Làm mới trạng thái" type="button">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+</button>
+</div>
+</div>
+<!-- Exchange Item 1: Coinbase Prime -->
+<div class="rounded-xl bg-surface p-space-md hover:bg-surface-container-low/40 transition-colors flex flex-col gap-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-primary font-headline-sm font-bold">
+<span>C</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Coinbase Prime</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-data-sm text-data-sm font-semibold">Active / Trade &amp; Read</span>
+</div>
+<div class="flex items-center gap-space-sm text-on-surface-variant font-data-sm text-data-sm mt-0.5">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 24ms latency
+                    </span>
+<span>•</span>
+<span>API Quota: <strong class="text-on-surface">94%</strong> remaining</span>
+</div>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="flex items-center gap-1.5 mt-2 sm:mt-0 self-end sm:self-auto">
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
+<span>Ping</span>
+</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">tune</span>
+<span>Quyền</span>
+</button>
+<button class="px-space-sm py-1 rounded-full text-error hover:bg-error-container/40 transition-colors font-label-md text-label-md flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">block</span>
+<span>Thu hồi</span>
+</button>
+</div>
+</div>
+<!-- Meta details row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-xs pt-space-xs bg-surface-container-lowest/70 rounded-lg p-space-sm mt-1">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Key ID:</span>
+<span class="font-data-sm text-data-sm text-on-surface select-all font-mono">cb_prime_sec_••••••••391a</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Ngày tạo (Created):</span>
+<span class="font-data-sm text-data-sm text-on-surface">14 Jan 2026 (Rotated)</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Quyền (Permissions):</span>
+<span class="font-data-sm text-data-sm text-on-surface">Spot Market, Limit, Balance Read <span class="text-error font-medium">(No Withdrawal)</span></span>
+</div>
+</div>
+</div>
+<!-- Exchange Item 2: Kraken Institutional -->
+<div class="rounded-xl bg-surface p-space-md hover:bg-surface-container-low/40 transition-colors flex flex-col gap-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-primary-container font-headline-sm font-bold">
+<span>K</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Kraken Institutional</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-data-sm text-data-sm font-semibold">Active / Low-Fee Maker</span>
+</div>
+<div class="flex items-center gap-space-sm text-on-surface-variant font-data-sm text-data-sm mt-0.5">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 32ms latency
+                    </span>
+<span>•</span>
+<span>Rate limit: 120 req/min</span>
+</div>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="flex items-center gap-1.5 mt-2 sm:mt-0 self-end sm:self-auto">
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
+<span>Ping</span>
+</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">alt_route</span>
+<span>Cấu hình IP</span>
+</button>
+<button class="px-space-sm py-1 rounded-full text-error hover:bg-error-container/40 transition-colors font-label-md text-label-md flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">block</span>
+<span>Thu hồi</span>
+</button>
+</div>
+</div>
+<!-- Meta details row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-xs pt-space-xs bg-surface-container-lowest/70 rounded-lg p-space-sm mt-1">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Key ID:</span>
+<span class="font-data-sm text-data-sm text-on-surface select-all font-mono">krk_inst_live_••••••••820c</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Chính sách ký (Signing):</span>
+<span class="font-data-sm text-data-sm text-on-surface">HMAC-SHA512 Tier-4</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Quyền (Permissions):</span>
+<span class="font-data-sm text-data-sm text-on-surface">OTC Spot Desk, Read Only</span>
+</div>
+</div>
+</div>
+<!-- Exchange Item 3: Binance Custody (MirrorX) -->
+<div class="rounded-xl bg-surface p-space-md hover:bg-surface-container-low/40 transition-colors flex flex-col gap-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-tertiary-container font-headline-sm font-bold">
+<span>B</span>
+</div>
+<div>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Binance Custody (MirrorX)</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-data-sm text-data-sm font-semibold">Standby / Read-Only</span>
+</div>
+<div class="flex items-center gap-space-sm text-on-surface-variant font-data-sm text-data-sm mt-0.5">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> 45ms latency
+                    </span>
+<span>•</span>
+<span>Cold Mirror Syncing</span>
+</div>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="flex items-center gap-1.5 mt-2 sm:mt-0 self-end sm:self-auto">
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-primary hover:bg-primary-fixed transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">upgrade</span>
+<span>Nâng cấp quyền</span>
+</button>
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shadow-xs flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">pause</span>
+<span>Tạm dừng</span>
+</button>
+<button class="px-space-sm py-1 rounded-full text-error hover:bg-error-container/40 transition-colors font-label-md text-label-md flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">delete</span>
+<span>Xóa</span>
+</button>
+</div>
+</div>
+<!-- Meta details row -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-xs pt-space-xs bg-surface-container-lowest/70 rounded-lg p-space-sm mt-1">
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Key ID:</span>
+<span class="font-data-sm text-data-sm text-on-surface select-all font-mono">bnc_cust_••••••••119e</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Off-exchange Settlement:</span>
+<span class="font-data-sm text-data-sm text-on-surface">Ceffu Triparty Escrow</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm text-on-surface-variant block">Quyền (Permissions):</span>
+<span class="font-data-sm text-data-sm text-on-surface">Portfolio Sync Only</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CARD B: COLD HARDWARE VAULTS & KEY SIGNERS -->
+<div class="rounded-[22px] bg-surface-container-lowest p-space-lg sm:p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[22px]">lock_clock</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Ví Lạnh Phần Cứng &amp; Thiết Bị Ký</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Cold Hardware Vaults &amp; Air-Gapped Cosigners for Auto-Sweep Cold Storage</p>
+</div>
+</div>
+<button class="flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md shrink-0" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary">add_moderator</span>
+<span>+ Thêm Thiết bị Ký Mới</span>
+</button>
+</div>
+<!-- Hardware Device 1: Coldcard Mk4 -->
+<div class="rounded-xl bg-surface p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[26px]">memory</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Coldcard Mk4 (Sparrow Multisig)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-data-sm text-data-sm font-semibold">
+                    Đã xác thực chữ ký (Air-gapped Verified)
+                  </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-1 mt-2 text-on-surface-variant font-data-sm text-data-sm">
+<div>Quorum: <strong class="text-on-surface">3-of-5 Hardware Quorum</strong></div>
+<div>Derivation: <span class="font-mono text-on-surface">Native SegWit / Taproot</span></div>
+<div>Fingerprint XPUB: <span class="font-mono text-primary font-semibold">F3B8C19A</span></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Kiểm tra sức khỏe chữ ký gần nhất: <span class="text-on-surface font-medium">Hôm nay, 08:30 UTC via MicroSD PSBT</span>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-center shrink-0">
+<button class="px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-label-md text-label-md text-on-surface shadow-xs" type="button">
+                Export PSBT
+              </button>
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface-variant flex items-center justify-center shadow-xs" title="Cài đặt khóa" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Hardware Device 2: Ledger Stax -->
+<div class="rounded-xl bg-surface p-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest shadow-sm flex items-center justify-center text-outline shrink-0">
+<span class="material-symbols-outlined text-[26px]">devices_other</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Ledger Stax (Backup Signer)</span>
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-data-sm text-data-sm font-semibold">
+                    Offline / Safe Vault Stored
+                  </span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-x-4 gap-y-1 mt-2 text-on-surface-variant font-data-sm text-data-sm">
+<div>Quorum Role: <strong class="text-on-surface">Cosigner #2</strong></div>
+<div>Derivation: <span class="font-mono text-on-surface">m/48'/0'/0'/2'</span></div>
+<div>Fingerprint XPUB: <span class="font-mono text-on-surface font-semibold">A91C4402</span></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  Được cất giữ tại két sắt an toàn ngân hàng Thụy Sĩ (Zurich Depot).
+                </span>
+</div>
+</div>
+<div class="flex items-center gap-2 self-end md:self-center shrink-0">
+<button class="px-space-md py-1.5 rounded-full bg-surface-container-lowest hover:bg-surface-container-high transition-colors font-label-md text-label-md text-on-surface shadow-xs" type="button">
+                Xác thực Cosigner
+              </button>
+<button class="w-9 h-9 rounded-full bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface-variant flex items-center justify-center shadow-xs" title="Cài đặt khóa" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ================= RIGHT COLUMN (35% -> 4 of 12 cols) ================= -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- CARD C: EXECUTION SAFETY GUARDRAILS -->
+<div class="rounded-[22px] bg-surface-container-lowest p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm pb-space-xs">
+<div class="w-9 h-9 rounded-lg bg-error-container text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">gavel</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Quy Tắc An Toàn &amp; Hạn Mức</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Execution Safety Guardrails</p>
+</div>
+</div>
+<!-- Policy Toggles -->
+<div class="flex flex-col gap-space-sm">
+<!-- Toggle 1 -->
+<div class="p-space-sm rounded-xl bg-surface flex items-start justify-between gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Chặn quyền Rút Tiền qua API</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Strict No-Withdrawal Policy. Chỉ cho phép lệnh mua giao ngay (Spot).</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<!-- Toggle 2 -->
+<div class="p-space-sm rounded-xl bg-surface flex items-start justify-between gap-space-sm">
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Giới hạn IP tĩnh nghiêm ngặt</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Strict IP Whitelist Restriction (4 IP máy chủ LOQO được cấp phép).</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0 mt-0.5">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+</div>
+<!-- Input: Max Order DCA Cap -->
+<div class="flex flex-col gap-1 mt-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Hạn mức mua tối đa mỗi lệnh DCA:</label>
+<div class="relative flex items-center">
+<input class="w-full h-11 px-space-md pr-10 rounded-xl bg-surface border-0 font-data-md text-data-md text-on-surface focus:ring-2 focus:ring-primary-container outline-none" type="text" value="$2,500 USD / lệnh"/>
+<button class="absolute right-2 text-on-surface-variant hover:text-primary transition-colors p-1" title="Chỉnh sửa hạn mức" type="button">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+<span class="font-body-sm text-body-sm text-outline">Ngăn chặn mua nhầm số lượng lớn khi flash crash xảy ra.</span>
+</div>
+<!-- Selector / Slider: Emergency Killswitch -->
+<div class="flex flex-col gap-space-xs p-space-sm rounded-xl bg-surface mt-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Tự động ngắt kết nối khẩn cấp</span>
+<span class="font-data-sm text-data-sm text-error font-medium">Trượt giá &gt; 0.8%</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Tạm ngừng toàn bộ DCA bot nếu BTC giảm &gt; 15% trong vòng 1 giờ hoặc độ sâu thanh khoản sổ lệnh suy giảm nghiêm trọng.
+            </p>
+<div class="w-full bg-surface-container rounded-full h-2 mt-1">
+<div class="bg-error h-2 rounded-full w-3/4"></div>
+</div>
+<div class="flex justify-between font-data-sm text-data-sm text-outline mt-0.5">
+<span>0.2% (Nhạy cảm)</span>
+<span>0.8% (Khuyến nghị)</span>
+<span>2.5%</span>
+</div>
+</div>
+<!-- Emergency Action Button -->
+<button class="w-full py-2.5 px-space-md rounded-xl bg-error-container text-error hover:bg-error hover:text-on-error transition-all duration-200 font-label-lg text-label-lg font-semibold flex items-center justify-center gap-space-xs shadow-xs" type="button">
+<span class="material-symbols-outlined text-[20px]">power_settings_new</span>
+<span>Kích Hoạt Kill-Switch Ngay (Emergency Pause All APIs)</span>
+</button>
+</div>
+<!-- CARD D: WEBHOOK & TELEGRAM ALERTS -->
+<div class="rounded-[22px] bg-surface-container-lowest p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm pb-space-xs">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">cell_tower</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Kênh Cảnh Báo &amp; Webhook</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Webhook &amp; Telegram Execution Alerts</p>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Telegram Bot -->
+<div class="p-space-sm rounded-xl bg-surface flex items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">send</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-[14px] text-on-surface truncate">@loqo_btc_quant_bot</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Gửi tín hiệu DCA &amp; biến động cá voi</span>
+</div>
+</div>
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-data-sm text-data-sm shrink-0">
+                Connected
+              </span>
+</div>
+<!-- Webhook URL -->
+<div class="p-space-sm rounded-xl bg-surface flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">DCA Exec Webhook</span>
+<span class="inline-flex items-center gap-1 font-data-sm text-data-sm text-secondary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 200 OK
+                </span>
+</div>
+<div class="bg-surface-container-lowest px-space-sm py-1.5 rounded-lg flex items-center justify-between text-on-surface font-data-sm text-data-sm">
+<span class="truncate font-mono">https://api.portfolio.internal/v1/dca-events</span>
+<button class="text-on-surface-variant hover:text-primary ml-1 shrink-0" title="Sao chép URL" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Discord Bot -->
+<div class="p-space-sm rounded-xl bg-surface flex items-center justify-between gap-space-xs">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-8 h-8 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">forum</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-headline-sm text-[14px] text-on-surface truncate">Discord Channel Relay</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Nhóm Quản trị Rủi ro Nội bộ</span>
+</div>
+</div>
+<button class="px-space-sm py-1 rounded-full bg-surface-container-lowest text-primary hover:bg-primary hover:text-on-primary transition-colors font-label-md text-label-md shadow-xs shrink-0" type="button">
+                Connect
+              </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main></div><div class="fixed bottom-space-lg left-[104px] right-gutter flex justify-center pointer-events-none z-50"><div class="pointer-events-auto w-full max-w-2xl bg-surface-container-lowest/90 backdrop-blur-xl rounded-full shadow-[0_4px_6px_-1px_rgba(15,23,42,0.04),0_16px_32px_-4px_rgba(15,23,42,0.08)] p-1.5 flex items-center justify-between gap-space-md ring-1 ring-outline-variant/30 hover:ring-primary-container/40 transition-all"><div class="flex items-center gap-space-sm flex-1 pl-space-md"><span class="material-symbols-outlined text-primary-container text-[20px]">auto_awesome</span><input class="w-full bg-transparent border-0 outline-none text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/70" placeholder="Ask AI Quant about BTC Spot accumulation..." type="text"/></div><div class="flex items-center gap-space-xs pr-1"><kbd class="hidden sm:inline-flex items-center px-space-xs py-0.5 rounded text-on-surface-variant bg-surface-container font-data-sm text-data-sm">⌘K</kbd><button class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary hover:bg-primary transition-colors shadow-[0_2px_8px_rgba(124,58,237,0.35)]" type="button"><span class="material-symbols-outlined text-[16px]">arrow_upward</span></button></div></div></div></body></html>
