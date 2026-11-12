@@ -17,31 +17,31 @@ export const BearTrapBanner: React.FC = () => {
   const factors = locale === 'vi' ? alert.triggerFactorsVi : alert.triggerFactorsEn;
 
   return (
-    <div className="w-full bg-[#1A0B2E] border-y border-purple-500/50 px-4 py-3 shadow-lg relative z-30 text-xs font-mono">
-      <div className="max-w-[1920px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+    <div className="w-full bg-purple-50 border-b border-purple-200 px-4 py-2.5 shadow-sm relative z-30 text-xs font-mono">
+      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         <div className="flex items-start gap-3">
-          <div className="p-2 rounded bg-purple-500/20 border border-purple-400 text-purple-300 shrink-0 mt-0.5">
-            <ShieldAlert className="w-5 h-5 text-purple-300" />
+          <div className="p-2 rounded-xl bg-purple-100 border border-purple-200 text-[#7C3AED] shrink-0 mt-0.5">
+            <ShieldAlert className="w-5 h-5 text-[#7C3AED]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono font-black text-[10px] uppercase px-2 py-0.5 rounded bg-purple-600 text-white tracking-wider">
+              <span className="font-mono font-bold text-[10px] uppercase px-2 py-0.5 rounded-full bg-[#7C3AED] text-white tracking-wider">
                 QUANT ALERT • PHASE 2
               </span>
-              <span className="font-extrabold text-sm text-purple-200">
+              <span className="font-bold text-sm text-[#111827]">
                 {headline}
               </span>
             </div>
-            <p className="text-purple-100 text-xs font-medium mt-1 leading-relaxed font-sans">
+            <p className="text-gray-700 text-xs font-medium mt-1 leading-relaxed font-sans">
               {description}
             </p>
-            <div className="flex flex-wrap items-center gap-2 mt-1.5 text-[10px] text-slate-300">
+            <div className="flex flex-wrap items-center gap-2 mt-1.5 text-[10px] text-gray-600">
               {factors.map((factor, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center gap-1 bg-black/50 border border-purple-700/60 px-2 py-0.5 rounded"
+                  className="inline-flex items-center gap-1 bg-white border border-purple-200 px-2 py-0.5 rounded-full shadow-sm"
                 >
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
+                  <CheckCircle2 className="w-3 h-3 text-[#10B981]" />
                   {factor}
                 </span>
               ))}
@@ -50,18 +50,18 @@ export const BearTrapBanner: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
-          <div className="px-3.5 py-1.5 rounded bg-emerald-500/20 border border-emerald-400/60 text-emerald-300 font-bold text-center">
-            <div className="text-[9px] uppercase tracking-wider text-emerald-400">
+          <div className="px-3.5 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-center shadow-sm">
+            <div className="text-[9px] uppercase tracking-wider text-emerald-600">
               {t('multiplierBadge', locale)}
             </div>
-            <div className="text-base font-black">2.0X DEPLOY</div>
+            <div className="text-base font-extrabold font-mono">2.0X DEPLOY</div>
           </div>
 
           {/* Close button */}
           <button
             onClick={() => setDismissed(true)}
             title="Đóng thông báo"
-            className="p-1.5 rounded bg-black/40 hover:bg-black/70 border border-purple-800 text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 rounded-full bg-white hover:bg-gray-100 border border-purple-200 text-gray-500 hover:text-gray-900 transition-colors shadow-sm"
           >
             <X className="w-4 h-4" />
           </button>
