@@ -89,3 +89,43 @@
 .animate-fadeIn {
   animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Stitch Horizon Chart Hover & Interactive Effects */
+.interactive-bar {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center bottom;
+  cursor: pointer;
+}
+.bar-chart-group:hover .interactive-bar:not(:hover) {
+  opacity: 0.35;
+  filter: saturate(60%);
+}
+.interactive-bar:hover {
+  opacity: 1 !important;
+  filter: brightness(1.12) drop-shadow(0 4px 10px rgba(16, 185, 129, 0.35));
+  transform: scaleY(1.04) scaleX(1.15);
+}
+.interactive-bar.bar-negative:hover {
+  filter: brightness(1.12) drop-shadow(0 4px 10px rgba(239, 68, 68, 0.35));
+}
+.radar-vertex {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), r 0.2s ease, stroke-width 0.2s ease;
+  cursor: pointer;
+  transform-origin: center;
+}
+.radar-vertex:hover {
+  transform: scale(1.6);
+  filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.7));
+}
+.radar-vertex.vertex-orange:hover {
+  filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.7));
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.4); opacity: 0.2; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+.pulse-halo {
+  animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
+}

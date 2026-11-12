@@ -11,6 +11,7 @@ import {
   Compass,
   Lock,
   Search,
+  Sparkles,
 } from 'lucide-react';
 
 const LivePriceDisplay: React.FC = React.memo(() => {
@@ -96,7 +97,11 @@ const LivePriceDisplay: React.FC = React.memo(() => {
   );
 });
 
-export const TopExecutiveBar: React.FC = () => {
+export interface TopExecutiveBarProps {
+  onSwitchToHorizon?: () => void;
+}
+
+export const TopExecutiveBar: React.FC<TopExecutiveBarProps> = ({ onSwitchToHorizon }) => {
   const locale = useTerminalStore((s) => s.locale);
   const setLocale = useTerminalStore((s) => s.setLocale);
   const activeTab = useTerminalStore((s) => s.activeTab);
@@ -273,6 +278,19 @@ export const TopExecutiveBar: React.FC = () => {
             >
               <Zap className="w-3.5 h-3.5" />
               <span>{isVi ? 'Đồng Bộ Binance' : 'Sync Binance'}</span>
+            </button>
+          )}
+
+          {/* Stitch Horizon UI View Switcher Button */}
+          {onSwitchToHorizon && (
+            <button
+              type="button"
+              onClick={onSwitchToHorizon}
+              className="flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md transition-all hover:scale-105 active:scale-95"
+              title="Chuyển sang giao diện Stitch Horizon Pro"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Horizon UI</span>
             </button>
           )}
 

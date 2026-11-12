@@ -41,7 +41,17 @@ export default {
         cyan: {
           accent: '#06B6D4',
           dim: 'rgba(6, 182, 212, 0.15)',
-        }
+        },
+        // Stitch Horizon Design System Colors
+        appBg: '#F4F6F9',
+        brandDark: '#111827',
+        cardBg: '#FFFFFF',
+        cardBorder: '#EEF0F5',
+        brandPurple: '#7C3AED',
+        brandPurpleLight: '#8B5CF6',
+        brandGreen: '#10B981',
+        brandRed: '#EF4444',
+        brandOrange: '#F97316',
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
@@ -50,6 +60,9 @@ export default {
       boxShadow: {
         'specular': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08)',
         'specular-lg': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.7)',
+        'card': '0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02)',
+        'float-pill': '0 16px 36px -6px rgba(124, 58, 237, 0.16), 0 8px 18px -4px rgba(15, 23, 42, 0.08)',
+        'elevated-tooltip': '0 10px 25px -3px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.06)',
       },
       animation: {
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
