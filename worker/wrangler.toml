@@ -1,0 +1,12 @@
+name = "btc-macro-edge-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "btc-macro-db"
+database_id = "256a6203-4447-4dd8-b5a9-ad53e2fae0ae"
+
+[vars]
+ENVIRONMENT = "production"

@@ -1,0 +1,50 @@
+{
+  "modelVersion": "v7.2-institutional",
+  "generatedAt": "2026-11-12T04:20:00Z",
+  "dataTimestamp": "2026-11-12T04:00:00Z",
+  "spot": {
+    "symbol": "BTCUSDT",
+    "priceUsd": 74140,
+    "priceVnd": 1912812000,
+    "change24hPct": 1.45
+  },
+  "confluence": {
+    "totalScore": 71,
+    "regime": "ACCUMULATION_REGIME",
+    "regimeVi": "VÙNG TÍCH LŨY ĐỊNH GIÁ",
+    "regimeEn": "ACCUMULATION REGIME",
+    "recommendedMultiplier": 1.35,
+    "activePhase": 2,
+    "phaseNameVi": "2. Vùng Tích Lũy Chu Kỳ",
+    "pillars": {
+      "onChain": 28,
+      "technical": 18,
+      "derivatives": 12,
+      "macro": 13
+    },
+    "trajectory": {
+      "delta7D": 2.3,
+      "delta30D": 5.8
+    }
+  },
+  "tacticalOrders": {
+    "weeklyDcaBudgetUsd": 500,
+    "scheduledBaseSpendUsd": 350,
+    "tacticalReserveSpendUsd": 150,
+    "limit1": {
+      "name": "7D Pullback",
+      "price": 71800,
+      "deltaPct": -3.16,
+      "touchProbabilityPct": 55,
+      "horizonDays": 7
+    },
+    "limit2": {
+      "name": "7D Wick Flush",
+      "price": 70150,
+      "deltaPct": -5.38,
+      "touchProbabilityPct": 30,
+      "horizonDays": 7
+    }
+  },
+  "licensing": "Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0)"
+}

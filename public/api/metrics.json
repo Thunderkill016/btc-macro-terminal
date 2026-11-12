@@ -1,0 +1,40 @@
+{
+  "modelVersion": "v7.2-institutional",
+  "generatedAt": "2026-11-12T04:20:00Z",
+  "spot": {
+    "priceUsd": 74140,
+    "powerLawFairValue": 88632,
+    "piCycleTopTarget": 151270,
+    "floor200wSma": 68033,
+    "discountVsFairPct": -16.35
+  },
+  "onChain": {
+    "realizedPriceUsd": 53950,
+    "shortTermHolderCostBasisUsd": 75700,
+    "trueMarketMeanPriceUsd": 77700,
+    "mvrv": 1.37,
+    "mvrvZScore": -1.36,
+    "mayerMultiple": 1.01,
+    "ahr999": 0.85,
+    "puellMultiple": 0.98,
+    "exchangeNetflow7dBtc": -14250
+  },
+  "usSpotEtfAggregate": {
+    "dayNetInflowMillionsUsd": 84.6,
+    "totalBtcHoldings": 1491840,
+    "totalAumBillionsUsd": 113.2,
+    "cumulativeInflowsBillionsUsd": 38.45,
+    "dayBtcAbsorbed": 1115,
+    "dailyMinerIssuance": 450,
+    "absorptionMultiple": 2.48,
+    "fundsCount": 11,
+    "source": "Farside Investors / Arkham Intelligence / Newhedge"
+  },
+  "macro": {
+    "globalM2TrillionsUsd": 108.6,
+    "m2YoYGrowthPct": 1.2,
+    "dxyIndex": 104.2,
+    "us10yRealYieldPct": 1.85,
+    "macroRegime": "NEUTRAL"
+  }
+}

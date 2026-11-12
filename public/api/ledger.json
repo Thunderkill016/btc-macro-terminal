@@ -1,0 +1,424 @@
+[
+  {
+    "index": 0,
+    "date": "2026-10-27",
+    "snapshotPrice": 68420,
+    "confluenceScore": 78,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 62100,
+      "p50": 68420,
+      "p85": 75200
+    },
+    "touchProbabilities": {
+      "tier1_7D": 58,
+      "tier2_7D": 32,
+      "tier3_90D": 68,
+      "tier4_90D": 12
+    },
+    "prevHash": "hash_0000000000000000",
+    "currentHash": "hash_38b10d4756fa1844",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 870800,
+      "txHash": "tx_20261027_3e8",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-10-27T00:00:00Z"
+    }
+  },
+  {
+    "index": 1,
+    "date": "2026-10-28",
+    "snapshotPrice": 69150,
+    "confluenceScore": 76,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 62700,
+      "p50": 69150,
+      "p85": 76000
+    },
+    "touchProbabilities": {
+      "tier1_7D": 56,
+      "tier2_7D": 31,
+      "tier3_90D": 67,
+      "tier4_90D": 11
+    },
+    "prevHash": "hash_38b10d4756fa1844",
+    "currentHash": "hash_5fe74ff64e1fb477",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 870944,
+      "txHash": "tx_20261028_3e9",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-10-28T00:00:00Z"
+    }
+  },
+  {
+    "index": 2,
+    "date": "2026-10-29",
+    "snapshotPrice": 71200,
+    "confluenceScore": 74,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 64500,
+      "p50": 71200,
+      "p85": 78300
+    },
+    "touchProbabilities": {
+      "tier1_7D": 55,
+      "tier2_7D": 30,
+      "tier3_90D": 66,
+      "tier4_90D": 11
+    },
+    "prevHash": "hash_5fe74ff64e1fb477",
+    "currentHash": "hash_433f20269366b2d1",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871088,
+      "txHash": "tx_20261029_3ea",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-10-29T00:00:00Z"
+    }
+  },
+  {
+    "index": 3,
+    "date": "2026-10-30",
+    "snapshotPrice": 72450,
+    "confluenceScore": 72,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 65700,
+      "p50": 72450,
+      "p85": 79600
+    },
+    "touchProbabilities": {
+      "tier1_7D": 55,
+      "tier2_7D": 30,
+      "tier3_90D": 65,
+      "tier4_90D": 10
+    },
+    "prevHash": "hash_433f20269366b2d1",
+    "currentHash": "hash_02771b01164f42c4",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871232,
+      "txHash": "tx_20261030_3eb",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-10-30T00:00:00Z"
+    }
+  },
+  {
+    "index": 4,
+    "date": "2026-10-31",
+    "snapshotPrice": 70180,
+    "confluenceScore": 75,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 63600,
+      "p50": 70180,
+      "p85": 77100
+    },
+    "touchProbabilities": {
+      "tier1_7D": 56,
+      "tier2_7D": 31,
+      "tier3_90D": 67,
+      "tier4_90D": 11
+    },
+    "prevHash": "hash_02771b01164f42c4",
+    "currentHash": "hash_b0496b94cdefd568",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871376,
+      "txHash": "tx_20261031_3ec",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-10-31T00:00:00Z"
+    }
+  },
+  {
+    "index": 5,
+    "date": "2026-11-01",
+    "snapshotPrice": 69540,
+    "confluenceScore": 75,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 63000,
+      "p50": 69540,
+      "p85": 76400
+    },
+    "touchProbabilities": {
+      "tier1_7D": 57,
+      "tier2_7D": 32,
+      "tier3_90D": 67,
+      "tier4_90D": 11
+    },
+    "prevHash": "hash_b0496b94cdefd568",
+    "currentHash": "hash_bd7888648e13f5ab",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871520,
+      "txHash": "tx_20261101_3ed",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-01T00:00:00Z"
+    }
+  },
+  {
+    "index": 6,
+    "date": "2026-11-02",
+    "snapshotPrice": 68900,
+    "confluenceScore": 76,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 62500,
+      "p50": 68900,
+      "p85": 75800
+    },
+    "touchProbabilities": {
+      "tier1_7D": 57,
+      "tier2_7D": 32,
+      "tier3_90D": 68,
+      "tier4_90D": 12
+    },
+    "prevHash": "hash_bd7888648e13f5ab",
+    "currentHash": "hash_bbe73bf4e0c323a7",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871664,
+      "txHash": "tx_20261102_3ee",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-02T00:00:00Z"
+    }
+  },
+  {
+    "index": 7,
+    "date": "2026-11-03",
+    "snapshotPrice": 69820,
+    "confluenceScore": 75,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 63300,
+      "p50": 69820,
+      "p85": 76800
+    },
+    "touchProbabilities": {
+      "tier1_7D": 56,
+      "tier2_7D": 31,
+      "tier3_90D": 67,
+      "tier4_90D": 11
+    },
+    "prevHash": "hash_bbe73bf4e0c323a7",
+    "currentHash": "hash_364d324441f72160",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871808,
+      "txHash": "tx_20261103_3ef",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-03T00:00:00Z"
+    }
+  },
+  {
+    "index": 8,
+    "date": "2026-11-04",
+    "snapshotPrice": 71850,
+    "confluenceScore": 73,
+    "regime": "ATTRACTIVE_ACCUMULATION",
+    "quantiles30D": {
+      "p15": 65100,
+      "p50": 71850,
+      "p85": 79000
+    },
+    "touchProbabilities": {
+      "tier1_7D": 55,
+      "tier2_7D": 30,
+      "tier3_90D": 66,
+      "tier4_90D": 10
+    },
+    "prevHash": "hash_364d324441f72160",
+    "currentHash": "hash_c0c29a658754d8fd",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 871952,
+      "txHash": "tx_20261104_3f0",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-04T00:00:00Z"
+    }
+  },
+  {
+    "index": 9,
+    "date": "2026-11-05",
+    "snapshotPrice": 74500,
+    "confluenceScore": 70,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 67500,
+      "p50": 74500,
+      "p85": 81900
+    },
+    "touchProbabilities": {
+      "tier1_7D": 54,
+      "tier2_7D": 29,
+      "tier3_90D": 64,
+      "tier4_90D": 9
+    },
+    "prevHash": "hash_c0c29a658754d8fd",
+    "currentHash": "hash_6a41939c9ca05075",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 872096,
+      "txHash": "tx_20261105_3f1",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-05T00:00:00Z"
+    }
+  },
+  {
+    "index": 10,
+    "date": "2026-11-06",
+    "snapshotPrice": 76100,
+    "confluenceScore": 68,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 68900,
+      "p50": 76100,
+      "p85": 83600
+    },
+    "touchProbabilities": {
+      "tier1_7D": 53,
+      "tier2_7D": 28,
+      "tier3_90D": 63,
+      "tier4_90D": 9
+    },
+    "prevHash": "hash_6a41939c9ca05075",
+    "currentHash": "hash_cacdf3fca3adef63",
+    "otsProof": {
+      "status": "BITCOIN_ANCHORED",
+      "blockHeight": 872240,
+      "txHash": "tx_20261106_3f2",
+      "anchorSource": "OpenTimestamps Calendar Server",
+      "timestampUtc": "2026-11-06T00:00:00Z"
+    }
+  },
+  {
+    "index": 11,
+    "date": "2026-11-07",
+    "snapshotPrice": 75800,
+    "confluenceScore": 69,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 68700,
+      "p50": 75800,
+      "p85": 83300
+    },
+    "touchProbabilities": {
+      "tier1_7D": 54,
+      "tier2_7D": 29,
+      "tier3_90D": 63,
+      "tier4_90D": 9
+    },
+    "prevHash": "hash_cacdf3fca3adef63",
+    "currentHash": "hash_8f72c72f90ab8d30",
+    "otsProof": {
+      "status": "PENDING_CONFIRMATION",
+      "anchorSource": "OpenTimestamps Mempool Queue",
+      "timestampUtc": "2026-11-07T00:00:00Z"
+    }
+  },
+  {
+    "index": 12,
+    "date": "2026-11-08",
+    "snapshotPrice": 76420,
+    "confluenceScore": 68,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 69200,
+      "p50": 76420,
+      "p85": 84000
+    },
+    "touchProbabilities": {
+      "tier1_7D": 53,
+      "tier2_7D": 28,
+      "tier3_90D": 62,
+      "tier4_90D": 8
+    },
+    "prevHash": "hash_8f72c72f90ab8d30",
+    "currentHash": "hash_be7ac809f1ca2a85",
+    "otsProof": {
+      "status": "PENDING_CONFIRMATION",
+      "anchorSource": "OpenTimestamps Mempool Queue",
+      "timestampUtc": "2026-11-08T00:00:00Z"
+    }
+  },
+  {
+    "index": 13,
+    "date": "2026-11-09",
+    "snapshotPrice": 75200,
+    "confluenceScore": 70,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 68100,
+      "p50": 75200,
+      "p85": 82700
+    },
+    "touchProbabilities": {
+      "tier1_7D": 54,
+      "tier2_7D": 29,
+      "tier3_90D": 64,
+      "tier4_90D": 9
+    },
+    "prevHash": "hash_be7ac809f1ca2a85",
+    "currentHash": "hash_eaea8129675132b7",
+    "otsProof": {
+      "status": "PENDING_CONFIRMATION",
+      "anchorSource": "OpenTimestamps Mempool Queue",
+      "timestampUtc": "2026-11-09T00:00:00Z"
+    }
+  },
+  {
+    "index": 14,
+    "date": "2026-11-10",
+    "snapshotPrice": 74300,
+    "confluenceScore": 71,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 67300,
+      "p50": 74300,
+      "p85": 81700
+    },
+    "touchProbabilities": {
+      "tier1_7D": 55,
+      "tier2_7D": 30,
+      "tier3_90D": 65,
+      "tier4_90D": 10
+    },
+    "prevHash": "hash_eaea8129675132b7",
+    "currentHash": "hash_b577f6e28d68c3bd",
+    "otsProof": {
+      "status": "PENDING_CONFIRMATION",
+      "anchorSource": "OpenTimestamps Mempool Queue",
+      "timestampUtc": "2026-11-10T00:00:00Z"
+    }
+  },
+  {
+    "index": 15,
+    "date": "2026-11-11",
+    "snapshotPrice": 74140,
+    "confluenceScore": 71,
+    "regime": "ACCUMULATION_REGIME",
+    "quantiles30D": {
+      "p15": 67100,
+      "p50": 74140,
+      "p85": 81500
+    },
+    "touchProbabilities": {
+      "tier1_7D": 55,
+      "tier2_7D": 30,
+      "tier3_90D": 66,
+      "tier4_90D": 10
+    },
+    "prevHash": "hash_b577f6e28d68c3bd",
+    "currentHash": "hash_fb8c2634a668c83c",
+    "otsProof": {
+      "status": "PENDING_CONFIRMATION",
+      "anchorSource": "OpenTimestamps Mempool Queue",
+      "timestampUtc": "2026-11-11T00:00:00Z"
+    }
+  }
+]

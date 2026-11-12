@@ -1,0 +1,144 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Bitcoin Alpha Terminal Public Read-Only Quant API",
+    "version": "7.2.0",
+    "description": "Institutional REST endpoints for real-time Bitcoin macroeconomic valuation, Cornish-Fisher forward cones, and cryptographic forecast ledger.",
+    "contact": {
+      "name": "Quantitative Research Desk",
+      "url": "https://btc.thunderkill016.workers.dev"
+    },
+    "license": {
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://btc.thunderkill016.workers.dev",
+      "description": "Cloudflare Workers Edge Server"
+    }
+  ],
+  "paths": {
+    "/api/signals": {
+      "get": {
+        "summary": "Retrieve latest spot confluence signal, regime, and tactical limit orders",
+        "operationId": "getLatestSignals",
+        "responses": {
+          "200": {
+            "description": "Latest signal snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignalResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/forecast": {
+      "get": {
+        "summary": "Retrieve probabilistic forward cones (7D, 30D, 90D) and first-passage touch probabilities",
+        "operationId": "getForecastModel",
+        "responses": {
+          "200": {
+            "description": "Quant forecast model snapshot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/metrics": {
+      "get": {
+        "summary": "Retrieve on-chain, ETF flows, and global macro metrics",
+        "operationId": "getMacroMetrics",
+        "responses": {
+          "200": {
+            "description": "Core valuation metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ledger": {
+      "get": {
+        "summary": "Retrieve cryptographic daily forecast ledger chain with OpenTimestamps Bitcoin anchors",
+        "operationId": "getForecastLedger",
+        "responses": {
+          "200": {
+            "description": "16-day continuous hash chain ledger",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LedgerEntry"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignalResponse": {
+        "type": "object",
+        "properties": {
+          "modelVersion": { "type": "string" },
+          "generatedAt": { "type": "string", "format": "date-time" },
+          "spot": { "type": "object" },
+          "confluence": { "type": "object" },
+          "tacticalOrders": { "type": "object" }
+        }
+      },
+      "ForecastResponse": {
+        "type": "object",
+        "properties": {
+          "modelVersion": { "type": "string" },
+          "spotPriceUsd": { "type": "number" },
+          "volatility": { "type": "object" },
+          "quantiles": { "type": "object" },
+          "touchProbabilities": { "type": "object" }
+        }
+      },
+      "MetricsResponse": {
+        "type": "object",
+        "properties": {
+          "spot": { "type": "object" },
+          "onChain": { "type": "object" },
+          "usSpotEtfAggregate": { "type": "object" },
+          "macro": { "type": "object" }
+        }
+      },
+      "LedgerEntry": {
+        "type": "object",
+        "properties": {
+          "index": { "type": "integer" },
+          "date": { "type": "string" },
+          "snapshotPrice": { "type": "number" },
+          "confluenceScore": { "type": "number" },
+          "prevHash": { "type": "string" },
+          "currentHash": { "type": "string" },
+          "otsProof": { "type": "object" }
+        }
+      }
+    }
+  }
+}

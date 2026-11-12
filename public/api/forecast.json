@@ -1,0 +1,63 @@
+{
+  "modelVersion": "v7.2-institutional",
+  "generatedAt": "2026-11-12T04:20:00Z",
+  "spotPriceUsd": 74140,
+  "volatility": {
+    "annualizedPct": 38.7,
+    "dailySigma": 0.020256,
+    "dvolIndex": 39.4,
+    "annualizedDrift": 0.0,
+    "dailyDrift": 0.0,
+    "distribution": "Zero-Centered Cornish-Fisher (S=-0.24, K=2.85)"
+  },
+  "quantiles": {
+    "horizon7D": {
+      "p15": 70350,
+      "p50": 74140,
+      "p85": 78120
+    },
+    "horizon30D": {
+      "p15": 66450,
+      "p50": 74140,
+      "p85": 82720
+    },
+    "horizon90D": {
+      "p15": 61280,
+      "p50": 74140,
+      "p85": 89680
+    }
+  },
+  "touchProbabilities": {
+    "method": "Brownian Bridge Reflection Principle [2 * Phi(ln(B/S0) / (sigma_daily * sqrt(T)))]",
+    "tier1_7D": {
+      "name": "7D Pullback",
+      "barrierPrice": 71800,
+      "horizonDays": 7,
+      "probabilityPct": 55.4
+    },
+    "tier2_7D": {
+      "name": "7D Wick Flush",
+      "barrierPrice": 70150,
+      "horizonDays": 7,
+      "probabilityPct": 30.2
+    },
+    "tier3_90D": {
+      "name": "200W Cycle Floor",
+      "barrierPrice": 68033,
+      "horizonDays": 90,
+      "probabilityPct": 65.8
+    },
+    "tier4_90D": {
+      "name": "Realized Price",
+      "barrierPrice": 53950,
+      "horizonDays": 90,
+      "probabilityPct": 10.3
+    }
+  },
+  "calibration": {
+    "brierSkillScore": 0.165,
+    "isCalibratedPava": true,
+    "baseRatePct": 61.5,
+    "hasStatisticalEdge": true
+  }
+}
