@@ -8,52 +8,39 @@ export default {
     extend: {
       colors: {
         terminal: {
-          bg: '#FFFFFF',
-          surface: '#FFFFFF',
-          card: '#FFFFFF',
-          cardHover: '#F8FAFC',
-          border: '#E1E3E3',
-          borderLight: '#E5E7EB',
+          bg: '#05070B',
+          surface: '#0A0E17',
+          card: '#0F1522',
+          cardHover: '#141C2E',
+          border: 'rgba(255, 255, 255, 0.06)',
+          borderLight: 'rgba(255, 255, 255, 0.12)',
           textMuted: '#64748B',
-          textSub: '#4B5563',
-          textMain: '#191F2C',
-        },
-        lookinto: {
-          bg: '#FFFFFF',
-          surface: '#F8FAFC',
-          card: '#FFFFFF',
-          border: '#E1E3E3',
-          borderLight: '#E5E7EB',
-          textMain: '#191F2C',
-          textBody: '#343B43',
-          textMuted: '#64748B',
-          blue: '#3C75D5',
-          blueHover: '#2B63C0',
-          blueLight: '#EEF4FD',
+          textSub: '#CBD5E1',
+          textMain: '#F8FAFC',
         },
         bull: {
           DEFAULT: '#10B981',
-          light: '#059669',
-          dim: 'rgba(16, 185, 129, 0.1)',
+          light: '#34D399',
+          dim: 'rgba(16, 185, 129, 0.15)',
         },
         bear: {
           DEFAULT: '#EF4444',
-          light: '#DC2626',
-          dim: 'rgba(239, 68, 68, 0.1)',
+          light: '#F87171',
+          dim: 'rgba(239, 68, 68, 0.15)',
         },
         warning: {
           DEFAULT: '#F59E0B',
-          light: '#D97706',
-          dim: 'rgba(245, 158, 11, 0.1)',
+          light: '#FBBF24',
+          dim: 'rgba(245, 158, 11, 0.15)',
         },
         shock: {
           DEFAULT: '#8B5CF6',
-          light: '#7C3AED',
-          dim: 'rgba(139, 92, 246, 0.1)',
+          light: '#A78BFA',
+          dim: 'rgba(139, 92, 246, 0.15)',
         },
         cyan: {
-          accent: '#0284C7',
-          dim: 'rgba(2, 132, 199, 0.1)',
+          accent: '#06B6D4',
+          dim: 'rgba(6, 182, 212, 0.15)',
         }
       },
       fontFamily: {
@@ -61,8 +48,8 @@ export default {
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       boxShadow: {
-        'specular': '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
-        'specular-lg': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+        'specular': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08)',
+        'specular-lg': 'inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.7)',
       },
       animation: {
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -71,11 +58,11 @@ export default {
       },
       keyframes: {
         flashGreen: {
-          '0%': { backgroundColor: 'rgba(16, 185, 129, 0.2)' },
+          '0%': { backgroundColor: 'rgba(16, 185, 129, 0.35)' },
           '100%': { backgroundColor: 'transparent' },
         },
         flashRed: {
-          '0%': { backgroundColor: 'rgba(239, 68, 68, 0.2)' },
+          '0%': { backgroundColor: 'rgba(239, 68, 68, 0.35)' },
           '100%': { backgroundColor: 'transparent' },
         },
       },

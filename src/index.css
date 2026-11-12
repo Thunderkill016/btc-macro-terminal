@@ -3,12 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    color-scheme: light;
-    accent-color: #3C75D5;
-    scrollbar-color: #CBD5E1 #FFFFFF;
-  }
-
   *,
   *::before,
   *::after {
@@ -16,117 +10,75 @@
   }
 
   body {
-    background-color: #FFFFFF;
-    color: #343B43;
+    background-color: #070A12;
+    color: #F1F5F9;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'tnum';
     font-variant-numeric: tabular-nums;
-    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  h1,
-  h2,
-  h3 {
-    text-wrap: balance;
-    line-height: 1.25;
-    color: #191F2C;
-  }
-
-  p,
-  li {
-    text-wrap: pretty;
-    line-height: 1.5;
-    color: #4B5563;
-  }
-
-  /* Universal accessible keyboard focus ring */
+  /* Universal accessible keyboard focus ring (WCAG 2.1 AA compliant) */
   :focus-visible {
-    outline: 2px solid #3C75D5;
+    outline: 2px solid #06B6D4;
     outline-offset: 2px;
   }
 
-  /* LookIntoBitcoin selection color */
+  /* Sleek Apple-inspired selection color */
   ::selection {
-    background: rgba(60, 117, 213, 0.2);
-    color: #191F2C;
+    background: rgba(6, 182, 212, 0.28);
+    color: #FFFFFF;
   }
 }
 
-/* LookInto clean scrollbars */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #CBD5E1 #F8FAFC;
+/* Institutional dense scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
 
-@supports not (scrollbar-color: auto) {
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #F8FAFC;
-    border-radius: 3px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 3px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
-  }
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0F1623;
+  border-radius: 2px;
 }
 
-/* LookIntoBitcoin Card & Surface System */
-.fey-bento-panel {
-  background: #FFFFFF;
-  border: 1px solid #E1E3E3;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
-  position: relative;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 2px;
 }
 
-.fey-inner-card {
-  background: #F8FAFC;
-  border: 1px solid #E1E3E3;
-  border-radius: 8px;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
 
-.fey-inner-card:hover {
-  background: #F1F5F9;
-  border-color: #CBD5E1;
-  transform: translateY(-1px);
-}
-
+/* Apple HIG & Linear Frosted Glass Utilities */
 .glass-panel {
-  background: #FFFFFF;
-  border: 1px solid #E1E3E3;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
+  background: rgba(15, 22, 35, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-card {
-  background: #FFFFFF;
-  border: 1px solid #E1E3E3;
-  border-radius: 8px;
+  background: rgba(15, 22, 35, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
-  border-color: #CBD5E1;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(19, 28, 46, 0.7);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.99);
+    transform: scale(0.98);
   }
   to {
     opacity: 1;
@@ -135,31 +87,5 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes priceFlashEmerald {
-  0% {
-    color: #16A34A;
-  }
-  100% {
-    color: #191F2C;
-  }
-}
-
-@keyframes priceFlashRose {
-  0% {
-    color: #DC2626;
-  }
-  100% {
-    color: #191F2C;
-  }
-}
-
-.price-tick-up {
-  animation: priceFlashEmerald 0.65s ease-out;
-}
-
-.price-tick-down {
-  animation: priceFlashRose 0.65s ease-out;
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

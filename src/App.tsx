@@ -2,10 +2,11 @@ import React, { useEffect, Suspense, lazy } from 'react';
 import { useTerminalStore } from './store/useTerminalStore';
 import { CryptoWebSocketManager } from './lib/websocketService';
 import { TopExecutiveBar } from './components/header/TopExecutiveBar';
+import { BearTrapBanner } from './components/common/BearTrapBanner';
 import { ValuationTab } from './components/tabs/ValuationTab';
 import { CommandPalette } from './components/CommandPalette';
 
-// Lazy-loaded secondary tabs
+// Lazy-loaded secondary tabs for instant initial paint
 const PortfolioTab = lazy(() =>
   import('./components/tabs/PortfolioTab').then((m) => ({ default: m.PortfolioTab }))
 );
@@ -13,7 +14,7 @@ const ResearchTab = lazy(() =>
   import('./components/tabs/ResearchTab').then((m) => ({ default: m.ResearchTab }))
 );
 
-// Lazy-loaded modals
+// Lazy-loaded on-demand dialogs & modals
 const ShareCardModal = lazy(() =>
   import('./components/modals/ShareCardModal').then((m) => ({ default: m.ShareCardModal }))
 );
@@ -51,12 +52,17 @@ export const App: React.FC = () => {
   const forecastLedgerModalOpen = useTerminalStore((s) => s.forecastLedgerModalOpen);
   const setForecastLedgerModalOpen = useTerminalStore((s) => s.setForecastLedgerModalOpen);
 
+  // Auto-sync Binance Portfolio on mount (Cloudflare Server has credentials saved directly)
   useEffect(() => {
     fetchBinancePortfolio();
   }, [fetchBinancePortfolio]);
 
+  // Initialize browser-direct WebSockets and zero-mock real data fetching
   useEffect(() => {
+    // 1. Fetch 100% Real Public Data (Binance Candles + Futures + Mempool Mining + FX + News)
     fetchRealData();
+
+    // 2. High-frequency Realtime Stream from Binance & Mempool WebSockets
     const wsManager = new CryptoWebSocketManager({
       onSpotTicker: (tickerUpdate) => {
         updateSpotTicker(tickerUpdate);
@@ -80,41 +86,32 @@ export const App: React.FC = () => {
   }, [fetchRealData, updateSpotTicker, updateFundingRate, addLiquidation, updateMempool]);
 
   return (
-    <div className="min-h-screen bg-white text-[#343B43] flex flex-col font-sans">
-      {/* Top Navigation Bar (LookIntoBitcoin Style) */}
+    <div className="min-h-screen bg-terminal-bg text-terminal-textMain flex flex-col font-sans">
+      {/* Top Executive Bar (Always Visible: Live Price, Verdict, DCA Order, Tab Switcher, Language) */}
       <TopExecutiveBar />
 
-      {/* Main Content Area (LookInto Exact 1140px Container) */}
-      <main className="flex-1 max-w-[1140px] mx-auto w-full px-4 py-8 space-y-8">
+      {/* Geopolitical & War Bear-Trap Alert Banner */}
+      <BearTrapBanner />
+
+      {/* Clean 3-Tab Scientific Viewport */}
+      <main className="flex-1 p-3 md:p-5 max-w-[1920px] mx-auto w-full">
         {activeTab === 'valuation' && <ValuationTab />}
         {activeTab === 'portfolio' && (
-          <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono text-xs">Đang tải Danh Mục Tích Sản...</div>}>
+          <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono text-xs animate-pulse">Đang tải Danh Mục Tích Sản...</div>}>
             <PortfolioTab />
           </Suspense>
         )}
         {activeTab === 'research' && (
-          <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono text-xs">Đang tải Nghiên Cứu & Backtest...</div>}>
+          <Suspense fallback={<div className="p-12 text-center text-slate-400 font-mono text-xs animate-pulse">Đang tải Nghiên Cứu & Backtest...</div>}>
             <ResearchTab />
           </Suspense>
         )}
       </main>
 
-      {/* Footer (LookIntoBitcoin Style) */}
-      <footer className="border-t border-[#E1E3E3] py-6 text-center text-xs text-[#64748B] mt-12 bg-[#F8FAFC]">
-        <div className="max-w-[1240px] mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span>© 2026 Look Into Bitcoin & Macro Terminal. All live data cryptographically audited.</span>
-          <div className="flex items-center gap-4 text-[#3C75D5]">
-            <span className="hover:underline cursor-pointer">Phương Pháp Luận</span>
-            <span className="hover:underline cursor-pointer">Sổ Cái Băm Khối 870,800+</span>
-            <span className="hover:underline cursor-pointer">API Dữ Liệu</span>
-          </div>
-        </div>
-      </footer>
-
-      {/* Command Palette */}
+      {/* Global Bloomberg-Style Command Palette (⌘K / Ctrl+K) */}
       <CommandPalette />
 
-      {/* Modals */}
+      {/* High-Conversion Modals (Deferred Loading) */}
       <Suspense fallback={null}>
         <ShareCardModal />
         <TelegramAlertModal />
