@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bitcoin Spot Accumulation &amp; Cycle Analytics Terminal</title>
+<!-- Tailwind CSS CDN with forms and container queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            appBg: '#F4F6F9',
+            brandDark: '#111827',
+            cardBg: '#FFFFFF',
+            cardBorder: '#EEF0F5',
+            brandPurple: '#7C3AED',
+            brandPurpleLight: '#8B5CF6',
+            brandGreen: '#10B981',
+            brandRed: '#EF4444',
+            brandOrange: '#F97316'
+          },
+          boxShadow: {
+            'card': '0 4px 20px -2px rgba(15, 23, 42, 0.03), 0 2px 6px -1px rgba(15, 23, 42, 0.02)',
+            'float-pill': '0 16px 36px -6px rgba(124, 58, 237, 0.16), 0 8px 18px -4px rgba(15, 23, 42, 0.08)',
+            'elevated-tooltip': '0 10px 25px -3px rgba(15, 23, 42, 0.12), 0 4px 10px -2px rgba(15, 23, 42, 0.06)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="base-typography">
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F4F6F9;
+      color: #111827;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-purpose="custom-elements">
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E2E8F0;
+      border-radius: 9999px;
+    }
+    /* Dynamic Chart Hover & Interactive Classes */
+    .interactive-bar {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center bottom;
+      cursor: pointer;
+    }
+    .bar-chart-group:hover .interactive-bar:not(:hover) {
+      opacity: 0.35;
+      filter: saturate(60%);
+    }
+    .interactive-bar:hover {
+      opacity: 1 !important;
+      filter: brightness(1.12) drop-shadow(0 4px 10px rgba(16, 185, 129, 0.35));
+      transform: scaleY(1.04) scaleX(1.15);
+    }
+    .interactive-bar.bar-negative:hover {
+      filter: brightness(1.12) drop-shadow(0 4px 10px rgba(239, 68, 68, 0.35));
+    }
+    .radar-vertex {
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), r 0.2s ease, stroke-width 0.2s ease;
+      cursor: pointer;
+      transform-origin: center;
+    }
+    .radar-vertex:hover {
+      transform: scale(1.6);
+      filter: drop-shadow(0 0 6px rgba(124, 58, 237, 0.7));
+    }
+    .radar-vertex.vertex-orange:hover {
+      filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.7));
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 0.2; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .pulse-halo {
+      animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      transform-origin: center;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-appBg text-gray-900 flex antialiased selection:bg-brandPurple selection:text-white">
+<!-- BEGIN: LeftSidebar -->
+<!-- Persistent floating vertical rail on the left -->
+<aside class="fixed left-5 top-1/2 -translate-y-1/2 flex flex-col gap-3.5 z-40" data-purpose="sidebar-rail">
+<!-- Active Main Dashboard Icon -->
+<button aria-label="Terminal Home" class="w-12 h-12 rounded-full bg-brandDark text-white flex items-center justify-center shadow-lg hover:scale-105 transition-transform duration-200">
+<svg class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20">
+<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+</svg>
+</button>
+<!-- Secondary Nav 1: Cycle Models -->
+<button aria-label="Cycle Models" class="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-brandPurple border border-cardBorder flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<path d="M3.6 9h16.8M3.6 15h16.8" stroke-linecap="round"></path>
+<path d="M11.5 3a17 17 0 000 18M12.5 3a17 17 0 010 18"></path>
+</svg>
+</button>
+<!-- Secondary Nav 2: Candlestick Chart & Technicals -->
+<button aria-label="Candlestick Chart" class="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-brandPurple border border-cardBorder flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 3v2m0 14v2m0-14a3 3 0 00-3 3v6a3 3 0 006 0V9a3 3 0 00-3-3zM6 8v1m0 6v1m0-7a2 2 0 00-2 2v2a2 2 0 004 0V9a2 2 0 00-2-2zm12 2v1m0 4v1m0-5a2 2 0 00-2 2v0a2 2 0 004 0v0a2 2 0 00-2-2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Secondary Nav 3: On-Chain Ledger & Nodes -->
+<button aria-label="On-Chain Ledger &amp; Nodes" class="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-brandPurple border border-cardBorder flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<rect height="6" rx="2" width="6" x="2" y="2"></rect>
+<rect height="6" rx="2" width="6" x="16" y="2"></rect>
+<rect height="6" rx="2" width="6" x="9" y="16"></rect>
+<path d="M5 8v4a2 2 0 002 2h5m7-6v4a2 2 0 01-2 2h-5m0 0v2" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Secondary Nav 4: Distribution / Histogram -->
+<button aria-label="Distribution Histogram" class="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-brandPurple border border-cardBorder flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- Secondary Nav 5: Vault & Security Audit -->
+<button aria-label="Vault &amp; Security Audit" class="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-brandPurple border border-cardBorder flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group">
+<svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24">
+<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="12" cy="11" r="2.5"></circle>
+</svg>
+</button>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContentWrapper -->
+<div class="flex-1 ml-24 mr-6 my-5 max-w-[1440px] flex flex-col gap-6">
+<!-- BEGIN: TopBar -->
+<header class="flex flex-wrap items-center justify-between gap-4 py-1" data-purpose="top-navigation">
+<!-- Left Logo & Area Title -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<!-- Sleek geometric brandmark styled like LOQO -->
+<div class="flex items-center tracking-tighter text-2xl font-black text-brandDark">
+<span class="inline-block border-[3.5px] border-brandDark rounded-full w-6 h-6 mr-1"></span>
+<span class="tracking-tight">LOQO</span>
+</div>
+</div>
+<span class="text-xl font-semibold text-gray-700 tracking-tight">Dashboard</span>
+<!-- Live BTC Spot Price Ticker Pill -->
+<div class="hidden sm:flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 px-3 py-1.5 rounded-full shadow-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span class="text-xs font-mono font-bold text-gray-900 tracking-tight">BTC/USD $75,790.00</span>
+<span class="text-[11px] font-mono font-bold text-emerald-600">(+2.45%)</span>
+</div>
+</div>
+<!-- Right Controls: Date Range, Currency, Filter, Avatar -->
+<div class="flex items-center gap-3">
+<!-- Date Selector Pill (Cycle 5 Halving) -->
+<button class="bg-white border border-cardBorder text-gray-700 px-4 py-2 rounded-full text-xs font-semibold flex items-center gap-2.5 shadow-sm hover:bg-gray-50 transition-colors">
+<svg class="w-4 h-4 text-brandPurple" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect>
+<line x1="16" x2="16" y1="2" y2="6"></line>
+<line x1="8" x2="8" y1="2" y2="6"></line>
+<line x1="3" x2="21" y1="10" y2="10"></line>
+</svg>
+<span>1W Cycle - Halving 5</span>
+<svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+</button>
+<!-- Currency Selector Pill ($ / ₫) -->
+<button class="bg-white border border-cardBorder text-gray-700 px-3.5 py-2 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm hover:bg-gray-50 transition-colors">
+<span class="w-4 h-4 rounded-full bg-purple-50 flex items-center justify-center text-[10px] font-bold text-brandPurple">$</span>
+<span class="text-[11px] text-gray-400">/</span>
+<span class="text-[11px] text-gray-500 font-medium">₫</span>
+<svg class="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+</button>
+<!-- Settings / Filter Pill Button -->
+<button aria-label="Filters" class="w-9 h-9 rounded-full bg-white border border-cardBorder flex items-center justify-center text-gray-600 hover:text-brandPurple shadow-sm transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+<!-- User Avatar -->
+<div class="relative cursor-pointer">
+<img alt="User Avatar" class="w-9 h-9 rounded-full border border-cardBorder object-cover shadow-sm ring-2 ring-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg7Wvu23pSLOc9bQh57NbcQgOb3Xj2Z3gmR7iFBtlWblLjxZiD9200vJRPHFsXI2WEokZxFyWViwDeVH4PFnzm9IsUSNR-fEXZEc0tNdgQSbdfWvCH9UJa9nRiEa0bxvBOY01DN1F9knmFa6csRggAbbo6Qpqdah0szrpGwLeQpWZn48KMNMDNvH8ZX7LGA60iZ42rPtczl7SsYKKoflHDf4tx058jpqlL92-9stw1J51V1z6prBo"/>
+</div>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: GreetingAndActions -->
+<div class="flex items-center justify-between pt-1">
+<div>
+<p class="text-xs font-medium text-gray-400 tracking-wide">Tuesday, 20 Jun 2026</p>
+<h1 class="text-2xl lg:text-3xl font-extrabold text-brandDark tracking-tight mt-0.5">Welcome Back, Biswas</h1>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-3">
+<!-- Solid Matte Black Start Day / Dynamic DCA Execution Button -->
+<button class="bg-brandDark hover:bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all hover:scale-[1.02]">
+<span class="text-amber-400">⚡</span>
+<span>Execute Dynamic DCA</span>
+</button>
+<!-- 3D Cube / Perspective View Button -->
+<button aria-label="Perspective View" class="w-10 h-10 rounded-full bg-white border border-cardBorder flex items-center justify-center text-gray-600 hover:text-black shadow-sm transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
+<path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</button>
+</div>
+</div>
+<!-- END: GreetingAndActions -->
+<!-- BEGIN: TopMetricsGrid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch" data-purpose="primary-accumulation-analytics">
+<!-- Left Column: Score & 2x2 Quant Cards (4 cols) -->
+<div class="lg:col-span-4 flex flex-col justify-between space-y-4">
+<!-- Score & Spectrum Bar -->
+<div class="group relative bg-cardBg border border-cardBorder hover:border-purple-200 transition-all duration-200 rounded-2xl p-5 shadow-card cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-xs font-medium text-gray-500">Cycle Confluence Score</span>
+<span class="text-[10px] font-semibold text-gray-400 group-hover:text-brandPurple transition-colors">Top 4% Cycle Quantile</span>
+</div>
+<div class="mt-1 flex items-baseline gap-2">
+<span class="text-3xl font-extrabold text-brandDark tracking-tight font-mono">80.75</span>
+<span class="text-[11px] text-gray-400 font-mono">/ 100</span>
+<span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1.5 ml-auto">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+  Optimal Buy Zone
+</span>
+</div>
+<!-- Color Gradient Bar (Coral Red -> Warm Amber -> Lime -> Emerald Green) -->
+<div class="relative mt-4 mb-2">
+<div class="h-3 w-full rounded-full bg-gradient-to-r from-[#EF4444] via-[#FBBF24] via-[#84CC16] to-[#10B981]"></div>
+<!-- White Slider Pin indicator positioned exactly at 80.75% -->
+<div class="absolute -top-1 left-[80.75%] -translate-x-1/2 w-4 h-5 bg-white border-2 border-emerald-500 rounded-md shadow-md flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-transform">
+<div class="w-0.5 h-2.5 bg-emerald-500 rounded-full"></div>
+</div>
+<!-- Axis Ticks -->
+<div class="flex justify-between items-center text-[10px] text-gray-400 font-mono px-0.5 mt-2">
+<span>0</span>
+<span>20</span>
+<span>40</span>
+<span>60</span>
+<span>80</span>
+<span>100</span>
+</div>
+</div>
+<!-- Micro-tooltip overlay on hover -->
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] py-1 px-3 rounded-lg shadow-lg whitespace-nowrap z-30">
+Composite Quant Confluence: 80.75 / 100 (Deep DCA Accumulation)
+<div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+</div>
+</div>
+<!-- 2x2 Mini Quant Metric Cards -->
+<div class="grid grid-cols-2 gap-4 flex-1">
+<!-- Card 1: Net P&L -->
+<div class="relative group bg-cardBg border border-cardBorder hover:border-purple-200 transition-all duration-200 rounded-2xl p-4 shadow-card flex flex-col justify-between hover:shadow-md cursor-pointer">
+<div class="w-7 h-7 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 mb-2 group-hover:bg-purple-50 group-hover:text-brandPurple transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+</div>
+<div>
+<div class="flex items-center gap-1 text-[11px] font-medium text-gray-400">
+<span>Net P&amp;L</span>
+<div class="relative cursor-help">
+<svg class="w-3 h-3 text-gray-300 group-hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+</div>
+</div>
+<p class="text-xl font-bold text-brandDark mt-0.5 font-mono">$14,742</p>
+<span class="inline-block mt-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-100">+31.79% spot yield</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-8 left-4 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-20">
+Realized + Unrealized Spot Accumulation
+</div>
+</div>
+<!-- Card 2: ahr999 DCA Index -->
+<div class="relative group bg-cardBg border border-cardBorder hover:border-purple-200 transition-all duration-200 rounded-2xl p-4 shadow-card flex flex-col justify-between hover:shadow-md cursor-pointer">
+<div class="w-7 h-7 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 mb-2 group-hover:bg-purple-50 group-hover:text-brandPurple transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<div class="flex items-center gap-1 text-[11px] font-medium text-gray-400">
+<span>ahr999 DCA Index</span>
+<svg class="w-3 h-3 text-gray-300 group-hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+</div>
+<p class="text-xl font-bold text-brandDark mt-0.5 font-mono">0.48</p>
+<span class="inline-block mt-1 text-[9px] font-medium text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded border border-purple-100">DCA: &lt;0.45 All-in, 0.45-1.2 Regular</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-8 left-4 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-20">
+Geometric Mean of BTC 200D Cost &amp; Exponential Valuation Model
+</div>
+</div>
+<!-- Card 3: MVRV Z-Score -->
+<div class="relative group bg-cardBg border border-cardBorder hover:border-purple-200 transition-all duration-200 rounded-2xl p-4 shadow-card flex flex-col justify-between hover:shadow-md cursor-pointer">
+<div class="w-7 h-7 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 mb-2 group-hover:bg-purple-50 group-hover:text-brandPurple transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<div class="flex items-center gap-1 text-[11px] font-medium text-gray-400">
+<span>MVRV Z-Score</span>
+<svg class="w-3 h-3 text-gray-300 group-hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+</div>
+<p class="text-xl font-bold text-brandDark mt-0.5 font-mono">1.39</p>
+<span class="inline-block mt-1 text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-100">Undervaluation Buy Zone (vs 2.8)</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-8 left-4 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-20">
+Standard Deviations between Market Cap and Realized Cap
+</div>
+</div>
+<!-- Card 4: Puell Multiple -->
+<div class="relative group bg-cardBg border border-cardBorder hover:border-purple-200 transition-all duration-200 rounded-2xl p-4 shadow-card flex flex-col justify-between hover:shadow-md cursor-pointer">
+<div class="w-7 h-7 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 mb-2 group-hover:bg-purple-50 group-hover:text-brandPurple transition-colors">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<div>
+<div class="flex items-center gap-1 text-[11px] font-medium text-gray-400">
+<span>Puell Multiple</span>
+<svg class="w-3 h-3 text-gray-300 group-hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+</div>
+<p class="text-xl font-bold text-brandDark mt-0.5 font-mono">0.88</p>
+<span class="inline-block mt-1 text-[9px] font-medium text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-100">Healthy Miner Issuance</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-8 left-4 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-20">
+Daily Miner Coin Issuance USD / 365-day Moving Average
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Daily Net Cumulative P&L & Spot DCA Valuation Curve (8 cols) -->
+<div class="lg:col-span-8 bg-cardBg border border-cardBorder rounded-2xl p-6 shadow-card flex flex-col justify-between relative overflow-hidden" id="spline-card-container">
+<!-- Chart Header -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<h2 class="text-sm font-semibold text-brandDark">Daily Net Cumulative P&amp;L &amp; Spot DCA Valuation Curve</h2>
+<div class="group relative cursor-pointer">
+<svg class="w-3.5 h-3.5 text-gray-400 hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute left-0 top-5 bg-gray-900 text-white text-[10px] py-1.5 px-3 rounded-lg shadow-lg whitespace-nowrap z-40">
+Tracks spot Bitcoin DCA cost-basis against cumulative portfolio valuation
+</div>
+</div>
+</div>
+<!-- Legend & Interaction Hint -->
+<div class="flex items-center gap-3 text-[11px] text-gray-400">
+<span class="flex items-center gap-1.5 font-medium text-gray-600"><span class="w-2.5 h-1 rounded-full bg-brandPurple"></span> Cumulative P&amp;L</span>
+<span class="hidden sm:inline-block text-[10px] bg-purple-50 text-brandPurple px-2.5 py-0.5 rounded-full font-semibold border border-purple-100">Hover across curve</span>
+</div>
+</div>
+<!-- SVG Spline Curve Area with cursor tracking overlay -->
+<div class="relative w-full h-[260px] flex items-center select-none" id="spline-interactive-area">
+<svg class="w-full h-full" id="spline-svg" preserveaspectratio="none" viewbox="0 0 820 250">
+<defs>
+<!-- Purple Glow Dropdown Gradient -->
+<lineargradient id="purpleGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#7C3AED" stop-opacity="0.28"></stop>
+<stop offset="60%" stop-color="#8B5CF6" stop-opacity="0.08"></stop>
+<stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.0"></stop>
+</lineargradient>
+<!-- Dotted Accumulation Shade Pattern -->
+<pattern height="8" id="dotPattern" patternunits="userSpaceOnUse" width="8" x="0" y="0">
+<circle cx="2" cy="2" fill="#7C3AED" opacity="0.4" r="1"></circle>
+</pattern>
+</defs>
+<!-- Horizontal Dashed Reference Grid Lines ($0k, $20k, $40k, $60k, $80k) -->
+<g class="text-[10px] fill-gray-400 font-mono" stroke="#EEF0F5" stroke-dasharray="4,4" stroke-width="1">
+<!-- $80k -->
+<text fill="#9CA3AF" stroke="none" x="5" y="24">$80k -</text>
+<line x1="50" x2="820" y1="20" y2="20"></line>
+<!-- $60k -->
+<text fill="#9CA3AF" stroke="none" x="5" y="78">$60k -</text>
+<line x1="50" x2="820" y1="74" y2="74"></line>
+<!-- $40k -->
+<text fill="#9CA3AF" stroke="none" x="5" y="132">$40k -</text>
+<line x1="50" x2="820" y1="128" y2="128"></line>
+<!-- $20k -->
+<text fill="#9CA3AF" stroke="none" x="5" y="184">$20k -</text>
+<line x1="50" x2="820" y1="180" y2="180"></line>
+<!-- $0k -->
+<text fill="#9CA3AF" stroke="none" x="5" y="238">$0k -</text>
+<line x1="50" x2="820" y1="234" y2="234"></line>
+</g>
+<!-- Vertical Hatched Accumulation Zones during cycle drawdown dips -->
+<path d="M 220,105 L 240,115 C 270,140 280,165 310,165 C 330,165 350,145 375,120 L 375,234 L 220,234 Z" fill="url(#dotPattern)"></path>
+<path d="M 525,115 C 560,150 580,175 605,175 C 630,175 660,140 685,145 L 685,234 L 525,234 Z" fill="url(#dotPattern)"></path>
+<!-- Gradient Area under entire wave -->
+<path d="M 60,135 
+                     C 90,135 110,80 150,75 
+                     C 190,70 215,110 240,115 
+                     C 270,120 285,165 310,165 
+                     C 340,165 360,140 380,118 
+                     C 400,96 420,55 450,55 
+                     C 480,55 500,100 525,115 
+                     C 555,133 570,175 605,175 
+                     C 635,175 655,130 690,130 
+                     C 725,130 750,175 780,175 
+                     C 800,175 810,120 820,105 
+                     L 820,234 L 60,234 Z" fill="url(#purpleGradient)"></path>
+<!-- The Smooth Violet Spline Wave Curve (#7C3AED) -->
+<path d="M 60,135 
+                     C 90,135 110,80 150,75 
+                     C 190,70 215,110 240,115 
+                     C 270,120 285,165 310,165 
+                     C 340,165 360,140 380,118 
+                     C 400,96 420,55 450,55 
+                     C 480,55 500,100 525,115 
+                     C 555,133 570,175 605,175 
+                     C 635,175 655,130 690,130 
+                     C 725,130 750,175 780,175 
+                     C 800,175 810,120 820,105" fill="none" id="spline-main-path" stroke="#7C3AED" stroke-linecap="round" stroke-width="3.5"></path>
+<!-- Interactive Key Points along curve -->
+<g id="spline-keypoints">
+<circle class="cursor-pointer hover:r-6 transition-all" cx="310" cy="165" data-chg="+42.8%" data-date="11 Jun, 2026" data-pnl="$25,710" data-status="Cycle Dip Accumulation" fill="#FFFFFF" r="3.5" stroke="#7C3AED" stroke-width="2.5"></circle>
+<circle class="cursor-pointer hover:r-6 transition-all" cx="450" cy="55" data-chg="+184.2%" data-date="16 Jun, 2026" data-pnl="$67,490" data-status="Cycle Expansion Peak" fill="#7C3AED" r="4.5" stroke="#FFFFFF" stroke-width="2.5"></circle>
+<circle class="cursor-pointer hover:r-6 transition-all" cx="605" cy="175" data-chg="+31.5%" data-date="21 Jun, 2026" data-pnl="$22,180" data-status="Secondary DCA Zone" fill="#FFFFFF" r="3.5" stroke="#7C3AED" stroke-width="2.5"></circle>
+<circle class="cursor-pointer hover:r-6 transition-all" cx="810" cy="120" data-chg="+115.6%" data-date="25 Jun, 2026" data-pnl="$44,820" data-status="Macro Bull Expansion" fill="#FFFFFF" r="3.5" stroke="#7C3AED" stroke-width="2.5"></circle>
+</g>
+<!-- Dynamic Vertical Cursor Guide Line -->
+<line class="opacity-0 transition-opacity duration-150 pointer-events-none" id="spline-guideline" stroke="#7C3AED" stroke-dasharray="3,3" stroke-width="1.5" x1="0" x2="0" y1="20" y2="234"></line>
+<!-- Dynamic Moving Highlight Point -->
+<g class="opacity-0 transition-opacity duration-150 pointer-events-none" id="spline-hover-point">
+<circle class="pulse-halo" cx="0" cy="0" fill="#7C3AED" opacity="0.3" r="14"></circle>
+<circle cx="0" cy="0" fill="#7C3AED" r="5" stroke="#FFFFFF" stroke-width="2.5"></circle>
+</g>
+</svg>
+<!-- Sleek Floating Tooltip Card for Spline Curve -->
+<div class="absolute opacity-0 pointer-events-none transition-all duration-75 z-40 bg-white/95 backdrop-blur-md border border-purple-100 shadow-elevated-tooltip rounded-xl p-3 text-xs w-48 -translate-x-1/2 -translate-y-full" id="spline-tooltip" style="top: 0; left: 0;">
+<div class="flex items-center justify-between border-b border-gray-100 pb-1.5 mb-1.5">
+<span class="font-semibold text-gray-500 text-[10px] uppercase tracking-wider" id="spline-tooltip-date">16 Jun, 2026</span>
+<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-50 text-brandPurple" id="spline-tooltip-tag">Peak Zone</span>
+</div>
+<div class="flex items-baseline justify-between">
+<span class="text-gray-400 text-[11px]">Net Spot Value</span>
+<span class="text-sm font-extrabold text-brandDark font-mono" id="spline-tooltip-val">$67,490.00</span>
+</div>
+<div class="flex items-center justify-between text-[10px] mt-1 pt-1 border-t border-dashed border-gray-100 text-emerald-600 font-medium">
+<span>Cycle Return</span>
+<span class="font-mono font-bold" id="spline-tooltip-chg">+184.2%</span>
+</div>
+</div>
+</div>
+<!-- Timeline X-Axis Labels -->
+<div class="flex justify-between items-center text-[11px] text-gray-400 font-mono font-medium pl-10 pr-2 pt-2 border-t border-gray-100">
+<span>05 Jun, 2026</span>
+<span>09 Jun, 2026</span>
+<span>13 Jun, 2026</span>
+<span>17 Jun, 2026</span>
+<span>21 Jun, 2026</span>
+<span>25 Jun, 2026</span>
+</div>
+</div>
+</section>
+<!-- END: TopMetricsGrid -->
+<!-- BEGIN: BottomAnalyticsGrid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch relative pb-12" data-purpose="secondary-confluence-analytics">
+<!-- Column 1: Net Daily Spot Inflows & Whale Absorption (4 cols) -->
+<div class="lg:col-span-4 bg-cardBg border border-cardBorder rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="bar-card-container">
+<!-- Header -->
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<h3 class="text-sm font-semibold text-brandDark">Net Daily Spot Inflows &amp; Whale Absorption</h3>
+<div class="group relative cursor-pointer">
+<svg class="w-3.5 h-3.5 text-gray-400 hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute left-0 top-5 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-30">
+Daily spot buy/sell inflows and whale OTC absorption vs exchange reserves
+</div>
+</div>
+</div>
+<span class="text-[10px] font-mono font-semibold text-gray-400">19 Recorded Sessions</span>
+</div>
+<!-- Bar Chart Component with Zero Baseline -->
+<div class="relative w-full h-[210px] bar-chart-group">
+<svg class="w-full h-full" id="barchart-svg" preserveaspectratio="none" viewbox="0 0 450 200">
+<!-- Y-Axis Guides & Labels -->
+<g class="text-[9px] fill-gray-400 font-mono pointer-events-none">
+<text x="5" y="16">+$10m</text>
+<line stroke="#EEF0F5" stroke-dasharray="3,3" x1="42" x2="450" y1="12" y2="12"></line>
+<text x="5" y="52">+$6m</text>
+<line stroke="#EEF0F5" stroke-dasharray="3,3" x1="42" x2="450" y1="48" y2="48"></line>
+<text x="5" y="88">+$3m</text>
+<line stroke="#EEF0F5" stroke-dasharray="3,3" x1="42" x2="450" y1="84" y2="84"></line>
+<!-- Baseline 0 -->
+<text class="font-bold fill-gray-500" x="5" y="124">$0</text>
+<line stroke="#D1D5DB" stroke-width="1.2" x1="42" x2="450" y1="120" y2="120"></line>
+<text x="5" y="160">-$3m</text>
+<line stroke="#EEF0F5" stroke-dasharray="3,3" x1="42" x2="450" y1="156" y2="156"></line>
+</g>
+<!-- Bars: Emerald Green (#10B981) for Positive Inflows, Coral Red (#EF4444) for Distribution/Outflow -->
+<rect class="interactive-bar bar-negative" data-amount="-$1,820k" data-date="05 Jun, 2026" data-type="Exchange Inflow Dump" fill="#EF4444" height="24" rx="1.5" width="10" x="58" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$8,450k" data-date="06 Jun, 2026" data-type="Whale Spot Absorption" fill="#10B981" height="98" rx="2" width="10" x="78" y="22"></rect>
+<rect class="interactive-bar" data-amount="+$1,450k" data-date="07 Jun, 2026" data-type="Retail DCA Inflow" fill="#10B981" height="18" rx="1.5" width="10" x="98" y="102"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$850k" data-date="08 Jun, 2026" data-type="Miner Treasury Outflow" fill="#EF4444" height="12" rx="1.5" width="10" x="118" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$1,920k" data-date="09 Jun, 2026" data-type="Institutional DCA" fill="#10B981" height="24" rx="1.5" width="10" x="138" y="96"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$640k" data-date="10 Jun, 2026" data-type="Spot Profit Taking" fill="#EF4444" height="9" rx="1.5" width="10" x="158" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$4,820k" data-date="11 Jun, 2026" data-type="ETF Net Accumulation" fill="#10B981" height="58" rx="2" width="10" x="178" y="62"></rect>
+<rect class="interactive-bar" data-amount="+$3,100k" data-date="12 Jun, 2026" data-type="Spot Absorption" fill="#10B981" height="38" rx="2" width="10" x="198" y="82"></rect>
+<rect class="interactive-bar" data-amount="+$7,210k" data-date="13 Jun, 2026" data-type="Whale Cluster Bid" fill="#10B981" height="84" rx="2" width="10" x="218" y="36"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$2,410k" data-date="14 Jun, 2026" data-type="Derivatives Hedging Outflow" fill="#EF4444" height="32" rx="2" width="10" x="238" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$3,950k" data-date="15 Jun, 2026" data-type="Dip Floor Absorption" fill="#10B981" height="48" rx="2" width="10" x="258" y="72"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$1,340k" data-date="16 Jun, 2026" data-type="Rebalancing Outflow" fill="#EF4444" height="18" rx="2" width="10" x="278" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$2,840k" data-date="17 Jun, 2026" data-type="Systematic DCA" fill="#10B981" height="34" rx="2" width="10" x="298" y="86"></rect>
+<rect class="interactive-bar" data-amount="+$2,200k" data-date="18 Jun, 2026" data-type="Cold Wallet Outflow (Bullish)" fill="#10B981" height="28" rx="2" width="10" x="318" y="92"></rect>
+<rect class="interactive-bar" data-amount="+$3,450k" data-date="19 Jun, 2026" data-type="Spot Inflow Wave" fill="#10B981" height="42" rx="2" width="10" x="338" y="78"></rect>
+<rect class="interactive-bar" data-amount="+$4,150k" data-date="20 Jun, 2026" data-type="ETF High Volume" fill="#10B981" height="50" rx="2" width="10" x="358" y="70"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$2,900k" data-date="21 Jun, 2026" data-type="Short-Term Holder Realization" fill="#EF4444" height="38" rx="2" width="10" x="378" y="120"></rect>
+<rect class="interactive-bar" data-amount="+$5,200k" data-date="22 Jun, 2026" data-type="Aggressive Whale Buying" fill="#10B981" height="62" rx="2" width="10" x="398" y="58"></rect>
+<rect class="interactive-bar bar-negative" data-amount="-$480k" data-date="23 Jun, 2026" data-type="Minor Outflow" fill="#EF4444" height="6" rx="1" width="10" x="418" y="120"></rect>
+</svg>
+<!-- Elevated Floating Dark Bar Tooltip -->
+<div class="absolute opacity-0 pointer-events-none transition-all duration-100 z-30 bg-gray-900 text-white rounded-lg px-3 py-2 text-xs shadow-xl -translate-x-1/2 -translate-y-full" id="bar-tooltip" style="top: 0; left: 0;">
+<div class="flex items-center justify-between gap-3 text-[10px] text-gray-400 border-b border-gray-800 pb-1 mb-1">
+<span id="bar-tooltip-date">06 Jun, 2026</span>
+<span class="px-1.5 py-0.2 rounded font-semibold text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800/50" id="bar-tooltip-badge">Absorption</span>
+</div>
+<div class="font-bold font-mono text-sm tracking-tight text-emerald-400" id="bar-tooltip-amount">+$8,450k</div>
+<div class="text-[9px] text-gray-400 mt-0.5" id="bar-tooltip-type">Whale Spot Absorption</div>
+</div>
+</div>
+<!-- Dates X Axis -->
+<div class="flex justify-between text-[10px] text-gray-400 font-mono font-medium pl-8 pr-3 pt-1 border-t border-gray-100">
+<span>05 Jun, 2026</span>
+<span>09 Jun, 2026</span>
+<span>13 Jun, 2026</span>
+<span>17 Jun, 2026</span>
+<span>23 Jun, 2026</span>
+</div>
+</div>
+<!-- Column 2: Overall Cycle Score Radar v2.4 (3.5 cols) -->
+<div class="lg:col-span-3 bg-cardBg border border-cardBorder rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="radar-card-container">
+<!-- Header -->
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-2">
+<h3 class="text-sm font-semibold text-brandDark">Overall Cycle Score Radar</h3>
+<div class="group relative cursor-pointer">
+<svg class="w-3.5 h-3.5 text-gray-400 hover:text-brandPurple transition-colors" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" fill-rule="evenodd"></path></svg>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute left-0 top-5 bg-gray-900 text-white text-[10px] py-1 px-2.5 rounded-md shadow-lg whitespace-nowrap z-30">
+6 quantitative Bitcoin cycle axes vs institutional halving benchmark
+</div>
+</div>
+</div>
+<span class="text-[10px] font-semibold text-brandPurple bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">Radar v2.4</span>
+</div>
+<!-- Radar Chart Container with 6 authentic quantitative Bitcoin axes -->
+<div class="relative w-full h-[220px] flex items-center justify-center">
+<svg class="w-full h-full" id="radar-svg" viewbox="0 0 320 240">
+<!-- Radar Outer Web Hexagons -->
+<!-- Level 3 Outer -->
+<polygon fill="none" points="160,25 250,75 250,175 160,225 70,175 70,75" stroke="#E2E8F0" stroke-width="1"></polygon>
+<!-- Level 2 Mid -->
+<polygon fill="none" points="160,65 220,95 220,155 160,185 100,155 100,95" stroke="#F1F5F9" stroke-width="1"></polygon>
+<!-- Level 1 Inner -->
+<polygon fill="none" points="160,105 190,120 190,150 160,165 130,150 130,120" stroke="#F8FAFC" stroke-width="1"></polygon>
+<!-- Spokes -->
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="160" y1="125" y2="25"></line>
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="250" y1="125" y2="75"></line>
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="250" y1="125" y2="175"></line>
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="160" y1="125" y2="225"></line>
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="70" y1="125" y2="175"></line>
+<line stroke="#E2E8F0" stroke-width="0.8" x1="160" x2="70" y1="125" y2="75"></line>
+<!-- Translucent Purple Overlay Polygon (Current Run: #7C3AED) -->
+<polygon fill="#7C3AED" fill-opacity="0.2" points="160,52 230,98 222,162 154,202 102,168 108,98" stroke="#7C3AED" stroke-linejoin="round" stroke-width="2.5"></polygon>
+<!-- Overlapping Warm Orange Polygon (Institutional Benchmark: #F97316) -->
+<polygon fill="none" points="165,35 242,88 238,168 170,182 132,158 142,112" stroke="#F97316" stroke-linejoin="round" stroke-width="2.2"></polygon>
+<!-- Interactive Vertices for Purple Polygon -->
+<g id="radar-purple-vertices">
+<circle class="radar-vertex" cx="160" cy="52" data-benchmark="1.25" data-delta="+0.14" data-metric="Win Rate MVRV" data-type="Current Run" data-value="1.39" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle class="radar-vertex" cx="230" cy="98" data-benchmark="1.18" data-delta="+0.16" data-metric="Mayer Multiple" data-type="Current Run" data-value="1.34" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle class="radar-vertex" cx="222" cy="162" data-benchmark="0.75" data-delta="+0.13" data-metric="Puell Recovery" data-type="Current Run" data-value="0.88" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle class="radar-vertex" cx="154" cy="202" data-benchmark="2.65" data-delta="+0.85" data-metric="STH Risk:Reward" data-type="Current Run" data-value="3.50" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle class="radar-vertex" cx="102" cy="168" data-benchmark="-18.5%" data-delta="+8.1% (Resilient)" data-metric="Max Drawdown Safety" data-type="Current Run" data-value="-10.4%" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+<circle class="radar-vertex" cx="108" cy="98" data-benchmark="82.0" data-delta="+7.2" data-metric="Hash Ribbon Consistency" data-type="Current Run" data-value="89.2" fill="#7C3AED" r="4" stroke="#FFFFFF" stroke-width="2"></circle>
+</g>
+<!-- Interactive Vertices for Orange Benchmark Polygon -->
+<g id="radar-orange-vertices">
+<circle class="radar-vertex vertex-orange" cx="165" cy="35" data-benchmark="Baseline" data-delta="Cycle Avg" data-metric="Win Rate MVRV" data-type="Institutional Benchmark" data-value="1.25" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+<circle class="radar-vertex vertex-orange" cx="242" cy="88" data-benchmark="Baseline" data-delta="200D SMA" data-metric="Mayer Multiple" data-type="Institutional Benchmark" data-value="1.18" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+<circle class="radar-vertex vertex-orange" cx="238" cy="168" data-benchmark="Baseline" data-delta="Post-Halving" data-metric="Puell Recovery" data-type="Institutional Benchmark" data-value="0.75" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+<circle class="radar-vertex vertex-orange" cx="170" cy="182" data-benchmark="Baseline" data-delta="Standard" data-metric="STH Risk:Reward" data-type="Institutional Benchmark" data-value="2.65" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+<circle class="radar-vertex vertex-orange" cx="132" cy="158" data-benchmark="Baseline" data-delta="Moderate" data-metric="Max Drawdown Safety" data-type="Institutional Benchmark" data-value="-18.5%" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+<circle class="radar-vertex vertex-orange" cx="142" cy="112" data-benchmark="Baseline" data-delta="Miner Inversion" data-metric="Hash Ribbon Consistency" data-type="Institutional Benchmark" data-value="82.0" fill="#F97316" r="3.5" stroke="#FFFFFF" stroke-width="1.8"></circle>
+</g>
+<!-- 6 Authentic Quantitative Bitcoin Axes Labels -->
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="middle" x="160" y="16">Win Rate MVRV</text>
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="start" x="256" y="78">Mayer Multiple</text>
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="start" x="256" y="180">Puell Recovery</text>
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="middle" x="160" y="238">STH Risk:Reward</text>
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="end" x="62" y="180">Max Drawdown</text>
+<text class="text-[9px] fill-gray-500 font-semibold" text-anchor="end" x="62" y="78">Hash Ribbon</text>
+</svg>
+<!-- Radar Vertex Floating Tooltip Card -->
+<div class="absolute opacity-0 pointer-events-none transition-all duration-100 z-30 bg-white/95 backdrop-blur-md border border-gray-200 shadow-elevated-tooltip rounded-xl p-2.5 text-xs w-48 -translate-x-1/2 -translate-y-full" id="radar-tooltip" style="top: 0; left: 0;">
+<div class="flex items-center justify-between border-b border-gray-100 pb-1 mb-1">
+<span class="font-bold text-gray-800 text-[11px]" id="radar-tooltip-metric">Win Rate MVRV</span>
+<span class="text-[9px] font-semibold px-1.5 py-0.5 rounded bg-purple-50 text-brandPurple" id="radar-tooltip-type">Current Run</span>
+</div>
+<div class="flex items-baseline justify-between text-xs">
+<span class="text-gray-400 text-[10px]">Quant Value</span>
+<span class="font-extrabold text-brandDark text-sm font-mono" id="radar-tooltip-val">1.39</span>
+</div>
+<div class="flex items-center justify-between text-[10px] text-gray-500 mt-1 pt-1 border-t border-dashed border-gray-100">
+<span>Benchmark / Delta</span>
+<span class="font-semibold text-emerald-600 font-mono" id="radar-tooltip-delta">+0.14</span>
+</div>
+</div>
+</div>
+<!-- Bottom Legend comparing Current Run vs Benchmark -->
+<div class="flex items-center justify-center gap-5 text-[10px] text-gray-400 font-medium pt-1 border-t border-gray-100">
+<span class="flex items-center gap-1.5 cursor-pointer hover:text-brandPurple transition-colors"><span class="w-2 h-2 rounded-full bg-brandPurple"></span> Current Run</span>
+<span class="flex items-center gap-1.5 cursor-pointer hover:text-brandOrange transition-colors"><span class="w-2 h-2 rounded-full bg-brandOrange"></span> Institutional Benchmark</span>
+</div>
+</div>
+<!-- Column 3: Spot DCA Execution Ledger (5 cols) -->
+<div class="lg:col-span-5 bg-cardBg border border-cardBorder rounded-2xl p-5 shadow-card flex flex-col justify-between">
+<!-- Header & Nav Tabs -->
+<div>
+<div class="flex items-center justify-between border-b border-gray-100 pb-2 mb-2">
+<div class="flex items-center gap-4">
+<button class="text-xs font-bold text-brandDark border-b-2 border-brandDark pb-2 -mb-2.5">Recent Spot DCA</button>
+<button class="text-xs font-semibold text-gray-400 hover:text-gray-600 transition-colors pb-2">Open DCA Triggers</button>
+</div>
+<span class="text-[10px] font-mono font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">Kelly Sized DCA</span>
+</div>
+<!-- Authentic Bitcoin Spot DCA Execution Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50">
+<th class="py-2 font-medium">Date</th>
+<th class="py-2 font-medium">Pair &amp; Sats</th>
+<th class="py-2 font-medium text-right">Fill Price</th>
+<th class="py-2 font-medium text-right">Net USD / Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-50 text-[11px] font-medium text-gray-700 font-mono">
+<!-- Order 1 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/19/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.8x</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.01350 BTC (1.35m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$74,200</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$1,001.70</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+<!-- Order 2 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/16/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.0x</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.02100 BTC (2.10m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$71,450</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$1,500.45</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+<!-- Order 3 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/12/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.5x</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.01250 BTC (1.25m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$69,820</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$872.75</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+<!-- Order 4 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/08/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.2x</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.01800 BTC (1.80m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$68,500</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$1,233.00</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+<!-- Order 5 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/05/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-gray-500 bg-gray-100 px-1 py-0.2 rounded">1.0x Base</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.01050 BTC (1.05m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$72,110</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$757.15</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+<!-- Order 6 -->
+<tr class="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+<td class="py-2.5 text-gray-500 text-[10px]">06/01/2026</td>
+<td class="py-2.5">
+<div class="font-bold text-gray-900 flex items-center gap-1">BTC/USDT <span class="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.5x</span></div>
+<div class="text-[9px] text-gray-400 font-sans">0.01420 BTC (1.42m sats)</div>
+</td>
+<td class="py-2.5 text-right font-semibold text-gray-800">$70,400</td>
+<td class="py-2.5 text-right">
+<div class="font-bold text-emerald-600">$999.68</div>
+<div class="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-2 text-right border-t border-gray-100">
+<a class="text-[11px] font-semibold text-brandPurple hover:underline inline-flex items-center gap-1 group font-sans" href="#view-txs">
+  View verified on-chain TXs <span class="group-hover:translate-x-0.5 transition-transform font-bold">→</span>
+</a>
+</div>
+</div>
+<!-- BEGIN: FloatingSearchPill -->
+<!-- Sleek floating pill-shaped input bar centered at the bottom of the screen -->
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 z-30 w-full max-w-xl px-4" data-purpose="floating-ai-bar">
+<div class="backdrop-blur-md bg-white/90 border border-purple-200/90 shadow-float-pill rounded-full py-2.5 px-4 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-brandPurple text-xs font-bold flex-shrink-0">
+<svg class="w-3.5 h-3.5 text-brandPurple" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"></path>
+</svg>
+</div>
+<input class="bg-transparent border-0 focus:ring-0 p-0 text-xs text-gray-700 placeholder-gray-400 font-medium w-full" placeholder="Ask AI Quant about Bitcoin cycle, Kelly DCA sizing, or macro liquidity..." type="text"/>
+<button class="text-[10px] font-bold text-white bg-brandPurple hover:bg-purple-800 px-3 py-1 rounded-full transition-colors flex-shrink-0 shadow-sm">AI</button>
+</div>
+</div>
+<!-- END: FloatingSearchPill -->
+</section>
+<!-- END: BottomAnalyticsGrid -->
+</div>
+<!-- END: MainContentWrapper -->
+<!-- BEGIN: Interactive Charts & Hover Tooltips Logic -->
+<script data-purpose="chart-interactivity">
+  document.addEventListener('DOMContentLoaded', () => {
+    // -------------------------------------------------------------
+    // 1. Spline Curve Interactive Cursor Tracking & Floating Tooltip
+    // -------------------------------------------------------------
+    const splineArea = document.getElementById('spline-interactive-area');
+    const splineSvg = document.getElementById('spline-svg');
+    const splinePath = document.getElementById('spline-main-path');
+    const splineGuideline = document.getElementById('spline-guideline');
+    const splineHoverPoint = document.getElementById('spline-hover-point');
+    const splineTooltip = document.getElementById('spline-tooltip');
+    const tooltipDate = document.getElementById('spline-tooltip-date');
+    const tooltipTag = document.getElementById('spline-tooltip-tag');
+    const tooltipVal = document.getElementById('spline-tooltip-val');
+    const tooltipChg = document.getElementById('spline-tooltip-chg');
+
+    if (splineArea && splinePath) {
+      const pathLength = splinePath.getTotalLength();
+      
+      const samplesCount = 300;
+      const samples = [];
+      for (let i = 0; i <= samplesCount; i++) {
+        const pt = splinePath.getPointAtLength((i / samplesCount) * pathLength);
+        samples.push(pt);
+      }
+
+      function findClosestPointOnCurve(svgX) {
+        let bestPoint = samples[0];
+        let minDiff = Infinity;
+        for (let i = 0; i < samples.length; i++) {
+          const diff = Math.abs(samples[i].x - svgX);
+          if (diff < minDiff) {
+            minDiff = diff;
+            bestPoint = samples[i];
+          }
+        }
+        return bestPoint;
+      }
+
+      function calculateMetricsAtX(x) {
+        const minX = 60, maxX = 820;
+        const clampedX = Math.max(minX, Math.min(maxX, x));
+        const progress = (clampedX - minX) / (maxX - minX);
+        const dayNumber = Math.round(5 + progress * 20);
+        const dateStr = `${dayNumber < 10 ? '0' + dayNumber : dayNumber} Jun, 2026`;
+
+        const bestPt = findClosestPointOnCurve(clampedX);
+        // Map Y range 234 down to 20 for $0k to $80k
+        const valUSD = Math.round(((234 - bestPt.y) / (234 - 20)) * 80000);
+        const formattedUSD = '$' + valUSD.toLocaleString('en-US') + '.00';
+
+        let tag = 'DCA Zone';
+        let chg = '+45.2%';
+        if (bestPt.y < 80) {
+          tag = 'Expansion Peak';
+          chg = '+184.2%';
+        } else if (bestPt.y > 150) {
+          tag = 'Cycle Dip Accumulation';
+          chg = '+22.4%';
+        } else {
+          tag = 'Mid DCA Phase';
+          chg = '+78.1%';
+        }
+
+        return { dateStr, formattedUSD, tag, chg, bestPt };
+      }
+
+      splineArea.addEventListener('mousemove', (e) => {
+        const rect = splineSvg.getBoundingClientRect();
+        const clientX = e.clientX - rect.left;
+
+        const svgX = (clientX / rect.width) * 820;
+        
+        if (svgX < 55 || svgX > 825) {
+          hideSplineTooltip();
+          return;
+        }
+
+        const metrics = calculateMetricsAtX(svgX);
+        const pt = metrics.bestPt;
+
+        // Move guide line
+        splineGuideline.setAttribute('x1', pt.x);
+        splineGuideline.setAttribute('x2', pt.x);
+        splineGuideline.style.opacity = '1';
+
+        // Move point
+        splineHoverPoint.setAttribute('transform', `translate(${pt.x}, ${pt.y})`);
+        splineHoverPoint.style.opacity = '1';
+
+        // Update Tooltip Content
+        tooltipDate.textContent = metrics.dateStr;
+        tooltipTag.textContent = metrics.tag;
+        tooltipVal.textContent = metrics.formattedUSD;
+        tooltipChg.textContent = metrics.chg;
+
+        // Position tooltip in parent DOM coordinates
+        const tooltipX = (pt.x / 820) * rect.width;
+        const tooltipY = (pt.y / 250) * rect.height - 12;
+
+        splineTooltip.style.left = `${tooltipX}px`;
+        splineTooltip.style.top = `${tooltipY}px`;
+        splineTooltip.style.opacity = '1';
+      });
+
+      function hideSplineTooltip() {
+        splineGuideline.style.opacity = '0';
+        splineHoverPoint.style.opacity = '0';
+        splineTooltip.style.opacity = '0';
+      }
+
+      splineArea.addEventListener('mouseleave', hideSplineTooltip);
+
+      // Keypoints hover events
+      const keypoints = document.querySelectorAll('#spline-keypoints circle');
+      keypoints.forEach(kp => {
+        kp.addEventListener('mouseenter', () => {
+          const date = kp.getAttribute('data-date');
+          const pnl = kp.getAttribute('data-pnl');
+          const status = kp.getAttribute('data-status');
+          const chg = kp.getAttribute('data-chg');
+          
+          tooltipDate.textContent = date;
+          tooltipTag.textContent = status;
+          tooltipVal.textContent = pnl;
+          tooltipChg.textContent = chg || '+120.5%';
+          
+          const rect = splineSvg.getBoundingClientRect();
+          const cx = parseFloat(kp.getAttribute('cx'));
+          const cy = parseFloat(kp.getAttribute('cy'));
+          splineTooltip.style.left = `${(cx / 820) * rect.width}px`;
+          splineTooltip.style.top = `${(cy / 250) * rect.height - 12}px`;
+          splineTooltip.style.opacity = '1';
+        });
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 2. Bar Chart Hover Tooltip
+    // -------------------------------------------------------------
+    const barSvg = document.getElementById('barchart-svg');
+    const barTooltip = document.getElementById('bar-tooltip');
+    const barDate = document.getElementById('bar-tooltip-date');
+    const barBadge = document.getElementById('bar-tooltip-badge');
+    const barAmount = document.getElementById('bar-tooltip-amount');
+    const barType = document.getElementById('bar-tooltip-type');
+
+    if (barSvg && barTooltip) {
+      const bars = barSvg.querySelectorAll('.interactive-bar');
+      bars.forEach(bar => {
+        bar.addEventListener('mouseenter', () => {
+          const date = bar.getAttribute('data-date');
+          const amount = bar.getAttribute('data-amount');
+          const type = bar.getAttribute('data-type');
+          const isNeg = amount.startsWith('-');
+
+          barDate.textContent = date;
+          barAmount.textContent = amount;
+          barType.textContent = type;
+          
+          if (isNeg) {
+            barBadge.textContent = 'Outflow / Dist';
+            barBadge.className = 'px-1.5 py-0.5 rounded font-semibold text-[9px] bg-red-950 text-red-300 border border-red-800/50';
+            barAmount.className = 'font-bold font-mono text-sm tracking-tight text-red-400';
+          } else {
+            barBadge.textContent = 'Whale Absorption';
+            barBadge.className = 'px-1.5 py-0.5 rounded font-semibold text-[9px] bg-emerald-950 text-emerald-300 border border-emerald-800/50';
+            barAmount.className = 'font-bold font-mono text-sm tracking-tight text-emerald-400';
+          }
+
+          const svgRect = barSvg.getBoundingClientRect();
+          const bx = parseFloat(bar.getAttribute('x')) + (parseFloat(bar.getAttribute('width')) / 2);
+          const by = parseFloat(bar.getAttribute('y'));
+
+          const tooltipX = (bx / 450) * svgRect.width;
+          const tooltipY = (by / 200) * svgRect.height - 8;
+
+          barTooltip.style.left = `${tooltipX}px`;
+          barTooltip.style.top = `${tooltipY}px`;
+          barTooltip.style.opacity = '1';
+        });
+
+        bar.addEventListener('mouseleave', () => {
+          barTooltip.style.opacity = '0';
+        });
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 3. Radar Spider Chart Interactive Vertices
+    // -------------------------------------------------------------
+    const radarSvg = document.getElementById('radar-svg');
+    const radarTooltip = document.getElementById('radar-tooltip');
+    const radarMetric = document.getElementById('radar-tooltip-metric');
+    const radarType = document.getElementById('radar-tooltip-type');
+    const radarVal = document.getElementById('radar-tooltip-val');
+    const radarDelta = document.getElementById('radar-tooltip-delta');
+
+    if (radarSvg && radarTooltip) {
+      const vertices = radarSvg.querySelectorAll('.radar-vertex');
+      vertices.forEach(v => {
+        v.addEventListener('mouseenter', () => {
+          const metric = v.getAttribute('data-metric');
+          const type = v.getAttribute('data-type');
+          const val = v.getAttribute('data-value');
+          const delta = v.getAttribute('data-delta');
+          const isOrange = v.classList.contains('vertex-orange');
+
+          radarMetric.textContent = metric;
+          radarType.textContent = type;
+          radarVal.textContent = val;
+          radarDelta.textContent = delta;
+
+          if (isOrange) {
+            radarType.className = 'text-[9px] font-semibold px-1.5 py-0.5 rounded bg-orange-50 text-brandOrange border border-orange-200';
+            radarDelta.className = 'font-semibold text-orange-600 font-mono';
+          } else {
+            radarType.className = 'text-[9px] font-semibold px-1.5 py-0.5 rounded bg-purple-50 text-brandPurple border border-purple-200';
+            radarDelta.className = 'font-semibold text-emerald-600 font-mono';
+          }
+
+          const svgRect = radarSvg.getBoundingClientRect();
+          const cx = parseFloat(v.getAttribute('cx'));
+          const cy = parseFloat(v.getAttribute('cy'));
+
+          const tooltipX = (cx / 320) * svgRect.width;
+          const tooltipY = (cy / 240) * svgRect.height - 8;
+
+          radarTooltip.style.left = `${tooltipX}px`;
+          radarTooltip.style.top = `${tooltipY}px`;
+          radarTooltip.style.opacity = '1';
+        });
+
+        v.addEventListener('mouseleave', () => {
+          radarTooltip.style.opacity = '0';
+        });
+      });
+    }
+  });
+</script>
+<!-- END: Interactive Charts & Hover Tooltips Logic -->
+</body></html>
