@@ -273,30 +273,30 @@ export const PortfolioTab: React.FC = () => {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start font-sans">
       {/* MAIN PORTFOLIO COLUMN (8 of 12 cols) */}
       <div className="lg:col-span-8 space-y-5">
-        {/* 1. FEY × LINEAR EXECUTIVE PORTFOLIO HERO CARD */}
-        <div className="relative overflow-hidden rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] p-6 sm:p-7 backdrop-blur-xl space-y-6">
+        {/* 1. EXECUTIVE PORTFOLIO HERO CARD */}
+        <div className="relative overflow-hidden rounded-2xl bg-white border border-[#EEF0F5] shadow-card p-6 sm:p-7 space-y-6">
           {/* Subtle Glow Accents */}
-          <div className="absolute -top-24 -right-24 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
 
           {/* Top Header Row */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E1E3E3]">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EEF0F5]">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shadow-sm">
-                <Wallet className="w-5 h-5" />
+              <div className="w-10 h-10 rounded-2xl bg-purple-50 border border-purple-200 text-[#7C3AED] flex items-center justify-center shadow-xs">
+                <Wallet className="w-5 h-5 text-[#7C3AED]" />
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-base sm:text-lg font-extrabold text-[#191F2C] tracking-tight uppercase">
+                  <h1 className="text-base sm:text-lg font-extrabold text-[#111827] tracking-tight uppercase">
                     {isVi ? 'DANH MỤC TÍCH SẢN BTC SPOT' : 'BTC SPOT PORTFOLIO'}
                   </h1>
                   {hasBinanceData && (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 font-mono">
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-mono">
                       BINANCE LIVE
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-[#64748B] font-normal">
+                <p className="text-xs text-gray-500 font-normal">
                   {isVi
                     ? 'Quản lý giá vốn bình quân và số lượng sats tích lũy chuẩn quốc tế.'
                     : 'Real-time Bitcoin holdings, cost basis, and sat stacking performance.'}
@@ -309,18 +309,18 @@ export const PortfolioTab: React.FC = () => {
               <button
                 type="button"
                 onClick={() => openBinanceModal(true)}
-                className="px-3.5 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+                className="px-4 py-2 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs"
               >
-                <LinkIcon className="w-3.5 h-3.5" />
+                <LinkIcon className="w-3.5 h-3.5 text-amber-700" />
                 <span>{hasBinanceData ? (isVi ? 'Ví Binance' : 'Binance Live') : (isVi ? 'Kết Nối Binance' : 'Connect Binance')}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setAddTransactionModalOpen(true)}
-                className="px-3.5 py-1.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
+                className="px-4 py-2 rounded-full bg-[#111827] hover:bg-black text-white text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-sm hover:scale-[1.02]"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5 text-amber-400" />
                 <span>{isVi ? 'Thêm Lệnh Mua' : 'Add Spot Buy'}</span>
               </button>
             </div>
@@ -328,46 +328,46 @@ export const PortfolioTab: React.FC = () => {
 
           {/* Primary Wealth Display (VND + USD + Sats) */}
           <div className="space-y-1">
-            <span className="text-xs text-[#64748B] font-medium block">
+            <span className="text-xs text-gray-500 font-medium block">
               {isVi ? 'Tổng Giá Trị Danh Mục Hiện Tại:' : 'Total Current Portfolio Value:'}
             </span>
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#191F2C] tracking-tight">
+            <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111827] tracking-tight">
               {formatVND(currentValueVnd)}
             </div>
-            <div className="text-sm text-[#64748B] font-medium flex items-center gap-2 pt-1 font-mono">
-              <span>≈ {formatUSD(currentValueUsd, 2)}</span>
-              <span className="text-amber-400 font-bold">
+            <div className="text-sm text-gray-500 font-medium flex items-center gap-2 pt-1 font-mono">
+              <span className="font-bold text-gray-800">≈ {formatUSD(currentValueUsd, 2)}</span>
+              <span className="text-amber-600 font-bold">
                 • {totalSats.toLocaleString()} sats
               </span>
-              <span className="text-[#64748B] font-normal hidden sm:inline">
+              <span className="text-gray-400 font-normal hidden sm:inline">
                 ({formatBtc(totalBtc, 8)} BTC)
               </span>
             </div>
           </div>
 
-          {/* 4 Clean Institutional Metric Cards (Fey × Linear Obsidian Inner Surface) */}
+          {/* 4 Clean Institutional Metric Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
             {/* Card 1: Giá Vốn Trung Bình */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1">
-              <span className="text-[10px] sm:text-[11px] text-[#64748B] uppercase tracking-[0.06em] font-semibold block">
+            <div className="p-4 rounded-2xl bg-[#F4F6F9] hover:bg-white border border-[#EEF0F5] hover:border-purple-200 shadow-xs transition-all space-y-1">
+              <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider font-semibold block">
                 {isVi ? 'GIÁ VỐN TRUNG BÌNH' : 'AVERAGE BUY PRICE'}
               </span>
-              <div className="text-base sm:text-lg font-bold text-[#191F2C] font-mono tabular-nums">
+              <div className="text-base sm:text-lg font-bold text-[#111827] font-mono tabular-nums">
                 {avgBuyPrice > 0 ? formatUSD(avgBuyPrice, 0) : '---'}
               </div>
-              <span className="text-[10px] text-[#64748B] block font-normal">
+              <span className="text-[10px] text-gray-400 block font-normal">
                 {isVi ? 'Chi phí mua bình quân' : 'Weighted cost basis'}
               </span>
             </div>
 
             {/* Card 2: Lợi Nhuận Vị Thế Mở (Unrealized PnL) */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1">
-              <span className="text-[10px] sm:text-[11px] text-[#64748B] uppercase tracking-[0.06em] font-semibold block">
+            <div className="p-4 rounded-2xl bg-[#F4F6F9] hover:bg-white border border-[#EEF0F5] hover:border-purple-200 shadow-xs transition-all space-y-1">
+              <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider font-semibold block">
                 {isVi ? 'LÃI / LỖ VỊ THẾ (PNL)' : 'UNREALIZED PNL'}
               </span>
               <div
                 className={`text-base sm:text-lg font-bold font-mono tabular-nums flex items-center gap-1 ${
-                  isProfitable ? 'text-emerald-400' : 'text-rose-400'
+                  isProfitable ? 'text-emerald-600' : 'text-rose-600'
                 }`}
               >
                 {isProfitable ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -379,7 +379,7 @@ export const PortfolioTab: React.FC = () => {
               </div>
               <span
                 className={`text-[10px] font-bold block ${
-                  isProfitable ? 'text-emerald-400' : 'text-rose-400'
+                  isProfitable ? 'text-emerald-600' : 'text-rose-600'
                 }`}
               >
                 {totalInvestedUsd > 0
@@ -391,28 +391,28 @@ export const PortfolioTab: React.FC = () => {
             </div>
 
             {/* Card 3: Tiền Mặt Chờ Mua (Dry Powder) */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1">
-              <span className="text-[10px] sm:text-[11px] text-[#64748B] uppercase tracking-[0.06em] font-semibold block flex items-center gap-1">
-                <Zap className="w-3 h-3 text-cyan-400" />
+            <div className="p-4 rounded-2xl bg-[#F4F6F9] hover:bg-white border border-[#EEF0F5] hover:border-purple-200 shadow-xs transition-all space-y-1">
+              <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider font-semibold block flex items-center gap-1">
+                <Zap className="w-3 h-3 text-[#7C3AED]" />
                 <span>{isVi ? 'TIỀN MẶT CHỜ GOM' : 'DRY POWDER (USDT)'}</span>
               </span>
-              <div className="text-base sm:text-lg font-bold text-cyan-300 font-mono tabular-nums">
+              <div className="text-base sm:text-lg font-bold text-[#7C3AED] font-mono tabular-nums">
                 {formatUSD(dryPowderUsd, 2)}
               </div>
-              <span className="text-[10px] text-[#64748B] block font-normal">
+              <span className="text-[10px] text-gray-400 block font-normal">
                 {isVi ? 'Sẵn sàng gom khi giá tốt' : 'Ready for dip stacking'}
               </span>
             </div>
 
             {/* Card 4: Tổng Vốn Đã Gom */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1">
-              <span className="text-[10px] sm:text-[11px] text-[#64748B] uppercase tracking-[0.06em] font-semibold block">
+            <div className="p-4 rounded-2xl bg-[#F4F6F9] hover:bg-white border border-[#EEF0F5] hover:border-purple-200 shadow-xs transition-all space-y-1">
+              <span className="text-[10px] sm:text-[11px] text-gray-500 uppercase tracking-wider font-semibold block">
                 {isVi ? 'TỔNG VỐN ĐÃ GOM' : 'TOTAL INVESTED'}
               </span>
-              <div className="text-base sm:text-lg font-bold text-[#191F2C] font-mono tabular-nums">
+              <div className="text-base sm:text-lg font-bold text-[#111827] font-mono tabular-nums">
                 {formatUSD(totalInvestedUsd, 2)}
               </div>
-              <span className="text-[10px] text-[#64748B] block font-normal">
+              <span className="text-[10px] text-gray-400 block font-normal">
                 ≈ {formatVND(Math.round(totalInvestedUsd * p2pRate))}
               </span>
             </div>
@@ -420,10 +420,10 @@ export const PortfolioTab: React.FC = () => {
         </div>
 
         {/* 2. COST-BASIS BENCHMARK & SMART AVERAGE-DOWN CARD */}
-        <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] space-y-4 font-sans">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#E1E3E3]">
-              <span className="font-bold text-[#191F2C] text-sm uppercase flex items-center gap-2">
-                <Target className="w-4 h-4 text-cyan-400" />
+        <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#EEF0F5] shadow-card space-y-4 font-sans">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#EEF0F5]">
+              <span className="font-bold text-[#111827] text-sm uppercase flex items-center gap-2">
+                <Target className="w-4 h-4 text-[#7C3AED]" />
                 <span>{isVi ? 'ĐỊNH VỊ GIÁ VỐN & KẾ HOẠCH GOM HÀNG' : 'COST-BASIS BENCHMARK & STRATEGY'}</span>
               </span>
               <span className="text-xs text-[#64748B]">
@@ -470,18 +470,18 @@ export const PortfolioTab: React.FC = () => {
               {sortedMilestones.map((m) => (
                 <div
                   key={m.id}
-                  className={`p-3 rounded-2xl bg-[#F8FAFC] border ${m.borderColor} space-y-1 transition-all`}
+                  className={`p-3 rounded-2xl bg-[#F4F6F9] border ${m.borderColor} space-y-1 transition-all`}
                 >
-                  <div className="flex items-center justify-between text-[11px] text-[#343B43]">
+                  <div className="flex items-center justify-between text-[11px] text-gray-600">
                     <span className="font-semibold">{isVi ? m.labelVi : m.labelEn}</span>
-                    <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[#343B43] text-[10px] font-mono tabular-nums">
+                    <span className="px-2 py-0.5 rounded-full bg-white text-gray-700 text-[10px] font-mono tabular-nums shadow-xs">
                       {isVi ? m.badgeVi : m.badgeEn}
                     </span>
                   </div>
                   <div className={`text-sm sm:text-base font-bold font-mono tabular-nums ${m.textColor}`}>
                     {formatUSD(m.price, 0)}
                   </div>
-                  <span className="text-[11px] text-[#343B43] block leading-tight font-normal">
+                  <span className="text-[11px] text-gray-500 block leading-tight font-normal">
                     {isVi ? m.subVi : m.subEn}
                   </span>
                 </div>
@@ -490,7 +490,7 @@ export const PortfolioTab: React.FC = () => {
 
             {/* Clean Mathematically Proportional Progress Line */}
             <div className="space-y-1.5 pt-1">
-              <div className="h-2 w-full bg-[#E1E3E3] rounded-full overflow-hidden flex border border-[#E1E3E3]" role="progressbar" aria-label="Milestone Progress">
+              <div className="h-2.5 w-full bg-gray-200 rounded-full overflow-hidden flex border border-gray-300/40" role="progressbar" aria-label="Milestone Progress">
                 {(() => {
                   const minP = sortedMilestones[0].price;
                   const maxP = sortedMilestones[sortedMilestones.length - 1].price;
@@ -510,11 +510,11 @@ export const PortfolioTab: React.FC = () => {
                   });
                 })()}
               </div>
-              <div className="grid grid-cols-4 text-center text-xs text-[#343B43] font-mono">
+              <div className="grid grid-cols-4 text-center text-xs text-gray-600 font-mono">
                 {sortedMilestones.map((m) => (
                   <span
                     key={m.id}
-                    className={m.isMarket ? 'text-emerald-400 font-bold' : m.isCost ? 'text-cyan-400 font-bold' : 'text-[#64748B]'}
+                    className={m.isMarket ? 'text-emerald-600 font-bold' : m.isCost ? 'text-[#7C3AED] font-bold' : 'text-gray-500'}
                   >
                     {isVi ? m.labelVi : m.labelEn}
                   </span>
@@ -529,33 +529,33 @@ export const PortfolioTab: React.FC = () => {
         {/* 4. TWO BALANCED COLUMNS BELOW (Order History vs Sats Milestones) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
             {/* Left: Binance Spot Trade History (7 cols) */}
-            <div className="lg:col-span-7 p-5 rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] space-y-3.5 text-xs font-mono">
-              <div className="flex items-center justify-between pb-2.5 border-b border-[#E1E3E3]">
-                <span className="font-bold text-[#191F2C] uppercase flex items-center gap-2 font-sans text-xs">
-                  <Clock className="w-4 h-4 text-amber-400" />
+            <div className="lg:col-span-7 p-5 rounded-2xl bg-white border border-[#EEF0F5] shadow-card space-y-3.5 text-xs font-mono">
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#EEF0F5]">
+                <span className="font-bold text-[#111827] uppercase flex items-center gap-2 font-sans text-xs">
+                  <Clock className="w-4 h-4 text-amber-500" />
                   <span>{isVi ? 'LỊCH SỬ LỆNH KHỚP BINANCE' : 'BINANCE TRADE HISTORY'}</span>
                 </span>
                 <button
                   type="button"
                   onClick={() => fetchBinance()}
                   disabled={isBinanceSyncing}
-                  className="p-1.5 rounded-lg bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] text-[#343B43] hover:text-[#191F2C] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-lg bg-[#F4F6F9] hover:bg-gray-100 border border-[#EEF0F5] text-gray-700 hover:text-black transition-colors cursor-pointer"
                   title={isVi ? 'Đồng bộ lại từ Binance' : 'Sync from Binance'}
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 ${isBinanceSyncing ? 'animate-spin text-amber-400' : ''}`} />
+                  <RefreshCw className={`w-3.5 h-3.5 ${isBinanceSyncing ? 'animate-spin text-amber-500' : ''}`} />
                 </button>
               </div>
 
               {/* Balance Breakdown Pills */}
-              <div className="flex flex-wrap gap-1.5 p-2 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-[10px]">
-                <span className="px-2 py-0.5 rounded bg-[#F1F5F9] border border-[#E1E3E3] text-[#343B43]">
-                  Ví Spot: <strong className="text-amber-400">{formatSats(binancePortfolio?.wallets.spotBtc || totalBtc)}</strong>
+              <div className="flex flex-wrap gap-1.5 p-2 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] text-[10px]">
+                <span className="px-2.5 py-1 rounded-full bg-white border border-[#EEF0F5] text-gray-700 shadow-xs">
+                  Ví Spot: <strong className="text-amber-600">{formatSats(binancePortfolio?.wallets.spotBtc || totalBtc)}</strong>
                 </span>
-                <span className="px-2 py-0.5 rounded bg-[#F1F5F9] border border-[#E1E3E3] text-[#343B43]">
-                  Simple Earn: <strong className="text-purple-400">{formatSats(binancePortfolio?.wallets.earnFlexibleBtc || 0)}</strong>
+                <span className="px-2.5 py-1 rounded-full bg-white border border-[#EEF0F5] text-gray-700 shadow-xs">
+                  Simple Earn: <strong className="text-purple-600">{formatSats(binancePortfolio?.wallets.earnFlexibleBtc || 0)}</strong>
                 </span>
-                <span className="px-2 py-0.5 rounded bg-[#F1F5F9] border border-[#E1E3E3] text-[#343B43]">
-                  USDT: <strong className="text-cyan-400">{formatUSD(dryPowderUsd, 2)}</strong>
+                <span className="px-2.5 py-1 rounded-full bg-white border border-[#EEF0F5] text-gray-700 shadow-xs">
+                  USDT: <strong className="text-[#7C3AED]">{formatUSD(dryPowderUsd, 2)}</strong>
                 </span>
               </div>
 
@@ -566,31 +566,31 @@ export const PortfolioTab: React.FC = () => {
                     {recentTrades.map((t) => (
                       <div
                         key={t.id}
-                        className="p-3 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] flex items-center justify-between text-xs"
+                        className="p-3 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] flex items-center justify-between text-xs hover:border-purple-200 transition-colors"
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className="px-2 py-0.5 rounded-md font-bold text-[10px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                          <span className="px-2 py-0.5 rounded-full font-bold text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200">
                             {t.side}
                           </span>
                           <div>
-                            <span className="font-bold text-[#191F2C]">
+                            <span className="font-bold text-[#111827]">
                               +{Math.round(t.btcAmount * 1e8).toLocaleString()} sats
                             </span>
-                            <span className="text-[10px] text-[#64748B] block font-normal">
+                            <span className="text-[10px] text-gray-500 block font-normal">
                               @ {formatUSD(t.price, 0)} ({t.btcAmount.toFixed(8)} BTC)
                             </span>
                           </div>
                         </div>
 
                         <div className="text-right">
-                          <span className="text-white font-bold block">{formatUSD(t.usdAmount, 2)}</span>
-                          <span className="text-[10px] text-[#64748B]">{timeAgo(t.time, locale)}</span>
+                          <span className="text-[#111827] font-bold block">{formatUSD(t.usdAmount, 2)}</span>
+                          <span className="text-[10px] text-gray-400">{timeAgo(t.time, locale)}</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-center text-[#64748B] text-xs font-sans">
+                  <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] text-center text-gray-500 text-xs font-sans">
                     {isVi
                       ? 'Chưa có lệnh mua bán BTC nào gần đây trên cặp BTCUSDT.'
                       : 'No recent trades on BTCUSDT pair.'}
@@ -600,38 +600,38 @@ export const PortfolioTab: React.FC = () => {
             </div>
 
             {/* Right: Sats Milestone Roadmap (5 cols) */}
-            <div className="lg:col-span-5 p-5 rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] space-y-3.5 text-xs font-sans">
-              <div className="flex items-center justify-between pb-2.5 border-b border-[#E1E3E3]">
-                <span className="font-bold text-[#191F2C] uppercase flex items-center gap-2 text-xs">
-                  <Award className="w-4 h-4 text-emerald-400" />
+            <div className="lg:col-span-5 p-5 rounded-2xl bg-white border border-[#EEF0F5] shadow-card space-y-3.5 text-xs font-sans">
+              <div className="flex items-center justify-between pb-2.5 border-b border-[#EEF0F5]">
+                <span className="font-bold text-[#111827] uppercase flex items-center gap-2 text-xs">
+                  <Award className="w-4 h-4 text-emerald-500" />
                   <span>{isVi ? 'LỘ TRÌNH TÍCH SẢN SATS' : 'SATS ROADMAP'}</span>
                 </span>
-                <span className="text-xs text-amber-400 font-bold font-mono">
+                <span className="text-xs text-amber-600 font-bold font-mono">
                   {totalSats.toLocaleString()} sats
                 </span>
               </div>
 
               {/* Next Milestone Banner */}
-              <div className="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-slate-900 border border-emerald-500/20 space-y-2">
+              <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-emerald-400 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+                  <span className="font-bold text-emerald-800 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                     <span>{isVi ? 'Mục tiêu kế tiếp:' : 'Next Goal:'} {nextMilestone.sats.toLocaleString()} sats</span>
                   </span>
-                  <span className="text-white font-mono font-bold">{progressToNext.toFixed(1)}%</span>
+                  <span className="text-emerald-800 font-mono font-extrabold">{progressToNext.toFixed(1)}%</span>
                 </div>
 
-                <div className="h-2 w-full bg-[#E1E3E3] rounded-full overflow-hidden border border-[#E1E3E3]">
+                <div className="h-2.5 w-full bg-emerald-100 rounded-full overflow-hidden border border-emerald-200">
                   <div
-                    className="bg-emerald-400 h-full rounded-full transition-all duration-500"
+                    className="bg-emerald-500 h-full rounded-full transition-all duration-500"
                     style={{ width: `${progressToNext}%` }}
                   />
                 </div>
 
-                <div className="flex justify-between text-[11px] text-[#64748B] font-mono">
+                <div className="flex justify-between text-[11px] text-gray-600 font-mono">
                   <span>Thiếu: {satsRemaining.toLocaleString()} sats</span>
                   {weeksToReach > 0 && (
-                    <span className="text-amber-300 font-medium font-sans">
+                    <span className="text-amber-700 font-semibold font-sans">
                       ~{weeksToReach} {isVi ? 'tuần DCA' : 'weeks'}
                     </span>
                   )}
@@ -647,10 +647,10 @@ export const PortfolioTab: React.FC = () => {
                   return (
                     <div
                       key={m.sats}
-                      className={`p-2.5 rounded-xl border transition-all ${
+                      className={`p-3 rounded-xl border transition-all ${
                         isAchieved
-                          ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                          : 'bg-[#F8FAFC] border-[#E1E3E3] text-[#343B43]'
+                          ? 'bg-emerald-50/70 border-emerald-200 text-emerald-900'
+                          : 'bg-[#F4F6F9] border-[#EEF0F5] text-gray-700'
                       }`}
                     >
                       <div className="flex items-center justify-between text-xs">
@@ -660,15 +660,15 @@ export const PortfolioTab: React.FC = () => {
                         </span>
                         <span className="font-mono text-[10px]">
                           {isAchieved ? (
-                            <span className="text-emerald-400 font-bold flex items-center gap-1">
-                              <CheckCircle className="w-3 h-3" /> Đạt
+                            <span className="text-emerald-700 font-bold flex items-center gap-1">
+                              <CheckCircle className="w-3 h-3 text-emerald-600" /> Đạt
                             </span>
                           ) : (
                             `${pct.toFixed(1)}%`
                           )}
                         </span>
                       </div>
-                      <div className="flex justify-between text-[10px] text-[#64748B] font-mono mt-0.5">
+                      <div className="flex justify-between text-[10px] text-gray-500 font-mono mt-0.5">
                         <span>{isVi ? m.labelVi : m.labelEn}</span>
                         <span>{m.btcEquivalent}</span>
                       </div>
@@ -681,14 +681,14 @@ export const PortfolioTab: React.FC = () => {
 
         {/* 4. MANUAL LOCAL LEDGER TABLE (If local transactions exist) */}
         {hasManualData && (
-          <div className="p-5 rounded-3xl bg-white border border-[#E1E3E3] shadow-sm space-y-3.5 text-xs font-mono">
-            <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#E1E3E3]">
+          <div className="p-5 rounded-2xl bg-white border border-[#EEF0F5] shadow-card space-y-3.5 text-xs font-mono">
+            <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#EEF0F5]">
               <div className="flex items-center gap-2 font-sans">
-                <Lock className="w-4 h-4 text-emerald-400" />
-                <span className="font-bold text-[#191F2C] uppercase">
+                <Lock className="w-4 h-4 text-emerald-500" />
+                <span className="font-bold text-[#111827] uppercase">
                   {isVi ? 'LỊCH SỬ LỆNH SỔ CÁI NỘI BỘ' : 'LOCAL SPOT LEDGER ORDERS'}
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-[#64748B] font-mono">
+                <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-purple-50 text-[#7C3AED] border border-purple-200 font-mono font-bold">
                   {transactions.length} {isVi ? 'lệnh' : 'trades'}
                 </span>
               </div>
@@ -698,32 +698,32 @@ export const PortfolioTab: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setAddTransactionModalOpen(true)}
-                  className="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer"
+                  className="px-3 py-1 rounded-full bg-[#111827] hover:bg-black text-white text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-xs"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-3 h-3 text-amber-400" />
                   <span>{isVi ? 'Thêm Lệnh' : 'Add Trade'}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleExportCsv}
-                  className="px-2 py-1 rounded-lg bg-[#F8FAFC] border border-[#E1E3E3] hover:border-slate-500 text-[#343B43] text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] hover:bg-gray-100 text-gray-700 text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-colors"
                 >
-                  <FileSpreadsheet className="w-3 h-3 text-emerald-400" />
+                  <FileSpreadsheet className="w-3 h-3 text-emerald-500" />
                   <span>CSV</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={handleExportJson}
-                  className="px-2 py-1 rounded-lg bg-[#F8FAFC] border border-[#E1E3E3] hover:border-slate-500 text-[#343B43] text-[11px] flex items-center gap-1 cursor-pointer"
+                  className="px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] hover:bg-gray-100 text-gray-700 text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-colors"
                 >
-                  <Download className="w-3 h-3 text-cyan-400" />
+                  <Download className="w-3 h-3 text-[#7C3AED]" />
                   <span>JSON</span>
                 </button>
 
-                <label className="px-2 py-1 rounded-lg bg-[#F8FAFC] border border-[#E1E3E3] hover:border-slate-500 text-[#343B43] text-[11px] flex items-center gap-1 cursor-pointer">
-                  <Upload className="w-3 h-3" />
+                <label className="px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] hover:bg-gray-100 text-gray-700 text-[11px] font-semibold flex items-center gap-1 cursor-pointer transition-colors">
+                  <Upload className="w-3 h-3 text-gray-500" />
                   <span>{isVi ? 'Nhập' : 'Import'}</span>
                   <input
                     type="file"
@@ -736,7 +736,7 @@ export const PortfolioTab: React.FC = () => {
             </div>
 
             {importStatus && (
-              <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs">
+              <div className="p-2 rounded-xl bg-purple-50 text-[#7C3AED] border border-purple-200 text-xs font-sans">
                 {importStatus}
               </div>
             )}
@@ -744,50 +744,50 @@ export const PortfolioTab: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-[#E1E3E3] text-[10px] text-[#64748B] uppercase">
-                    <th className="py-2 px-2.5">{isVi ? 'Ngày Mua' : 'Date'}</th>
-                    <th className="py-2 px-2.5">{isVi ? 'Số Lượng BTC' : 'Amount BTC'}</th>
-                    <th className="py-2 px-2.5">{isVi ? 'Giá Khớp' : 'Price'}</th>
-                    <th className="py-2 px-2.5">{isVi ? 'Tổng Vốn' : 'Total'}</th>
-                    <th className="py-2 px-2.5">{isVi ? 'Nơi Lưu Trữ' : 'Storage'}</th>
-                    <th className="py-2 px-2.5 text-right">{isVi ? 'Thao Tác' : 'Action'}</th>
+                  <tr className="border-b border-[#EEF0F5] text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                    <th className="py-2.5 px-3">{isVi ? 'Ngày Mua' : 'Date'}</th>
+                    <th className="py-2.5 px-3">{isVi ? 'Số Lượng BTC' : 'Amount BTC'}</th>
+                    <th className="py-2.5 px-3">{isVi ? 'Giá Khớp' : 'Price'}</th>
+                    <th className="py-2.5 px-3">{isVi ? 'Tổng Vốn' : 'Total'}</th>
+                    <th className="py-2.5 px-3">{isVi ? 'Nơi Lưu Trữ' : 'Storage'}</th>
+                    <th className="py-2.5 px-3 text-right">{isVi ? 'Thao Tác' : 'Action'}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E1E3E3]">
+                <tbody className="divide-y divide-[#EEF0F5]">
                   {transactions.map((tr) => (
-                    <tr key={tr.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="py-2 px-2.5 text-[#343B43]">{tr.date}</td>
-                      <td className="py-2 px-2.5 font-bold text-[#191F2C] tabular-nums">
+                    <tr key={tr.id} className="hover:bg-purple-50/30 transition-colors">
+                      <td className="py-2.5 px-3 text-gray-500">{tr.date}</td>
+                      <td className="py-2.5 px-3 font-bold text-[#111827] tabular-nums">
                         +{tr.amountBtc} BTC
                       </td>
-                      <td className="py-2 px-2.5 text-amber-300 font-bold tabular-nums">
+                      <td className="py-2.5 px-3 text-amber-600 font-bold tabular-nums">
                         {formatUSD(tr.priceUsd, 0)}
                       </td>
-                      <td className="py-2 px-2.5 text-[#343B43] tabular-nums">
+                      <td className="py-2.5 px-3 text-gray-700 tabular-nums font-semibold">
                         {formatUSD(tr.amountBtc * tr.priceUsd + (tr.feeUsd || 0), 2)}
                       </td>
-                      <td className="py-2 px-2.5">
-                        <span className="px-2 py-0.5 rounded-md bg-white/[0.06] text-[#343B43] text-[10px]">
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] text-gray-700 text-[10px] font-sans font-medium">
                           {tr.storageLocation || 'Binance Spot'}
                         </span>
                       </td>
-                      <td className="py-2 px-2.5 text-right">
+                      <td className="py-2.5 px-3 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             type="button"
                             aria-label={isVi ? 'Chỉnh sửa giao dịch' : 'Edit transaction'}
                             onClick={() => setEditingTransaction(tr)}
-                            className="p-2 min-w-[36px] min-h-[36px] rounded-lg text-[#64748B] hover:text-cyan-300 hover:bg-white/[0.08] transition-colors cursor-pointer flex items-center justify-center focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none"
+                            className="p-1.5 rounded-lg text-gray-400 hover:text-[#7C3AED] hover:bg-purple-50 transition-colors cursor-pointer"
                           >
-                            <Edit2 className="w-4 h-4" />
+                            <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             type="button"
                             aria-label={isVi ? 'Xóa giao dịch' : 'Delete transaction'}
                             onClick={() => deleteTransaction(tr.id)}
-                            className="p-2 min-w-[36px] min-h-[36px] rounded-lg text-[#64748B] hover:text-rose-400 hover:bg-white/[0.08] transition-colors cursor-pointer flex items-center justify-center focus-visible:ring-2 focus-visible:ring-rose-400 focus-visible:outline-none"
+                            className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
                       </td>

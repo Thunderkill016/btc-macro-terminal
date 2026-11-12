@@ -160,20 +160,20 @@ export const AppleCycleChart: React.FC = () => {
         fontFamily: '"Inter", -apple-system, sans-serif',
       },
       grid: {
-        vertLines: { color: '#F1F5F9' },
-        horzLines: { color: '#F1F5F9' },
+        vertLines: { color: '#FFFFFF' },
+        horzLines: { color: '#FFFFFF' },
       },
       crosshair: {
         vertLine: { color: '#94A3B8', width: 1, style: 3 },
         horzLine: { color: '#94A3B8', width: 1, style: 3 },
       },
       rightPriceScale: {
-        borderColor: '#E1E3E3',
+        borderColor: '#EEF0F5',
         mode: isLogScale ? PriceScaleMode.Logarithmic : PriceScaleMode.Normal,
         alignLabels: true,
       },
       timeScale: {
-        borderColor: '#E1E3E3',
+        borderColor: '#EEF0F5',
         timeVisible: true,
         visible: activeOscillator === 'none',
       },
@@ -893,20 +893,20 @@ export const AppleCycleChart: React.FC = () => {
         fontFamily: '"Inter", -apple-system, sans-serif',
       },
       grid: {
-        vertLines: { color: '#F1F5F9' },
-        horzLines: { color: '#F1F5F9' },
+        vertLines: { color: '#FFFFFF' },
+        horzLines: { color: '#FFFFFF' },
       },
       crosshair: {
         vertLine: { color: '#94A3B8', width: 1, style: 3 },
         horzLine: { color: '#94A3B8', width: 1, style: 3 },
       },
       rightPriceScale: {
-        borderColor: '#E1E3E3',
+        borderColor: '#EEF0F5',
         mode: PriceScaleMode.Normal,
         alignLabels: true,
       },
       timeScale: {
-        borderColor: '#E1E3E3',
+        borderColor: '#EEF0F5',
         timeVisible: true,
       },
       localization: {
@@ -1124,85 +1124,89 @@ export const AppleCycleChart: React.FC = () => {
   return (
     <div
       data-testid="zone2-chart-studio"
-      className="max-w-[1140px] mx-auto w-full transition-all"
+      className="w-full transition-all"
     >
-      {/* 1. LookInto Warning Message Box */}
-      <div className="flex items-center justify-between text-xs bg-[#FFFBEB] border border-[#FDE68A] text-[#92400E] px-4 py-2.5 rounded-t-lg">
-        <div className="flex items-center gap-2">
-          <span>☀️</span>
-          <span>Your view of this chart is 100% complete and cryptographically verifiable with 795 weeks of historical inception data.</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => setResolution('1D')}
-          className="font-semibold text-xs text-[#3C75D5] hover:underline cursor-pointer"
-        >
-          Block 870,800+ Verified
-        </button>
-      </div>
-
-      {/* 2. LookInto Exact Chart Title Box */}
-      <div className="bg-white border-x border-b border-[#E1E3E3] px-6 py-4 flex items-center justify-between">
+      {/* 1. Sleek Horizon Header Card */}
+      <div className="bg-white border-t border-x border-[#EEF0F5] rounded-t-2xl px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#F7931A] flex items-center justify-center text-white font-black text-base shadow-xs shrink-0">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 font-black text-lg flex items-center justify-center shadow-sm border border-amber-300/80 shrink-0">
             ₿
           </div>
-          <h1 className="text-2xl font-bold text-[#343B43] tracking-tight">
-            Bitcoin: Pi Cycle Top Indicator
-          </h1>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-extrabold text-[#111827] tracking-tight">
+                {isVi ? 'Biểu Đồ Kỹ Thuật Đa Khung Thời Gian & Dải Pi Cycle' : 'Bitcoin: Multi-Timeframe Technical & Pi Cycle Chart'}
+              </h1>
+              <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-[#7C3AED] border border-purple-200">
+                PRO QUANTUM
+              </span>
+            </div>
+            <p className="text-xs text-gray-500">
+              {isVi
+                ? 'Dữ liệu xác thực chu kỳ on-chain 795 tuần, đường 200W Floor, Pi Cycle Top, và dải lũy thừa Power Law.'
+                : 'Cryptographically verified with 795 weeks of on-chain data, 200W Floor, and Power Law corridors.'}
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Live Spot Pill */}
+          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200/80 px-3.5 py-1.5 rounded-full shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-xs font-mono font-bold text-gray-900">
+              BTC/USD {formatUSD(metrics.livePrice, 0)}
+            </span>
+          </div>
+
           <button
             type="button"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#CBD5E1] text-[#404040] hover:bg-slate-50 text-xs font-medium bg-white cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#EEF0F5] text-gray-700 hover:bg-gray-50 text-xs font-semibold bg-white cursor-pointer shadow-xs transition-colors"
           >
-            <Share2 className="w-3.5 h-3.5 text-[#64748B]" />
-            <span>Share</span>
+            <Share2 className="w-3.5 h-3.5 text-gray-500" />
+            <span>{isVi ? 'Chia sẻ' : 'Share'}</span>
           </button>
         </div>
       </div>
 
-      {/* 3. LookInto Exact Chart Box (Border-x border-b #E1E3E3) */}
-      <div className="border-x border-b border-[#E1E3E3] bg-white rounded-b-lg overflow-hidden">
-        {/* LookInto Exact Controls Bar */}
-        <div className="px-6 py-3 border-b border-[#E1E3E3] bg-[#F8FAFC] flex flex-wrap items-center justify-between gap-4 text-xs">
+      {/* 2. Horizon Controls Bar */}
+      <div className="border border-[#EEF0F5] bg-white rounded-b-2xl overflow-hidden shadow-card">
+        <div className="px-6 py-3 border-b border-[#EEF0F5] bg-[#F4F6F9] flex flex-wrap items-center justify-between gap-4 text-xs font-medium">
           <div className="flex flex-wrap items-center gap-5">
             {/* Resolution */}
             <div className="flex items-center gap-2">
-              <span className="text-[#64748B] font-medium text-xs">Resolution</span>
-              <div className="inline-flex rounded border border-[#CBD5E1] bg-white overflow-hidden shadow-xs">
+              <span className="text-gray-500 font-medium text-xs">{isVi ? 'Độ phân giải' : 'Resolution'}:</span>
+              <div className="inline-flex rounded-full border border-[#EEF0F5] bg-white p-0.5 shadow-xs">
                 <button
                   type="button"
                   onClick={() => setResolution('1D')}
-                  className={`px-2.5 py-1 text-xs cursor-pointer ${
-                    resolution === '1D' ? 'bg-[#3C75D5] text-white font-semibold' : 'text-[#404040] hover:bg-slate-50'
+                  className={`px-3 py-1 text-xs rounded-full font-bold transition-all cursor-pointer ${
+                    resolution === '1D' ? 'bg-[#111827] text-white shadow-xs' : 'text-gray-600 hover:text-black'
                   }`}
                 >
-                  1d
+                  {isVi ? '1 Ngày' : '1d'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setResolution('1W')}
-                  className={`px-2.5 py-1 text-xs cursor-pointer ${
-                    resolution === '1W' ? 'bg-[#3C75D5] text-white font-semibold' : 'text-[#404040] hover:bg-slate-50'
+                  className={`px-3 py-1 text-xs rounded-full font-bold transition-all cursor-pointer ${
+                    resolution === '1W' ? 'bg-[#111827] text-white shadow-xs' : 'text-gray-600 hover:text-black'
                   }`}
                 >
-                  1w
+                  {isVi ? '1 Tuần' : '1w'}
                 </button>
               </div>
             </div>
 
             {/* Scale */}
             <div className="flex items-center gap-2">
-              <span className="text-[#64748B] font-medium text-xs">Scale</span>
-              <div className="inline-flex rounded border border-[#CBD5E1] bg-white overflow-hidden shadow-xs">
+              <span className="text-gray-500 font-medium text-xs">{isVi ? 'Thang đo' : 'Scale'}:</span>
+              <div className="inline-flex rounded-full border border-[#EEF0F5] bg-white p-0.5 shadow-xs">
                 <button
                   type="button"
                   onClick={() => !isLogScale && toggleScale()}
-                  className={`px-2.5 py-1 text-xs cursor-pointer ${
-                    isLogScale ? 'bg-[#3C75D5] text-white font-semibold' : 'text-[#404040] hover:bg-slate-50'
+                  className={`px-3 py-1 text-xs rounded-full font-bold transition-all cursor-pointer ${
+                    isLogScale ? 'bg-[#111827] text-white shadow-xs' : 'text-gray-600 hover:text-black'
                   }`}
                 >
                   Log
@@ -1210,8 +1214,8 @@ export const AppleCycleChart: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => isLogScale && toggleScale()}
-                  className={`px-2.5 py-1 text-xs cursor-pointer ${
-                    !isLogScale ? 'bg-[#3C75D5] text-white font-semibold' : 'text-[#404040] hover:bg-slate-50'
+                  className={`px-3 py-1 text-xs rounded-full font-bold transition-all cursor-pointer ${
+                    !isLogScale ? 'bg-[#111827] text-white shadow-xs' : 'text-gray-600 hover:text-black'
                   }`}
                 >
                   Linear
@@ -1221,40 +1225,40 @@ export const AppleCycleChart: React.FC = () => {
 
             {/* Zoom / Range */}
             <div className="flex items-center gap-2">
-              <span className="text-[#64748B] font-medium text-xs">Zoom</span>
-              <div className="inline-flex rounded border border-[#CBD5E1] bg-white overflow-hidden shadow-xs">
+              <span className="text-gray-500 font-medium text-xs">{isVi ? 'Khoảng thời gian' : 'Zoom'}:</span>
+              <div className="inline-flex rounded-full border border-[#EEF0F5] bg-white p-0.5 shadow-xs">
                 {(['1Y', '4Y', 'ALL'] as const).map((r) => (
                   <button
                     type="button"
                     key={r}
                     onClick={() => setActiveRange(r)}
-                    className={`px-2.5 py-1 text-xs cursor-pointer ${
+                    className={`px-3 py-1 text-xs rounded-full font-bold transition-all cursor-pointer ${
                       activeRange === r
-                        ? 'bg-[#3C75D5] text-white font-semibold'
-                        : 'text-[#404040] hover:bg-slate-50'
+                        ? 'bg-[#111827] text-white shadow-xs'
+                        : 'text-gray-600 hover:text-black'
                     }`}
                   >
-                    {r === '1Y' ? '1y' : r === '4Y' ? '4y' : 'All'}
+                    {r === '1Y' ? (isVi ? '1 Năm' : '1y') : r === '4Y' ? (isVi ? '4 Năm' : '4y') : (isVi ? 'Tất cả' : 'All')}
                   </button>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* LookInto Exact Checkbox Legend */}
-          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#343B43]">
-            <label className="flex items-center gap-1.5 cursor-pointer">
+          {/* Indicators Legend Checkboxes */}
+          <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-gray-700">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={chartType === 'area'}
                 onChange={() => setChartType(chartType === 'area' ? 'candle' : 'area')}
-                className="rounded accent-[#3C75D5]"
+                className="rounded accent-[#111827]"
               />
-              <span className="w-3 h-0.5 bg-[#191F2C] inline-block"></span>
-              <span>Bitcoin Price</span>
+              <span className="w-3 h-0.5 bg-[#111827] inline-block"></span>
+              <span>{isVi ? 'Giá Nến Spot' : 'Bitcoin Price'}</span>
             </label>
 
-            <label className="flex items-center gap-1.5 cursor-pointer">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={visibleModels.has('picycle')}
@@ -1265,7 +1269,7 @@ export const AppleCycleChart: React.FC = () => {
               <span>111 DMA</span>
             </label>
 
-            <label className="flex items-center gap-1.5 cursor-pointer">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={visibleModels.has('picycle')}
@@ -1276,7 +1280,7 @@ export const AppleCycleChart: React.FC = () => {
               <span>350 DMA x 2</span>
             </label>
 
-            <label className="flex items-center gap-1.5 cursor-pointer">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={visibleModels.has('200w')}
@@ -1287,18 +1291,18 @@ export const AppleCycleChart: React.FC = () => {
               <span>200W Floor</span>
             </label>
 
-            <label className="flex items-center gap-1.5 cursor-pointer">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={visibleModels.has('powerlaw')}
                 onChange={() => toggleModel('powerlaw')}
-                className="rounded accent-[#0284C7]"
+                className="rounded accent-[#7C3AED]"
               />
-              <span className="w-3 h-0.5 bg-[#0284C7] inline-block"></span>
+              <span className="w-3 h-0.5 bg-[#7C3AED] inline-block"></span>
               <span>Power Law</span>
             </label>
 
-            <label className="flex items-center gap-1.5 cursor-pointer">
+            <label className="flex items-center gap-1.5 cursor-pointer hover:text-black">
               <input
                 type="checkbox"
                 checked={visibleModels.has('realized')}
@@ -1316,51 +1320,51 @@ export const AppleCycleChart: React.FC = () => {
 
         {/* Sub-Pane Oscillator Canvas (Optional) */}
         {activeOscillator !== 'none' && (
-          <div className="border-t border-[#E1E3E3] bg-white">
+          <div className="border-t border-[#EEF0F5] bg-white">
             <div ref={subChartContainerRef} className="w-full" />
           </div>
         )}
 
-        {/* Chart Footer (Exact LookInto Styling) */}
-        <div className="px-6 py-3 border-t border-[#E1E3E3] bg-white flex flex-col sm:flex-row items-center justify-between text-xs text-[#64748B] gap-2">
-          <div>Zoom in on desktop: Left click and drag. Double click to reset.</div>
-          <div className="font-medium text-[#404040]">© 2026 Look Into Bitcoin.</div>
+        {/* Chart Footer */}
+        <div className="px-6 py-2.5 bg-white border-t border-[#EEF0F5] flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-2">
+          <div>{isVi ? '💡 Giữ chuột trái & kéo để phóng to; nhấp đúp để đặt lại mặc định.' : 'Zoom in on desktop: Left click and drag. Double click to reset.'}</div>
+          <div className="font-semibold text-gray-700">© 2026 Bitcoin Macro Quantitative Terminal</div>
         </div>
       </div>
 
-      {/* LookInto 3 Blue Action Buttons */}
+      {/* Horizon Action Pills */}
       <div className="py-6 flex flex-col items-center justify-center gap-3">
         <div className="flex flex-wrap items-center justify-center gap-3">
           <button
             type="button"
             onClick={() => setTelegramModalOpen(true)}
-            className="px-6 py-2.5 rounded-lg bg-[#3C75D5] hover:bg-[#2B60BC] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-[#111827] hover:bg-black text-white text-xs font-semibold shadow-sm transition-all hover:scale-[1.02] cursor-pointer"
           >
-            {isVi ? 'Nhận Cảnh Báo Biểu Đồ' : 'Access Chart Alerts'}
+            {isVi ? 'Nhận Cảnh Báo Telegram' : 'Access Telegram Alerts'}
           </button>
           <button
             type="button"
             onClick={() => setBinanceModalOpen(true)}
-            className="px-6 py-2.5 rounded-lg bg-[#3C75D5] hover:bg-[#2B60BC] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-white hover:bg-gray-50 border border-[#EEF0F5] text-gray-800 text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
           >
-            {isVi ? 'Đồng Bộ Biểu Đồ Nhanh Hơn' : 'Faster Updating Charts'}
+            {isVi ? 'Đồng Bộ Sàn Binance Live' : 'Sync Binance Live'}
           </button>
           <button
             type="button"
             onClick={() => setInstitutionalModalOpen(true, 'lookintobitcoin')}
-            className="px-6 py-2.5 rounded-lg bg-[#3C75D5] hover:bg-[#2B60BC] text-white text-xs font-semibold shadow-xs transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-full bg-purple-50 hover:bg-purple-100 border border-purple-200 text-[#7C3AED] text-xs font-semibold shadow-xs transition-all hover:scale-[1.02] cursor-pointer"
           >
-            {isVi ? 'Chỉ Báo TradingView' : 'Tradingview Indicators'}
+            {isVi ? 'Sổ Tay Chiến Lược Thể Chế' : 'Institutional Playbook'}
           </button>
         </div>
-        <span className="text-[11px] text-[#64748B]">
+        <span className="text-[11px] text-gray-400">
           {isVi ? 'Cần dữ liệu định lượng này trong sản phẩm của bạn?' : 'Need this data in your product?'}{' '}
           <button
             type="button"
             onClick={() => setInstitutionalModalOpen(true, 'lookintobitcoin')}
-            className="text-[#3C75D5] hover:underline cursor-pointer font-medium"
+            className="text-[#7C3AED] hover:underline cursor-pointer font-semibold"
           >
-            {isVi ? 'Cấp phép API →' : 'API licensing →'}
+            {isVi ? 'Cấp phép API Thể Chế →' : 'Institutional API licensing →'}
           </button>
         </span>
       </div>

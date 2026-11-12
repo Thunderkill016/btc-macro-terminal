@@ -12,7 +12,7 @@ export interface BentoCardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 /**
  * Atomic Bento Card Primitive — Fey × Linear Obsidian Design System.
- * Background: #0A0E17 with border-[#E1E3E3] specular hairlines.
+ * Background: #0A0E17 with border-[#EEF0F5] specular hairlines.
  */
 export const BentoCard: React.FC<BentoCardProps> = ({
   children,
@@ -25,12 +25,12 @@ export const BentoCard: React.FC<BentoCardProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'relative rounded-2xl bg-white border border-[#E1E3E3] shadow-2xl backdrop-blur-xl transition-all duration-200 overflow-hidden';
+    'relative rounded-2xl bg-white border border-[#EEF0F5] shadow-2xl backdrop-blur-xl transition-all duration-200 overflow-hidden';
 
   const variantStyles = {
-    default: 'hover:border-[#E1E3E3]',
+    default: 'hover:border-[#EEF0F5]',
     specular:
-      'hover:border-[#E1E3E3] before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/[0.02] before:to-transparent before:pointer-events-none',
+      'hover:border-[#EEF0F5] before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/[0.02] before:to-transparent before:pointer-events-none',
     interactive:
       'cursor-pointer hover:border-cyan-500/30 hover:shadow-cyan-950/20 active:scale-[0.995]',
     accent:
@@ -40,7 +40,7 @@ export const BentoCard: React.FC<BentoCardProps> = ({
   return (
     <div className={`${baseStyles} ${variantStyles} ${className}`} {...props}>
       {(header || title || badge || action) && (
-        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-[#E1E3E3]">
+        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-[#EEF0F5]">
           {header ? (
             header
           ) : (

@@ -181,23 +181,23 @@ export const ExitLadderStrategy: React.FC = () => {
   ];
 
   return (
-    <div className="rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] p-5 sm:p-6 backdrop-blur-xl space-y-5 font-sans">
+    <div className="rounded-2xl bg-white border border-[#EEF0F5] shadow-card p-5 sm:p-6 space-y-5 font-sans">
       {/* Header Row */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E1E3E3]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#EEF0F5]">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center shadow-sm">
-            <Target className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 text-[#7C3AED] flex items-center justify-center shadow-xs">
+            <Target className="w-5 h-5 text-[#7C3AED]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-extrabold text-[#191F2C] tracking-tight uppercase">
+              <h2 className="text-base sm:text-lg font-extrabold text-[#111827] tracking-tight uppercase">
                 {isVi ? 'BẢNG KẾ HOẠCH THU HỒI GỐC & CHỐT LỜI TỪNG NẤC (EXIT LADDER)' : 'STRATEGIC EXIT LADDER'}
               </h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 font-mono">
+              <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-[#7C3AED] border border-purple-200 font-mono">
                 THIẾT CHẾ CHU KỲ
               </span>
             </div>
-            <p className="text-xs text-[#64748B] font-normal">
+            <p className="text-xs text-gray-500 font-normal">
               {isVi
                 ? 'Kế hoạch giảm thiểu rủi ro (De-risking) từng phần: Giảm tỷ trọng khi định giá mở rộng, bảo toàn vốn đầu tư và duy trì vị thế dài hạn.'
                 : 'Disciplined multi-stage de-risking framework: Systematic exposure reduction as valuation expands, capital preservation, and core holding retention.'}
@@ -206,14 +206,14 @@ export const ExitLadderStrategy: React.FC = () => {
         </div>
 
         {/* Portfolio Presets / Sandbox Selector */}
-        <div className="flex items-center gap-1.5 p-1 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-xs">
+        <div className="flex items-center gap-1 p-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] text-xs font-semibold">
           <button
             type="button"
             onClick={() => setSelectedPreset('my_portfolio')}
-            className={`px-3 py-1 rounded-xl font-bold transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               selectedPreset === 'my_portfolio'
-                ? 'bg-purple-600 text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C]'
+                ? 'bg-[#111827] text-white shadow-xs font-bold'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {isVi ? 'Ví Của Bạn' : 'My Wallet'} ({activeSats.toLocaleString()} sats)
@@ -221,10 +221,10 @@ export const ExitLadderStrategy: React.FC = () => {
           <button
             type="button"
             onClick={() => setSelectedPreset('demo_10m')}
-            className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               selectedPreset === 'demo_10m'
-                ? 'bg-purple-600 text-white shadow-sm font-bold'
-                : 'text-[#64748B] hover:text-[#191F2C]'
+                ? 'bg-[#111827] text-white shadow-xs font-bold'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {isVi ? 'Ví 10 Triệu' : '10M VND'}
@@ -232,10 +232,10 @@ export const ExitLadderStrategy: React.FC = () => {
           <button
             type="button"
             onClick={() => setSelectedPreset('demo_100m')}
-            className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-full transition-all cursor-pointer ${
               selectedPreset === 'demo_100m'
-                ? 'bg-purple-600 text-white shadow-sm font-bold'
-                : 'text-[#64748B] hover:text-[#191F2C]'
+                ? 'bg-[#111827] text-white shadow-xs font-bold'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             {isVi ? 'Ví 100 Triệu' : '100M VND'}
@@ -243,10 +243,10 @@ export const ExitLadderStrategy: React.FC = () => {
           <button
             type="button"
             onClick={() => setSelectedPreset('demo_1btc')}
-            className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer font-mono ${
+            className={`px-3 py-1.5 rounded-full transition-all cursor-pointer font-mono ${
               selectedPreset === 'demo_1btc'
-                ? 'bg-purple-600 text-white shadow-sm font-bold'
-                : 'text-[#64748B] hover:text-[#191F2C]'
+                ? 'bg-[#111827] text-white shadow-xs font-bold'
+                : 'text-gray-500 hover:text-gray-900'
             }`}
           >
             1.0 BTC
@@ -255,26 +255,26 @@ export const ExitLadderStrategy: React.FC = () => {
       </div>
 
       {/* Overview Metric Banner */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-2xl bg-black/40 border border-[#E1E3E3] text-xs font-mono">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-[#F4F6F9] border border-[#EEF0F5] text-xs font-mono">
         <div>
-          <span className="text-[10px] text-[#64748B] font-sans block">{isVi ? 'Vốn Gốc Ban Đầu:' : 'Initial Principal:'}</span>
-          <span className="font-bold text-[#191F2C] text-sm">{formatUSD(initialCapitalUsd, 2)}</span>
-          <span className="text-[10px] text-[#64748B] block font-sans">≈ {formatVND(initialCapitalVnd)}</span>
+          <span className="text-[10px] text-gray-500 font-sans block">{isVi ? 'Vốn Gốc Ban Đầu:' : 'Initial Principal:'}</span>
+          <span className="font-extrabold text-[#111827] text-sm sm:text-base">{formatUSD(initialCapitalUsd, 2)}</span>
+          <span className="text-[10px] text-gray-400 block font-sans">≈ {formatVND(initialCapitalVnd)}</span>
         </div>
         <div>
-          <span className="text-[10px] text-[#64748B] font-sans block">{isVi ? 'Tổng Tiền Mặt Thu Hồi:' : 'Total Cash Out:'}</span>
-          <span className="font-bold text-emerald-400 text-sm">{formatUSD(totalCashOutUsd, 2)}</span>
-          <span className="text-[10px] text-emerald-300 block font-sans">≈ {formatVND(totalCashOutVnd)}</span>
+          <span className="text-[10px] text-gray-500 font-sans block">{isVi ? 'Tổng Tiền Mặt Thu Hồi:' : 'Total Cash Out:'}</span>
+          <span className="font-extrabold text-emerald-600 text-sm sm:text-base">{formatUSD(totalCashOutUsd, 2)}</span>
+          <span className="text-[10px] text-emerald-600/80 block font-sans">≈ {formatVND(totalCashOutVnd)}</span>
         </div>
         <div>
-          <span className="text-[10px] text-[#64748B] font-sans block">{isVi ? 'Lợi Nhuận Ròng (Net ROI):' : 'Net ROI:'}</span>
-          <span className="font-bold text-cyan-300 text-sm">+{roiPct.toFixed(0)}%</span>
-          <span className="text-[10px] text-cyan-200 block font-sans">+{formatUSD(netProfitUsd, 2)}</span>
+          <span className="text-[10px] text-gray-500 font-sans block">{isVi ? 'Lợi Nhuận Ròng (Net ROI):' : 'Net ROI:'}</span>
+          <span className="font-extrabold text-[#7C3AED] text-sm sm:text-base">+{roiPct.toFixed(0)}%</span>
+          <span className="text-[10px] text-[#7C3AED]/80 block font-sans">+{formatUSD(netProfitUsd, 2)}</span>
         </div>
         <div>
-          <span className="text-[10px] text-[#64748B] font-sans block">{isVi ? 'Moonbag Vĩnh Cửu:' : 'Forever Bag:'}</span>
-          <span className="font-bold text-amber-300 text-sm">{r4Sats.toLocaleString()} sats</span>
-          <span className="text-[10px] text-amber-200 block font-sans">{r4Btc.toFixed(8)} BTC</span>
+          <span className="text-[10px] text-gray-500 font-sans block">{isVi ? 'Moonbag Vĩnh Cửu:' : 'Forever Bag:'}</span>
+          <span className="font-extrabold text-amber-600 text-sm sm:text-base">{r4Sats.toLocaleString()} sats</span>
+          <span className="text-[10px] text-amber-600/80 block font-sans">{r4Btc.toFixed(8)} BTC</span>
         </div>
       </div>
 
@@ -289,12 +289,12 @@ export const ExitLadderStrategy: React.FC = () => {
               key={rung.id}
               className={`p-4 sm:p-5 rounded-2xl border transition-all ${rung.color}`}
             >
-              <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#E1E3E3]">
+              <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#EEF0F5]">
                 <div className="flex items-center gap-2">
                   <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border font-mono ${rung.badgeColor}`}>
                     {isVi ? rung.badgeVi : rung.badgeEn}
                   </span>
-                  <span className="text-xs font-bold text-[#191F2C] uppercase tracking-wide">
+                  <span className="text-xs font-bold text-[#111827] uppercase tracking-wide">
                     {isVi ? rung.taglineVi : rung.taglineEn}
                   </span>
                 </div>
@@ -302,16 +302,16 @@ export const ExitLadderStrategy: React.FC = () => {
                 <div className="flex items-center gap-2 font-mono text-xs">
                   {!isForever ? (
                     <>
-                      <span className="text-[#64748B]">{isVi ? 'Giá Kích Hoạt:' : 'Target Price:'}</span>
+                      <span className="text-gray-500">{isVi ? 'Giá Kích Hoạt:' : 'Target Price:'}</span>
                       <span className={`text-sm sm:text-base font-black ${rung.priceColor}`}>
                         {formatUSD(rung.targetPrice, 0)}
                       </span>
-                      <span className="text-[10px] text-[#64748B] font-sans">
+                      <span className="text-[10px] text-gray-500 font-sans">
                         (+{rung.distPct.toFixed(1)}% {isVi ? 'từ giá hiện tại' : 'away'})
                       </span>
                     </>
                   ) : (
-                    <span className="text-amber-400 font-bold flex items-center gap-1 font-sans">
+                    <span className="text-amber-600 font-bold flex items-center gap-1 font-sans">
                       <Lock className="w-3.5 h-3.5" />
                       {isVi ? 'Không Bao Giờ Bán' : 'Never Sell'}
                     </span>
@@ -321,25 +321,25 @@ export const ExitLadderStrategy: React.FC = () => {
 
               {/* Rung Action & Details */}
               <div className="pt-3 grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
-                <div className="lg:col-span-8 text-xs text-[#343B43] leading-relaxed font-normal">
+                <div className="lg:col-span-8 text-xs text-gray-700 leading-relaxed font-normal">
                   {isVi ? rung.descVi : rung.descEn}
                 </div>
 
-                <div className="lg:col-span-4 p-3 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-xs font-mono space-y-1">
+                <div className="lg:col-span-4 p-3 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] text-xs font-mono space-y-1">
                   <div className="flex justify-between items-center">
-                    <span className="text-[#64748B] font-sans">{isVi ? 'Thao tác:' : 'Action:'}</span>
-                    <strong className="text-[#191F2C] font-sans">{rung.sellPct}</strong>
+                    <span className="text-gray-500 font-sans">{isVi ? 'Thao tác:' : 'Action:'}</span>
+                    <strong className="text-[#111827] font-sans">{rung.sellPct}</strong>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#64748B] font-sans">{isVi ? 'Khối lượng:' : 'Volume:'}</span>
-                    <strong className="text-amber-300">
+                    <span className="text-gray-500 font-sans">{isVi ? 'Khối lượng:' : 'Volume:'}</span>
+                    <strong className="text-amber-600 font-bold">
                       {isForever ? `${rung.sellSats.toLocaleString()} sats` : `-${rung.sellSats.toLocaleString()} sats`}
                     </strong>
                   </div>
                   {!isForever && (
-                    <div className="flex justify-between items-center pt-0.5 border-t border-[#E1E3E3]">
-                      <span className="text-[#64748B] font-sans">{isVi ? 'Thu tiền mặt:' : 'Cash Out:'}</span>
-                      <strong className="text-emerald-400">
+                    <div className="flex justify-between items-center pt-0.5 border-t border-[#EEF0F5]">
+                      <span className="text-gray-500 font-sans">{isVi ? 'Thu tiền mặt:' : 'Cash Out:'}</span>
+                      <strong className="text-emerald-600 font-bold">
                         +{formatUSD(rung.cashOutUsd, 2)} ({formatVND(rung.cashOutVnd)})
                       </strong>
                     </div>

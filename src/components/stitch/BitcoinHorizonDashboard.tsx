@@ -806,7 +806,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             </section>
 
             {/* BOTTOM ANALYTICS GRID (Bars + Radar + DCA Ledger) */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch relative pb-16" data-purpose="secondary-confluence-analytics">
+            <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch relative pb-32 sm:pb-36" data-purpose="secondary-confluence-analytics">
               {/* Column 1: Net Daily Spot Inflows & Whale Absorption (4 cols) */}
               <div className="lg:col-span-4 bg-white border border-[#EEF0F5] rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="bar-card-container">
                 <div className="flex items-center justify-between mb-3">
@@ -1116,7 +1116,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
         {/* TAB 2: CYCLE VALUATION MODELS */}
         {activeNav === 'models' && (
-          <div className="space-y-6 animate-fadeIn pb-16">
+          <div className="space-y-6 animate-fadeIn pb-32 sm:pb-36">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-[#111827] tracking-tight">
@@ -1130,15 +1130,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="horizon-card p-6">
-              <AppleCyclePeakRadar />
-            </div>
+            <AppleCyclePeakRadar />
           </div>
         )}
 
         {/* TAB 3: CANDLESTICK & TECHNICAL CHART */}
         {activeNav === 'candles' && (
-          <div className="space-y-6 animate-fadeIn pb-16">
+          <div className="space-y-6 animate-fadeIn pb-32 sm:pb-36">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-[#111827] tracking-tight">
@@ -1152,15 +1150,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               </div>
             </div>
 
-            <div className="horizon-card p-6">
-              <AppleCycleChart />
-            </div>
+            <AppleCycleChart />
           </div>
         )}
 
         {/* TAB 4: PORTFOLIO & ASSET ALLOCATION */}
         {activeNav === 'portfolio' && (
-          <div className="space-y-6 animate-fadeIn pb-16">
+          <div className="space-y-6 animate-fadeIn pb-32 sm:pb-36">
             <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">{isVi ? 'Đang tải Danh Mục Tích Sản...' : 'Loading Portfolio...'}</div>}>
               <PortfolioTab />
             </Suspense>
@@ -1169,7 +1165,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
         {/* TAB 5: AI QUANT INSIGHTS & RESEARCH HUB */}
         {activeNav === 'research' && (
-          <div className="space-y-6 animate-fadeIn pb-16">
+          <div className="space-y-6 animate-fadeIn pb-32 sm:pb-36">
             <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">{isVi ? 'Đang tải Nghiên Cứu & Backtest...' : 'Loading Macro Research...'}</div>}>
               <ResearchTab />
             </Suspense>

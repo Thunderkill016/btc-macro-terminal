@@ -347,24 +347,24 @@ export const AppleCyclePeakRadar: React.FC = () => {
       <div
         id="quant-radar-matrix"
         data-testid="zone3-radar-matrix"
-        className="rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] p-5 sm:p-6 backdrop-blur-xl space-y-4 font-sans"
+        className="rounded-2xl bg-white border border-[#EEF0F5] shadow-card p-5 sm:p-6 space-y-5 font-sans"
       >
         {/* Header & 4 Segmented Sub-Tab Switcher */}
-        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-3 border-b border-[#E1E3E3]">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-3 border-b border-[#EEF0F5]">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-cyan-400 flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-xl bg-purple-50 border border-purple-200 text-[#7C3AED] flex items-center justify-center shadow-xs">
+              <ShieldCheck className="w-5 h-5 text-[#7C3AED]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-base sm:text-lg font-semibold text-[#191F2C] tracking-[-0.02em] uppercase">
-                  {isVi ? '🧭 TRẠM RADAR ĐỊNH LƯỢNG ĐA TẦNG' : '🧭 MULTI-TIER QUANTITATIVE RADAR'}
+                <h2 className="text-base sm:text-lg font-bold text-[#111827] tracking-tight uppercase">
+                  {isVi ? 'TRẠM RADAR ĐỊNH LƯỢNG ĐA TẦNG' : 'MULTI-TIER QUANTITATIVE RADAR'}
                 </h2>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border font-mono ${radarStatus.badgeColorClass}`}>
+                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border font-mono ${radarStatus.badgeColorClass}`}>
                   {radarStatus.triggeredCount}/{radarStatus.totalCount} {isVi ? 'KÍCH HOẠT' : 'TRIGGERED'}
                 </span>
               </div>
-              <p className="text-xs text-[#64748B]">
+              <p className="text-xs text-gray-500">
                 {isVi
                   ? 'Ma trận định lượng 4 chế độ: Chỉ báo đỉnh Z-Score, Nón xác suất Cornish-Fisher 30D/90D, Thanh khoản Orderbook & Chu kỳ Halving 4.'
                   : '4-Mode Quantitative Matrix: Z-Score Peak Radar, Cornish-Fisher 30D/90D Cone, Orderbook Depth & Halving 4.'}
@@ -376,7 +376,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
           <div
             role="tablist"
             aria-label={isVi ? 'Chế độ hiển thị trạm định lượng' : 'Quantitative radar view modes'}
-            className="flex items-center bg-white p-1 rounded-xl border border-[#E1E3E3] text-xs font-medium self-start xl:self-auto overflow-x-auto max-w-full gap-1 shrink-0"
+            className="flex items-center bg-[#F4F6F9] p-1 rounded-full border border-[#EEF0F5] text-xs font-semibold self-start xl:self-auto overflow-x-auto max-w-full gap-1 shrink-0"
           >
             <button
               type="button"
@@ -384,13 +384,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
               aria-selected={activeSubTab === 'peak'}
               data-testid="radar-tab-peak"
               onClick={() => setActiveSubTab('peak')}
-              className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 activeSubTab === 'peak'
-                  ? 'bg-emerald-50 text-emerald-800 font-semibold border border-emerald-300 shadow-sm'
-                  : 'text-[#64748B] hover:text-[#343B43]'
+                  ? 'bg-[#111827] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <span>{isVi ? 'Radar 5 Chỉ Báo Đỉnh' : '5-Indicator Peak Radar'}</span>
             </button>
 
@@ -400,13 +400,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
               aria-selected={activeSubTab === 'cone'}
               data-testid="radar-tab-cone"
               onClick={() => setActiveSubTab('cone')}
-              className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 activeSubTab === 'cone'
-                  ? 'bg-purple-50 text-purple-800 font-semibold border border-purple-300 shadow-sm'
-                  : 'text-[#64748B] hover:text-[#343B43]'
+                  ? 'bg-[#111827] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              <Target className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+              <Target className="w-3.5 h-3.5 text-purple-400 shrink-0" />
               <span>{isVi ? 'Dự Báo Xác Suất 30D/90D' : '30D/90D Forward Cone'}</span>
             </button>
 
@@ -416,13 +416,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
               aria-selected={activeSubTab === 'downside'}
               data-testid="radar-tab-downside"
               onClick={() => setActiveSubTab('downside')}
-              className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 activeSubTab === 'downside'
-                  ? 'bg-amber-50 text-amber-900 font-semibold border border-amber-300 shadow-sm'
-                  : 'text-[#64748B] hover:text-[#343B43]'
+                  ? 'bg-[#111827] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <Zap className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span>{isVi ? 'Rủi Ro Ngắn Hạn & Cá Voi' : 'Downside & Orderbook'}</span>
             </button>
 
@@ -432,13 +432,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
               aria-selected={activeSubTab === 'halving_miners'}
               data-testid="radar-tab-halving"
               onClick={() => setActiveSubTab('halving_miners')}
-              className={`px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-full flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
                 activeSubTab === 'halving_miners'
-                  ? 'bg-sky-50 text-sky-800 font-semibold border border-sky-300 shadow-sm'
-                  : 'text-[#64748B] hover:text-[#343B43]'
+                  ? 'bg-[#111827] text-white shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900'
               }`}
             >
-              <Pickaxe className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+              <Pickaxe className="w-3.5 h-3.5 text-sky-400 shrink-0" />
               <span>{isVi ? 'Chu Kỳ Thợ Đào & Halving 4' : 'Miners & Halving 4'}</span>
             </button>
           </div>
@@ -450,7 +450,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
         {activeSubTab === 'peak' && (
           <div className="space-y-4 animate-fadeIn">
             {/* Single Concise Summary Banner */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
               <div className="flex items-start gap-2.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div className="text-[#343B43] leading-relaxed">
@@ -461,7 +461,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <div className="shrink-0 flex items-center gap-2 text-[10px] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#E1E3E3] text-[#343B43] self-start md:self-auto">
+              <div className="shrink-0 flex items-center gap-2 text-[10px] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#EEF0F5] text-[#343B43] self-start md:self-auto">
                 <span className="text-emerald-400 font-bold">{isVi ? 'Bắt 3/4 đỉnh' : 'Recall'}: {radarStatus.hitRatePercent}%</span>
                 <span>•</span>
                 <span className="text-[#64748B]">{isVi ? 'Báo động giả' : 'False alarm'}: {radarStatus.falseAlarmPercent}%</span>
@@ -478,7 +478,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   className={`text-left p-4 rounded-xl border transition-all duration-200 cursor-pointer flex flex-col justify-between space-y-3 group focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:outline-none ${
                     ind.triggered
                       ? 'bg-rose-500/10 border-rose-500/30 hover:border-rose-400'
-                      : 'bg-[#F8FAFC] hover:bg-[#F1F5F9] border-[#E1E3E3]'
+                      : 'bg-[#F4F6F9] hover:bg-[#FFFFFF] border-[#EEF0F5]'
                   }`}
                 >
                   <div className="space-y-2 w-full">
@@ -506,7 +506,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                     {/* Row 3: Compact Z-Score & Percentile Pill + 4px Progress Bar */}
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="inline-block px-2 py-0.5 rounded bg-white border border-[#E1E3E3] text-[10px] font-mono text-[#343B43] tabular-nums whitespace-nowrap">
+                        <span className="inline-block px-2 py-0.5 rounded bg-white border border-[#EEF0F5] text-[10px] font-mono text-[#343B43] tabular-nums whitespace-nowrap">
                           {ind.line2Display}
                         </span>
                         <span className="text-[10px] font-mono text-emerald-400 font-semibold tabular-nums">
@@ -539,7 +539,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
 
                   {/* Row 4: Subtle Modal Trigger */}
-                  <div className="w-full pt-2 border-t border-[#E1E3E3] text-[10px] text-[#64748B] group-hover:text-cyan-400 font-medium flex items-center justify-between transition-colors">
+                  <div className="w-full pt-2 border-t border-[#EEF0F5] text-[10px] text-[#64748B] group-hover:text-cyan-400 font-medium flex items-center justify-between transition-colors">
                     <span className="flex items-center gap-1">
                       <Info className="w-3 h-3" />
                       {isVi ? 'Xem phân tích & công thức' : 'Analysis & formula'}
@@ -558,7 +558,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
         {activeSubTab === 'cone' && (
           <div className="space-y-4 animate-fadeIn">
             {/* Econometric Specification Banner */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] flex flex-col lg:flex-row lg:items-center justify-between gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] flex flex-col lg:flex-row lg:items-center justify-between gap-3 text-xs">
               <div className="flex items-start gap-2.5">
                 <Target className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
                 <div className="text-[#343B43] leading-relaxed">
@@ -573,7 +573,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
               </div>
 
-              <div className="shrink-0 flex flex-wrap items-center gap-2 text-[11px] font-mono bg-white px-3 py-1.5 rounded-lg border border-[#E1E3E3] text-[#343B43]">
+              <div className="shrink-0 flex flex-wrap items-center gap-2 text-[11px] font-mono bg-white px-3 py-1.5 rounded-lg border border-[#EEF0F5] text-[#343B43]">
                 <span>σ_Eff (EWMA+GK): <strong className="text-cyan-300">{sigmaEffAnn}%</strong></span>
                 <span className="text-[#64748B]">•</span>
                 <span>σ_Mix: <strong className="text-[#191F2C]">{sigmaMix}%</strong></span>
@@ -589,7 +589,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
             {/* 3-Column Cone & Touch Probability Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               {/* Card 1: 30-Day Forward Cone */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] space-y-3">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#191F2C] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-cyan-400" />
@@ -601,7 +601,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 font-mono text-center">
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                     <div className="text-[10px] text-[#64748B] font-sans">{isVi ? 'P15 (Đáy Rũ)' : 'P15 (Lower)'}</div>
                     <div className="text-sm font-bold text-rose-400 mt-1 tabular-nums">{formatUSD(cone30.p15, 0)}</div>
                     <div className="text-[10px] text-rose-400/80 tabular-nums mt-0.5">
@@ -617,7 +617,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                     <div className="text-[10px] text-[#64748B] font-sans">{isVi ? 'P85 (Bứt Phá)' : 'P85 (Upper)'}</div>
                     <div className="text-sm font-bold text-emerald-400 mt-1 tabular-nums">{formatUSD(cone30.p85, 0)}</div>
                     <div className="text-[10px] text-emerald-400/80 tabular-nums mt-0.5">
@@ -626,7 +626,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#E1E3E3]">
+                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#EEF0F5]">
                   {isVi
                     ? `Biên độ dao động 70% trong 30 ngày tới trải dài từ ${formatUSD(cone30.p15, 0)} đến ${formatUSD(cone30.p85, 0)} (Độ phủ kiểm định Walk-Forward: 71.2%).`
                     : `70% probability interval over 30 days spans ${formatUSD(cone30.p15, 0)} to ${formatUSD(cone30.p85, 0)}.`}
@@ -634,7 +634,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* Card 2: 90-Day Forward Cone */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] space-y-3">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#191F2C] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-purple-400" />
@@ -646,7 +646,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 font-mono text-center">
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                     <div className="text-[10px] text-[#64748B] font-sans">{isVi ? 'P15 (Đáy Rũ)' : 'P15 (Lower)'}</div>
                     <div className="text-sm font-bold text-rose-400 mt-1 tabular-nums">{formatUSD(cone90.p15, 0)}</div>
                     <div className="text-[10px] text-rose-400/80 tabular-nums mt-0.5">
@@ -662,7 +662,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                     <div className="text-[10px] text-[#64748B] font-sans">{isVi ? 'P85 (Bứt Phá)' : 'P85 (Upper)'}</div>
                     <div className="text-sm font-bold text-emerald-400 mt-1 tabular-nums">{formatUSD(cone90.p85, 0)}</div>
                     <div className="text-[10px] text-emerald-400/80 tabular-nums mt-0.5">
@@ -671,7 +671,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#E1E3E3]">
+                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#EEF0F5]">
                   {isVi
                     ? `Kỳ vọng trung vị 90 ngày hướng về ${formatUSD(cone90.p50, 0)} nhờ lực hút hồi quy về giá trị hợp lý Power Law (${formatUSD(metrics.powerLawFairValue, 0)}).`
                     : `90-day median expectation gravitates toward ${formatUSD(cone90.p50, 0)} via Ornstein-Uhlenbeck mean reversion.`}
@@ -679,7 +679,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* Card 3: 7-Day First-Passage Limit Touch Probabilities */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] flex flex-col justify-between space-y-3">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] flex flex-col justify-between space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-[#191F2C] flex items-center gap-2">
                     <BarChart3 className="w-4 h-4 text-emerald-400" />
@@ -689,7 +689,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
 
                 <div className="space-y-2.5 font-mono text-xs">
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3] space-y-1.5">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5] space-y-1.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[#343B43] font-sans font-medium">
                         Limit 1 (-0.8×ATR): <strong className="text-[#191F2C] font-mono">{formatUSD(limit1Price, 0)}</strong>
@@ -704,7 +704,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3] space-y-1.5">
+                  <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5] space-y-1.5">
                     <div className="flex items-center justify-between">
                       <span className="text-[#343B43] font-sans font-medium">
                         Limit 2 (-1.6×ATR): <strong className="text-[#191F2C] font-mono">{formatUSD(limit2Price, 0)}</strong>
@@ -720,7 +720,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#E1E3E3]">
+                <div className="text-[11px] text-[#64748B] leading-relaxed pt-1 border-t border-[#EEF0F5]">
                   {isVi
                     ? 'Xác suất chạm biên đầu tiên (First-Passage) trong 7 ngày tới theo chuyển động Brown hình học có biến động Garman-Klass.'
                     : '7-day first-passage barrier touch probability under Garman-Klass volatility.'}
@@ -736,7 +736,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
         {activeSubTab === 'downside' && (
           <div className="space-y-4 animate-fadeIn">
             {/* Downside Summary Banner */}
-            <div className="p-3.5 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
+            <div className="p-3.5 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2.5">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
                 <div className="text-[#343B43]">
@@ -746,7 +746,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   — {isVi ? 'Đo lường rủi ro rũ bỏ & quét thanh lý ngắn hạn kết hợp tường thanh khoản sổ lệnh Binance Spot trực tiếp.' : 'Measures short-term liquidation flush risks and live Binance Spot orderbook liquidity walls.'}
                 </div>
               </div>
-              <div className="shrink-0 flex items-center gap-2 text-[10px] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#E1E3E3] text-[#343B43] self-start md:self-auto">
+              <div className="shrink-0 flex items-center gap-2 text-[10px] font-mono bg-white px-2.5 py-1.5 rounded-lg border border-[#EEF0F5] text-[#343B43] self-start md:self-auto">
                 <span className="text-emerald-400 font-bold">{isVi ? 'Bắt 4/5 đợt giảm >25%' : 'Recall'}: 80.0%</span>
                 <span>•</span>
                 <span className="text-[#64748B]">{isVi ? 'Báo động giả' : 'False alarm'}: 14.3%</span>
@@ -758,7 +758,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               {confluence?.downsideRisk?.items.map((item) => (
                 <div
                   key={item.id}
-                  className="p-4 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] transition-all flex flex-col justify-between space-y-2.5"
+                  className="p-4 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] transition-all flex flex-col justify-between space-y-2.5"
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
@@ -782,7 +782,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-[#343B43] leading-relaxed border-t border-[#E1E3E3] pt-2">
+                  <p className="text-[11px] text-[#343B43] leading-relaxed border-t border-[#EEF0F5] pt-2">
                     {isVi ? item.descriptionVi : item.descriptionEn}
                   </p>
                 </div>
@@ -790,7 +790,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
             </div>
 
             {/* Hybrid VPVR High-Volume Nodes (30D 1H) + Deep Orderbook (limit=1000, $25 Bins) */}
-            <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
+            <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs">
               <div className="lg:col-span-5 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C] flex items-center gap-1.5">
@@ -804,7 +804,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="h-2 w-full bg-white rounded-full overflow-hidden flex border border-[#E1E3E3]">
+                <div className="h-2 w-full bg-white rounded-full overflow-hidden flex border border-[#EEF0F5]">
                   <div
                     className="h-full bg-emerald-400 transition-all duration-500"
                     style={{ width: `${obBidSharePct}%` }}
@@ -822,8 +822,8 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-2.5 lg:border-l lg:border-[#E1E3E3] lg:pl-4 font-mono">
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-2.5 lg:border-l lg:border-[#EEF0F5] lg:pl-4 font-mono">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Tường Bid Cụm $25' : 'Largest $25 Bid Cluster'}</div>
                   <div className="text-sm font-bold text-cyan-300 mt-0.5 tabular-nums">
                     {formatUSD(obWallPrice, 0)} <span className="text-[11px] text-[#343B43]">({obWallVol.toFixed(1)} BTC)</span>
@@ -833,7 +833,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Nút HVN Hỗ Trợ 1 (Limit 1)' : 'HVN Support Node 1'}</div>
                   <div className="text-sm font-bold text-emerald-400 mt-0.5 tabular-nums">
                     {formatUSD(hvnZone1, 0)} <span className="text-[11px] text-[#343B43]">({hvnZone1Vol.toFixed(0)} BTC)</span>
@@ -843,7 +843,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Nút HVN Quét Râu 2 (Limit 2)' : 'HVN Deep Node 2'}</div>
                   <div className="text-sm font-bold text-purple-300 mt-0.5 tabular-nums">
                     {formatUSD(hvnZone2, 0)} <span className="text-[11px] text-[#343B43]">({hvnZone2Vol.toFixed(0)} BTC)</span>
@@ -858,7 +858,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
             {/* v7.0 Upgrade 2: Spot vs. Perpetual Futures Microstructure & Whale Positioning Matrix */}
             <div
               data-testid="microstructure-whale-matrix"
-              className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs"
+              className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs"
             >
               {/* Left: Whale vs. Retail Positioning Spread */}
               <div className="space-y-2">
@@ -877,11 +877,11 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
-                  <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between">
                     <span className="text-[#64748B] font-sans">{isVi ? 'Top Trader Long:' : 'Whale Long:'}</span>
                     <strong className="text-emerald-400 tabular-nums">{micro.topPositionLongPct.toFixed(1)}%</strong>
                   </div>
-                  <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between">
                     <span className="text-[#64748B] font-sans">{isVi ? 'Nhỏ Lẻ Long:' : 'Retail Long:'}</span>
                     <strong className="text-amber-300 tabular-nums">{micro.retailAccountLongPct.toFixed(1)}%</strong>
                   </div>
@@ -893,7 +893,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* Right: Spot vs. Perp Taker Orderflow Regime */}
-              <div className="space-y-2 lg:border-l lg:border-[#E1E3E3] lg:pl-4">
+              <div className="space-y-2 lg:border-l lg:border-[#EEF0F5] lg:pl-4">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C] flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5 text-cyan-400" />
@@ -905,11 +905,11 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
-                  <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between">
                     <span className="text-[#64748B] font-sans">Spot Taker Buy:</span>
                     <strong className="text-emerald-400 tabular-nums">{micro.spotTakerBuyPct7D.toFixed(2)}%</strong>
                   </div>
-                  <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between">
+                  <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between">
                     <span className="text-[#64748B] font-sans">Perp Taker Buy:</span>
                     <strong className="text-purple-300 tabular-nums">{micro.perpTakerBuyPct7D.toFixed(2)}%</strong>
                   </div>
@@ -924,7 +924,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
             {/* v8.0 Global Benchmark: Deribit DVOL Implied Volatility, VRP (IV - RV), Perp Basis & Liquidation Clusters */}
             <div
               data-testid="derivatives-vrp-liquidation-strip"
-              className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs"
+              className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] grid grid-cols-1 lg:grid-cols-12 gap-4 items-center text-xs"
             >
               <div className="lg:col-span-5 space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -954,18 +954,18 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 </div>
               </div>
 
-              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-2.5 lg:border-l lg:border-[#E1E3E3] lg:pl-4 font-mono">
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-2.5 lg:border-l lg:border-[#EEF0F5] lg:pl-4 font-mono">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Cụm Thanh Lý Long 50x' : '50x Long Liq Cluster'}</div>
                   <div className="text-sm font-bold text-amber-300 mt-0.5 tabular-nums">{formatUSD(liq50xLong, 0)}</div>
                   <div className="text-[10px] text-[#64748B] font-sans mt-0.5">{isVi ? 'Biên độ quét -1.6% từ Spot' : '-1.6% from Spot'}</div>
                 </div>
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Cụm Thanh Lý Long 25x' : '25x Long Liq Cluster'}</div>
                   <div className="text-sm font-bold text-rose-400 mt-0.5 tabular-nums">{formatUSD(liq25xLong, 0)}</div>
                   <div className="text-[10px] text-[#64748B] font-sans mt-0.5">{isVi ? 'Nam châm thanh khoản -3.6%' : '-3.6% Liquidity Magnet'}</div>
                 </div>
-                <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3]">
+                <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5]">
                   <div className="text-[10px] text-[#64748B] font-sans uppercase">{isVi ? 'Cụm Quét Short 25x' : '25x Short Squeeze Zone'}</div>
                   <div className="text-sm font-bold text-emerald-400 mt-0.5 tabular-nums">{formatUSD(liq25xShort, 0)}</div>
                   <div className="text-[10px] text-[#64748B] font-sans mt-0.5">{isVi ? 'Vùng kích hoạt Short Squeeze +3.6%' : '+3.6% Short Squeeze Trigger'}</div>
@@ -981,7 +981,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
         {activeSubTab === 'halving_miners' && (
           <div className="space-y-4 animate-fadeIn">
             {/* Halving 4 Timing & NUPL Banner */}
-            <div className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               {/* Left: Halving Progress */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -1007,7 +1007,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* Right: NUPL Sentiment */}
-              <div className="space-y-2 md:border-l md:border-[#E1E3E3] md:pl-4">
+              <div className="space-y-2 md:border-l md:border-[#EEF0F5] md:pl-4">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C] flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5 text-cyan-400" />
@@ -1032,7 +1032,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
             {/* 4 Structural Miner & Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {/* 1. Puell Multiple */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] transition-all space-y-1.5 font-mono">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] transition-all space-y-1.5 font-mono">
                 <div className="flex items-center justify-between text-[11px] font-sans">
                   <span className="font-semibold text-[#343B43]">{isVi ? 'Puell Multiple (Thợ Đào)' : 'Puell Multiple'}</span>
                   <span className="text-emerald-400 font-semibold text-[10px]">Capriole</span>
@@ -1043,13 +1043,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 <div className="text-[11px] text-emerald-400 font-sans">
                   {(latestPoint?.puellMultiple ?? 0.98) < 1.2 ? (isVi ? 'Vùng gom tích lũy chu kỳ' : 'Optimal Accumulation') : (isVi ? 'Vùng giữa chu kỳ' : 'Mid Cycle')}
                 </div>
-                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#E1E3E3] pt-1.5">
+                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#EEF0F5] pt-1.5">
                   {isVi ? 'Doanh thu thợ đào thấp hơn mức đỉnh, áp lực xả bán giảm.' : 'Miner daily revenue cool relative to 365DMA.'}
                 </p>
               </div>
 
               {/* 2. Spot Taker Buy Flow 7D */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] transition-all space-y-1.5 font-mono">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] transition-all space-y-1.5 font-mono">
                 <div className="flex items-center justify-between text-[11px] font-sans">
                   <span className="font-semibold text-[#343B43]">Spot Taker CVD 7D</span>
                   <span className="text-cyan-400 font-semibold text-[10px]">Binance API</span>
@@ -1060,13 +1060,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 <div className="text-[11px] text-[#343B43] font-sans">
                   {(derivatives.takerBuyRatio7D ?? 49.83) >= 48.5 ? (isVi ? 'Cân bằng dòng tiền Spot' : 'Balanced Spot Flow') : (isVi ? 'Áp lực phân phối Spot' : 'Spot Selling Pressure')}
                 </div>
-                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#E1E3E3] pt-1.5">
+                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#EEF0F5] pt-1.5">
                   {isVi ? 'Tỷ lệ gom chủ động cá voi phản ánh sự hấp thụ nguồn cung.' : 'Whale taker buy absorption across spot markets.'}
                 </p>
               </div>
 
               {/* 3. BTC / PAXG Gold Mayer */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] transition-all space-y-1.5 font-mono">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] transition-all space-y-1.5 font-mono">
                 <div className="flex items-center justify-between text-[11px] font-sans">
                   <span className="font-semibold text-[#343B43]">{isVi ? 'BTC / Vàng (PAXG) Mayer' : 'BTC / Gold Mayer'}</span>
                   <span className="text-amber-400 font-semibold text-[10px]">Cross-Asset</span>
@@ -1077,13 +1077,13 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 <div className="text-[11px] text-emerald-400 font-sans">
                   {isVi ? 'Định giá hấp dẫn so với Vàng' : 'Undervalued vs Gold'}
                 </div>
-                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#E1E3E3] pt-1.5">
+                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#EEF0F5] pt-1.5">
                   {isVi ? 'Tỷ số BTC/Vàng ở mức nén, cơ hội gia tăng tỷ trọng tài sản số.' : 'Compressed valuation ratio relative to physical gold.'}
                 </p>
               </div>
 
               {/* 4. Mempool Hash Ribbons */}
-              <div className="p-4 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] transition-all space-y-1.5 font-mono">
+              <div className="p-4 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] transition-all space-y-1.5 font-mono">
                 <div className="flex items-center justify-between text-[11px] font-sans">
                   <span className="font-semibold text-[#343B43]">Hash Ribbons (30D/60D)</span>
                   <span className="text-purple-400 font-semibold text-[10px]">Mempool.space</span>
@@ -1094,7 +1094,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
                 <div className="text-[11px] text-emerald-400 font-sans">
                   SMA 30D &gt; 60D (+{macro.hashRibbonsDiffPct ?? 3.9}%)
                 </div>
-                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#E1E3E3] pt-1.5">
+                <p className="text-[11px] text-[#64748B] font-sans border-t border-[#EEF0F5] pt-1.5">
                   {isVi ? 'Hashrate duy trì đà tăng trưởng, thợ đào không đầu hàng.' : 'Network hashrate steadily expanding, zero miner capitulation.'}
                 </p>
               </div>
@@ -1103,10 +1103,10 @@ export const AppleCyclePeakRadar: React.FC = () => {
             {/* v8.0 Global Benchmark: Cointime Economics (Glassnode × ARK × Checkonchain) & Capriole Thermodynamic Energy Value */}
             <div
               data-testid="cointime-energy-matrix"
-              className="p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs"
+              className="p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs"
             >
               {/* 1. True Market Mean & AVIV Ratio */}
-              <div className="p-3 rounded-lg bg-white border border-[#E1E3E3] space-y-1.5">
+              <div className="p-3 rounded-lg bg-white border border-[#EEF0F5] space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C]">
                     {isVi ? 'True Market Mean & AVIV Ratio' : 'True Market Mean & AVIV'}
@@ -1131,7 +1131,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* 2. ARK Seller Exhaustion Constant */}
-              <div className="p-3 rounded-lg bg-white border border-[#E1E3E3] space-y-1.5">
+              <div className="p-3 rounded-lg bg-white border border-[#EEF0F5] space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C]">
                     {isVi ? 'Hằng Số Cạn Kiệt Lực Bán (ARK)' : 'ARK Seller Exhaustion Constant'}
@@ -1156,7 +1156,7 @@ export const AppleCyclePeakRadar: React.FC = () => {
               </div>
 
               {/* 3. Capriole Thermodynamic Energy Value */}
-              <div className="p-3 rounded-lg bg-white border border-[#E1E3E3] space-y-1.5">
+              <div className="p-3 rounded-lg bg-white border border-[#EEF0F5] space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="font-semibold text-[#191F2C]">
                     {isVi ? 'Giá Trị Năng Lượng Bitcoin (Capriole)' : 'Capriole Bitcoin Energy Value'}

@@ -17,8 +17,8 @@ export const ResearchTab: React.FC = () => {
 
   return (
     <div className="space-y-5">
-      {/* Sub-Navigation Segmented Bar (Fey × Linear Obsidian Pill Style) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1.5 rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08)] backdrop-blur-xl">
+      {/* Sub-Navigation Segmented Bar in Horizon Pill Style */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-1.5 rounded-full bg-white border border-[#EEF0F5] shadow-card">
         <nav
           role="tablist"
           aria-label={isVi ? 'Các phân hệ nghiên cứu vĩ mô' : 'Macro research modules'}
@@ -29,10 +29,10 @@ export const ResearchTab: React.FC = () => {
             role="tab"
             aria-selected={activeSubTab === 'ALL'}
             onClick={() => setActiveSubTab('ALL')}
-            className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
               activeSubTab === 'ALL'
-                ? 'bg-[#3C75D5] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C] hover:bg-[#F8FAFC]'
+                ? 'bg-[#111827] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-[#F4F6F9]'
             }`}
           >
             <LayoutGrid className="w-3.5 h-3.5" />
@@ -44,10 +44,10 @@ export const ResearchTab: React.FC = () => {
             role="tab"
             aria-selected={activeSubTab === 'LEDGER'}
             onClick={() => setActiveSubTab('LEDGER')}
-            className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
               activeSubTab === 'LEDGER'
-                ? 'bg-[#3C75D5] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C] hover:bg-[#F8FAFC]'
+                ? 'bg-[#111827] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-[#F4F6F9]'
             }`}
           >
             <ShieldCheck className="w-3.5 h-3.5" />
@@ -59,10 +59,10 @@ export const ResearchTab: React.FC = () => {
             role="tab"
             aria-selected={activeSubTab === 'M2'}
             onClick={() => setActiveSubTab('M2')}
-            className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
               activeSubTab === 'M2'
-                ? 'bg-[#3C75D5] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C] hover:bg-[#F8FAFC]'
+                ? 'bg-[#111827] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-[#F4F6F9]'
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
@@ -74,10 +74,10 @@ export const ResearchTab: React.FC = () => {
             role="tab"
             aria-selected={activeSubTab === 'ETF'}
             onClick={() => setActiveSubTab('ETF')}
-            className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
               activeSubTab === 'ETF'
-                ? 'bg-[#3C75D5] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C] hover:bg-[#F8FAFC]'
+                ? 'bg-[#111827] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-[#F4F6F9]'
             }`}
           >
             <Building2 className="w-3.5 h-3.5" />
@@ -89,10 +89,10 @@ export const ResearchTab: React.FC = () => {
             role="tab"
             aria-selected={activeSubTab === 'BACKTEST'}
             onClick={() => setActiveSubTab('BACKTEST')}
-            className={`min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-2 whitespace-nowrap ${
+            className={`min-h-[38px] px-4 py-1.5 rounded-full text-xs font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
               activeSubTab === 'BACKTEST'
-                ? 'bg-[#3C75D5] text-white shadow-sm'
-                : 'text-[#64748B] hover:text-[#191F2C] hover:bg-[#F8FAFC]'
+                ? 'bg-[#111827] text-white shadow-xs'
+                : 'text-gray-500 hover:text-gray-900 hover:bg-[#F4F6F9]'
             }`}
           >
             <Calculator className="w-3.5 h-3.5" />
@@ -100,8 +100,8 @@ export const ResearchTab: React.FC = () => {
           </button>
         </nav>
 
-        <div className="hidden lg:flex items-center gap-2 pr-3 text-[11px] text-[#64748B] font-mono">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        <div className="hidden lg:flex items-center gap-2 pr-3 text-[11px] text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-mono font-bold">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>FRED & Farside Benchmark</span>
         </div>
       </div>

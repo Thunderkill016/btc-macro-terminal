@@ -33,7 +33,7 @@ export const ExecutiveSummaryStrip: React.FC = () => {
   return (
     <div
       data-testid="executive-summary-strip"
-      className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 rounded-2xl bg-white border border-[#E1E3E3] shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)] text-xs font-mono"
+      className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 rounded-2xl bg-white border border-[#EEF0F5] shadow-[0_4px_20px_rgba(0,0,0,0.5),inset_0_1px_0_0_rgba(255,255,255,0.06)] text-xs font-mono"
     >
       {/* 5 Compact Micro Ticker Capsules */}
       <div className="flex flex-wrap items-center gap-3 sm:gap-5">
@@ -78,7 +78,7 @@ export const ExecutiveSummaryStrip: React.FC = () => {
         <button
           type="button"
           onClick={() => setForecastLedgerModalOpen(true)}
-          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] text-cyan-400 hover:text-cyan-300 text-[11px] font-medium transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] text-cyan-400 hover:text-cyan-300 text-[11px] font-medium transition-all cursor-pointer"
         >
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
           <span>OTS Block 870,800+</span>

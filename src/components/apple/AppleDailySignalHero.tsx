@@ -367,7 +367,7 @@ export const AppleDailySignalHero: React.FC = () => {
       className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch"
     >
       {/* ================= LEFT BENTO (8 COLS): STRATEGIC VALUATION & REGIME COMPASS ================= */}
-      <div className="lg:col-span-8 rounded-2xl bg-white border border-[#E1E3E3] shadow-sm p-6 sm:p-7 backdrop-blur-xl flex flex-col justify-between space-y-5 relative overflow-hidden">
+      <div className="lg:col-span-8 rounded-2xl bg-white border border-[#EEF0F5] shadow-sm p-6 sm:p-7 backdrop-blur-xl flex flex-col justify-between space-y-5 relative overflow-hidden">
         {/* Fey Specular Top Hairline & Ambient Glow */}
         <div className="absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-white/[0.15] to-transparent pointer-events-none" />
         <div className="absolute -top-28 -left-28 w-80 h-80 bg-emerald-500/[0.05] rounded-full blur-3xl pointer-events-none" />
@@ -393,7 +393,7 @@ export const AppleDailySignalHero: React.FC = () => {
           <button
             type="button"
             onClick={() => setInstitutionalModalOpen(true, 'lookintobitcoin')}
-            className="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] text-[#191F2C] transition-all flex items-center gap-1.5 cursor-pointer"
+            className="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] text-[#191F2C] transition-all flex items-center gap-1.5 cursor-pointer"
             title={isVi ? 'Bấm để xem phương pháp luận định lượng quốc tế' : 'Click to view institutional methodology'}
           >
             <span>{confluence.totalScore}/100 {isVi ? 'Điểm Hội Tụ' : 'Score'}</span>
@@ -403,7 +403,7 @@ export const AppleDailySignalHero: React.FC = () => {
           {/* v7.0 Upgrade 4: 7-Day Signal Momentum Badge & 30-Day Non-Repainting SVG Sparkline */}
           <div
             data-testid="signal-trajectory-badge"
-            className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#F8FAFC] border border-[#E1E3E3] text-[11px] font-mono"
+            className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] text-[11px] font-mono"
             title={
               isVi
                 ? `Quỹ đạo điểm hội tụ 30 ngày không vẽ lại (Non-Repainting): Δ7D ${scoreDelta7D >= 0 ? '+' : ''}${scoreDelta7D.toFixed(1)}đ • Δ30D ${scoreDelta30D >= 0 ? '+' : ''}${scoreDelta30D.toFixed(1)}đ`
@@ -427,7 +427,7 @@ export const AppleDailySignalHero: React.FC = () => {
 
           {marketRegime && (
             <div
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F8FAFC] border border-[#E1E3E3] text-[11px] font-mono text-[#343B43]"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] text-[11px] font-mono text-[#343B43]"
               title={`Hurst Exponent (128D) = ${hurstVal.toFixed(2)}`}
             >
               <span className="font-semibold text-[#191F2C]">Hurst (128D) = {hurstVal.toFixed(2)}</span>
@@ -443,7 +443,7 @@ export const AppleDailySignalHero: React.FC = () => {
             </div>
           )}
 
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F8FAFC] border border-[#E1E3E3] text-[11px] font-mono text-[#64748B]">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#F4F6F9] border border-[#EEF0F5] text-[11px] font-mono text-[#64748B]">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             <span>{isVi ? 'Đồng bộ 00:00 UTC • Binance & CoinMetrics' : 'Synced 00:00 UTC • Binance & CoinMetrics'}</span>
           </div>
@@ -519,7 +519,7 @@ export const AppleDailySignalHero: React.FC = () => {
         {/* 3. 3 Clean Price Anchor Tiles (Obsidian Inner Surface #0F1522 + Specular Hairline + Plain-Language Purpose) */}
         <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Tile 1: 200W Support */}
-          <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] hover:border-cyan-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
+          <div className="p-3.5 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] hover:border-cyan-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
             <div className="text-[11px] font-medium text-[#64748B] uppercase tracking-[0.06em] flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
@@ -537,7 +537,7 @@ export const AppleDailySignalHero: React.FC = () => {
           </div>
 
           {/* Tile 2: Power Law Fair Value */}
-          <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] hover:border-emerald-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
+          <div className="p-3.5 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] hover:border-emerald-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
             <div className="text-[11px] font-medium text-[#64748B] uppercase tracking-[0.06em] flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Layers className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -555,7 +555,7 @@ export const AppleDailySignalHero: React.FC = () => {
           </div>
 
           {/* Tile 3: Pi Cycle Profit Target */}
-          <div className="p-3.5 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] hover:border-purple-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
+          <div className="p-3.5 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] hover:border-purple-500/30 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] transition-all space-y-1.5">
             <div className="text-[11px] font-medium text-[#64748B] uppercase tracking-[0.06em] flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5 text-purple-400 shrink-0" />
@@ -574,7 +574,7 @@ export const AppleDailySignalHero: React.FC = () => {
         </div>
 
         {/* 4. Sleek 5-Phase Market Regime Compass */}
-        <div className="relative z-10 p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] space-y-3">
+        <div className="relative z-10 p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] space-y-3">
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
             <button
               type="button"
@@ -614,7 +614,7 @@ export const AppleDailySignalHero: React.FC = () => {
               <div className="w-0.5 h-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.9)] mt-0.5 -translate-x-1/2" />
             </div>
 
-            <div className="relative h-3 rounded-full p-0.5 bg-white border border-[#E1E3E3]">
+            <div className="relative h-3 rounded-full p-0.5 bg-white border border-[#EEF0F5]">
               <div className="h-full w-full rounded-full bg-gradient-to-r from-emerald-600 via-emerald-400 via-cyan-400 via-amber-400 to-rose-500 relative overflow-hidden">
                 <div className="absolute top-0 bottom-0 left-[20%] w-[1px] bg-black/40" />
                 <div className="absolute top-0 bottom-0 left-[45%] w-[1px] bg-black/40" />
@@ -649,7 +649,7 @@ export const AppleDailySignalHero: React.FC = () => {
           </div>
 
           {/* 1-Line Contextual Callout */}
-          <div className="px-3 py-2 rounded-lg bg-white border border-[#E1E3E3] text-xs text-[#343B43] flex items-start gap-2">
+          <div className="px-3 py-2 rounded-lg bg-white border border-[#EEF0F5] text-xs text-[#343B43] flex items-start gap-2">
             <span className="text-emerald-400 font-bold shrink-0">📍</span>
             <div className="leading-relaxed">
               <strong className="text-[#191F2C]">
@@ -665,7 +665,7 @@ export const AppleDailySignalHero: React.FC = () => {
         {/* 5. Actionable BTC Accumulation Forecast & 4-Tier Dip-Catching Ladder */}
         <div
           data-testid="accumulation-forecast-ladder"
-          className="relative z-10 p-4 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] space-y-3"
+          className="relative z-10 p-4 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] space-y-3"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
             <div className="flex flex-wrap items-center gap-2">
@@ -675,7 +675,7 @@ export const AppleDailySignalHero: React.FC = () => {
                   ? '🎯 NÓN XÁC SUẤT GIÁ TƯƠNG LAI & 4 TẦNG ĐÓN SÓNG TÍCH LŨY BTC (30D/90D)'
                   : '🎯 PROBABILISTIC FORWARD CONE & 4-TIER BTC ACCUMULATION LADDER'}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.05] text-[#343B43] border border-[#E1E3E3]">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.05] text-[#343B43] border border-[#EEF0F5]">
                 Skew S={forwardCone?.sampleSkewness ?? -0.28} • Kurt K={forwardCone?.excessKurtosis ?? 2.45} • σ={forwardCone?.mixtureSigmaAnnualized ?? 38.8}%
               </span>
             </div>
@@ -692,7 +692,7 @@ export const AppleDailySignalHero: React.FC = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 font-mono text-xs">
             {/* 30D Compact Strip */}
-            <div className="px-3 py-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between gap-2">
+            <div className="px-3 py-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between gap-2">
               <span className="text-[11px] font-sans font-semibold text-[#343B43] whitespace-nowrap">
                 {isVi ? 'Dự Phóng 30 Ngày (30D)' : '30D Cone'}
               </span>
@@ -712,7 +712,7 @@ export const AppleDailySignalHero: React.FC = () => {
             </div>
 
             {/* 90D Compact Strip */}
-            <div className="px-3 py-2 rounded-lg bg-white border border-[#E1E3E3] flex items-center justify-between gap-2">
+            <div className="px-3 py-2 rounded-lg bg-white border border-[#EEF0F5] flex items-center justify-between gap-2">
               <span className="text-[11px] font-sans font-semibold text-[#343B43] whitespace-nowrap">
                 {isVi ? 'Dự Phóng 90 Ngày (90D)' : '90D Cone'}
               </span>
@@ -735,7 +735,7 @@ export const AppleDailySignalHero: React.FC = () => {
           {/* 4-Tier Actionable Dip-Buying Forecast Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-[11px]">
             <div
-              className="p-2.5 rounded-lg bg-white border border-[#E1E3E3] space-y-1"
+              className="p-2.5 rounded-lg bg-white border border-[#EEF0F5] space-y-1"
               title={isVi ? forecastModel.touchProbabilities.tier1.definitionVi : forecastModel.touchProbabilities.tier1.definitionEn}
             >
               <div className="flex items-center justify-between">
@@ -756,7 +756,7 @@ export const AppleDailySignalHero: React.FC = () => {
             </div>
 
             <div
-              className="p-2.5 rounded-lg bg-white border border-[#E1E3E3] space-y-1"
+              className="p-2.5 rounded-lg bg-white border border-[#EEF0F5] space-y-1"
               title={isVi ? forecastModel.touchProbabilities.tier2.definitionVi : forecastModel.touchProbabilities.tier2.definitionEn}
             >
               <div className="flex items-center justify-between">
@@ -822,11 +822,11 @@ export const AppleDailySignalHero: React.FC = () => {
       </div>
 
       {/* ================= RIGHT BENTO (4 COLS): FEY / STRIPE EXECUTION TICKET ================= */}
-      <div className="lg:col-span-4 rounded-2xl bg-white border border-[#E1E3E3] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_20px_40px_-15px_rgba(0,0,0,0.65)] p-5 sm:p-6 backdrop-blur-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
+      <div className="lg:col-span-4 rounded-2xl bg-white border border-[#EEF0F5] shadow-[inset_0_1px_0_0_rgba(255,255,255,0.08),0_20px_40px_-15px_rgba(0,0,0,0.65)] p-5 sm:p-6 backdrop-blur-xl flex flex-col justify-between space-y-4 relative overflow-hidden">
         <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-transparent pointer-events-none" />
         {/* 1. Ticket Header & Portfolio Summary */}
         <div className="space-y-3">
-          <div className="flex items-center justify-between pb-2.5 border-b border-[#E1E3E3]">
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#EEF0F5]">
             <span className="text-[11px] uppercase tracking-[0.06em] text-[#64748B] font-medium flex items-center gap-1.5">
               <Wallet className="w-3.5 h-3.5 text-cyan-400" />
               <span>
@@ -842,7 +842,7 @@ export const AppleDailySignalHero: React.FC = () => {
                 <span>BINANCE LIVE</span>
               </span>
             ) : (
-              <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-[#F8FAFC] text-[#64748B] border border-[#E1E3E3]">
+              <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-[#F4F6F9] text-[#64748B] border border-[#EEF0F5]">
                 LOCAL
               </span>
             )}
@@ -877,12 +877,12 @@ export const AppleDailySignalHero: React.FC = () => {
           </div>
 
           {/* Compact Holdings Grid */}
-          <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-[#F8FAFC] border border-[#E1E3E3] text-[11px]">
+          <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-[#F4F6F9] border border-[#EEF0F5] text-[11px]">
             <div>
               <div className="text-[#64748B]">{isVi ? 'Nắm Giữ BTC' : 'BTC Held'}</div>
               <div className="font-mono font-bold text-amber-400 tabular-nums mt-0.5">{totalBtc.toFixed(4)} BTC</div>
             </div>
-            <div className="border-x border-[#E1E3E3] px-2">
+            <div className="border-x border-[#EEF0F5] px-2">
               <div className="text-[#64748B]">{isVi ? 'Số Dư USDT' : 'Dry Powder'}</div>
               <div className="font-mono font-bold text-emerald-400 tabular-nums mt-0.5">{formatUSD(dryPowderUsd, 0)}</div>
             </div>
@@ -909,7 +909,7 @@ export const AppleDailySignalHero: React.FC = () => {
         </div>
 
         {/* 2. Primary Action Box: Continuous Fractional Kelly Execution (3% Accent Border Rule) */}
-        <div className="p-4 rounded-xl bg-[#F8FAFC] border border-emerald-500/30 shadow-[inset_0_1px_0_0_rgba(16,185,129,0.15)] space-y-3">
+        <div className="p-4 rounded-xl bg-[#F4F6F9] border border-emerald-500/30 shadow-[inset_0_1px_0_0_rgba(16,185,129,0.15)] space-y-3">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-[0.06em] flex items-center gap-1.5">
               <Zap className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400 shrink-0" />
@@ -950,7 +950,7 @@ export const AppleDailySignalHero: React.FC = () => {
                     setBudgetInput(dcaBudget.toString());
                     setIsEditingBudget(true);
                   }}
-                  className="flex items-center gap-1 text-[#343B43] hover:text-[#191F2C] bg-white px-2 py-0.5 rounded-lg border border-[#E1E3E3] transition-colors cursor-pointer"
+                  className="flex items-center gap-1 text-[#343B43] hover:text-[#191F2C] bg-white px-2 py-0.5 rounded-lg border border-[#EEF0F5] transition-colors cursor-pointer"
                   title={isVi ? 'Bấm để đổi ngân sách tháng' : 'Click to edit monthly budget'}
                 >
                   <span className="text-[#64748B]">{isVi ? 'Ngân sách:' : 'Budget:'}</span>
@@ -982,7 +982,7 @@ export const AppleDailySignalHero: React.FC = () => {
 
           {/* Single Clean Kelly Badge Row + Interactive Formula Popover Toggle */}
           <div className="space-y-1.5">
-            <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono text-[#343B43] bg-white px-2.5 py-1.5 rounded-lg border border-[#E1E3E3]">
+            <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] font-mono text-[#343B43] bg-white px-2.5 py-1.5 rounded-lg border border-[#EEF0F5]">
               <span>Kelly: <strong className="text-amber-300">{confluenceMultiplier.toFixed(2)}x</strong></span>
               <span className="text-[#64748B]">•</span>
               <span>{isVi ? 'Lời/Lỗ:' : 'Odds:'} <strong className="text-[#191F2C]">{kelly?.payoffOddsB?.toFixed(2) ?? '1.92'}x</strong></span>
@@ -1000,7 +1000,7 @@ export const AppleDailySignalHero: React.FC = () => {
             </div>
 
             {showKellyFormula && (
-              <div className="p-2.5 rounded-lg bg-white border border-[#E1E3E3] text-[11px] text-[#343B43] font-mono space-y-1 animate-fadeIn">
+              <div className="p-2.5 rounded-lg bg-white border border-[#EEF0F5] text-[11px] text-[#343B43] font-mono space-y-1 animate-fadeIn">
                 <div className="text-cyan-300 font-semibold">
                   f* = 0.5 × [ p(S) - (1 - p(S)) / b ] (Bounded [0.50x, 1.50x])
                 </div>
@@ -1020,7 +1020,7 @@ export const AppleDailySignalHero: React.FC = () => {
           </div>
 
           {/* 3 Tactical ATR Limit Sniper Boxes with 7D Touch Probabilities */}
-          <div className="space-y-2 pt-1 border-t border-[#E1E3E3]">
+          <div className="space-y-2 pt-1 border-t border-[#EEF0F5]">
             <div className="flex items-center justify-between text-[11px]">
               <span className="font-semibold text-[#191F2C] flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5 text-cyan-400" />
@@ -1033,7 +1033,7 @@ export const AppleDailySignalHero: React.FC = () => {
 
             <div className="grid grid-cols-3 gap-1.5 text-xs font-mono">
               {/* Leg 1: Market */}
-              <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex flex-col justify-between">
+              <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex flex-col justify-between">
                 <div className="text-[#343B43] text-[10px] font-sans font-medium truncate">
                   {isVi ? `Khớp Market (${(marketPct * 100).toFixed(0)}%)` : `Market (${(marketPct * 100).toFixed(0)}%)`}
                 </div>
@@ -1046,7 +1046,7 @@ export const AppleDailySignalHero: React.FC = () => {
               </div>
 
               {/* Leg 2: Limit 1 (Snapped to HVN Zone 1 + $25) */}
-              <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex flex-col justify-between">
+              <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex flex-col justify-between">
                 <div className="text-cyan-300 text-[10px] font-sans font-medium truncate">
                   {isVi ? `Limit Hỗ Trợ 1 (${(limit1Pct * 100).toFixed(0)}%)` : `Limit 1 (${(limit1Pct * 100).toFixed(0)}%)`}
                 </div>
@@ -1059,7 +1059,7 @@ export const AppleDailySignalHero: React.FC = () => {
               </div>
 
               {/* Leg 3: Limit 2 (Snapped to HVN Zone 2 + $25) */}
-              <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] flex flex-col justify-between">
+              <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] flex flex-col justify-between">
                 <div className="text-purple-300 text-[10px] font-sans font-medium truncate">
                   {isVi ? `Limit Quét Râu 2 (${(limit2Pct * 100).toFixed(0)}%)` : `Limit 2 (${(limit2Pct * 100).toFixed(0)}%)`}
                 </div>
@@ -1073,7 +1073,7 @@ export const AppleDailySignalHero: React.FC = () => {
             </div>
 
             {/* Live Binance Spot Orderbook Whale Bid-Wall & VPVR High-Volume Nodes */}
-            <div className="p-2 rounded-lg bg-white border border-[#E1E3E3] space-y-1 text-[11px]">
+            <div className="p-2 rounded-lg bg-white border border-[#EEF0F5] space-y-1 text-[11px]">
               <div className="flex items-center justify-between">
                 <span className="text-[#343B43] font-medium flex items-center gap-1">
                   <span>🐋</span>
@@ -1140,7 +1140,7 @@ export const AppleDailySignalHero: React.FC = () => {
               )}
 
               <div className="grid grid-cols-2 gap-2 font-mono text-[10px]">
-                <div className="p-2 rounded bg-white border border-[#E1E3E3] space-y-0.5">
+                <div className="p-2 rounded bg-white border border-[#EEF0F5] space-y-0.5">
                   <div className="text-[#64748B] font-sans font-semibold">
                     {isVi ? `Về Power Law (${formatUSD(fairValue, 0)}):` : `At Fair Value (${formatUSD(fairValue, 0)}):`}
                   </div>
@@ -1155,7 +1155,7 @@ export const AppleDailySignalHero: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="p-2 rounded bg-white border border-[#E1E3E3] space-y-0.5">
+                <div className="p-2 rounded bg-white border border-[#EEF0F5] space-y-0.5">
                   <div className="text-[#64748B] font-sans font-semibold">
                     {isVi ? `Chạm Đỉnh Pi Top (${formatUSD(piCycleTop, 0)}):` : `At Pi Top (${formatUSD(piCycleTop, 0)}):`}
                   </div>
@@ -1190,7 +1190,7 @@ export const AppleDailySignalHero: React.FC = () => {
               type="button"
               onClick={() => fetchBinancePortfolio()}
               disabled={isBinanceSyncing}
-              className="py-2.5 px-3 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] text-[#343B43] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
+              className="py-2.5 px-3 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] text-[#343B43] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${isBinanceSyncing ? 'animate-spin' : ''}`} />
               <span>
@@ -1203,7 +1203,7 @@ export const AppleDailySignalHero: React.FC = () => {
             <button
               type="button"
               onClick={() => setBinanceModalOpen(true)}
-              className="py-2.5 px-3 rounded-xl bg-[#F8FAFC] hover:bg-[#F1F5F9] border border-[#E1E3E3] text-[#191F2C] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              className="py-2.5 px-3 rounded-xl bg-[#F4F6F9] hover:bg-[#FFFFFF] border border-[#EEF0F5] text-[#191F2C] font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
             >
               <Wallet className="w-3.5 h-3.5 text-amber-400" />
               <span>{isVi ? 'Đồng Bộ Ví Binance' : 'Connect Binance'}</span>
