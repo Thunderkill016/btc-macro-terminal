@@ -1,6 +1,8 @@
-import React, { useState, useRef, useCallback, Suspense, lazy } from 'react';
+import React, { useState, useRef, useCallback, useMemo, Suspense, lazy } from 'react';
 import { useTerminalStore } from '../../store/useTerminalStore';
-import { formatUSD, formatVND } from '../../lib/formatters';
+import { formatUSD, formatVND, formatSats } from '../../lib/formatters';
+import { useUnifiedMetrics } from '../../lib/metricsSelector';
+import { RECENT_ETF_DAILY_FLOWS } from '../../data/macroEtfData';
 import { BearTrapBanner } from '../common/BearTrapBanner';
 import { AppleCycleChart } from '../apple/AppleCycleChart';
 import { AppleCyclePeakRadar } from '../apple/AppleCyclePeakRadar';
@@ -39,6 +41,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
   const confluence = useTerminalStore((s) => s.confluenceResult);
   const liveCoinMetrics = useTerminalStore((s) => s.liveCoinMetrics);
   const portfolioSummary = useTerminalStore((s) => s.portfolioSummary);
+  const realCyclePoints = useTerminalStore((s) => s.realCyclePoints);
+  const backtestResult = useTerminalStore((s) => s.backtestResult);
+  const transactions = useTerminalStore((s) => s.transactions);
+  const orderbookDepth = useTerminalStore((s) => s.orderbookDepth);
+  const dcaBudget = useTerminalStore((s) => s.dcaBudget);
+  const macro = useTerminalStore((s) => s.macro);
   const locale = useTerminalStore((s) => s.locale);
   const setLocale = useTerminalStore((s) => s.setLocale);
   const setCommandPaletteOpen = useTerminalStore((s) => s.setCommandPaletteOpen);
@@ -62,23 +70,136 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     }
   };
 
-  // Fallbacks & formatted values
-  const currentPrice = ticker?.price && ticker.price > 0 ? ticker.price : 75790;
+  // SSOT Unified Metrics (Real market live data)
+  const metrics = useUnifiedMetrics();
+  const currentPrice = metrics.livePrice;
   const change24h = ticker?.change24h ?? 2.45;
   const isUp = change24h >= 0;
-  const confluenceScore = confluence?.totalScoreExact ?? 80.75;
-  const mvrvScore = liveCoinMetrics?.mvrv ?? 1.39;
-  const ahr999Score = 0.48;
-  const puellScore = 0.88;
-  const netPnlUsd = portfolioSummary?.unrealizedPnlUsd ? Math.round(portfolioSummary.unrealizedPnlUsd) : 14742;
-  const netPnlPercent = portfolioSummary?.unrealizedPnlPercent ? `${portfolioSummary.unrealizedPnlPercent.toFixed(2)}%` : '+31.79%';
+  const confluenceScore = metrics.confluenceScoreExact;
+  const mvrvScore = metrics.mvrv;
+  const ahr999Score = metrics.ahr999;
+  const latestPoint = realCyclePoints && realCyclePoints.length > 0 ? realCyclePoints[realCyclePoints.length - 1] : null;
+  const puellScore = latestPoint?.puellMultiple ?? 0.88;
+
+  // Real Dynamic Portfolio / Backtest Returns:
+  const hasUserPortfolio = (portfolioSummary?.totalInvestedUsd ?? 0) > 0;
+  const netPnlUsd = hasUserPortfolio
+    ? Math.round(portfolioSummary?.unrealizedPnlUsd ?? 0)
+    : Math.round(backtestResult?.btcPortfolio?.profitUsd ?? 42150);
+  const netPnlPercent = hasUserPortfolio
+    ? `${(portfolioSummary?.unrealizedPnlPercent ?? 0) >= 0 ? '+' : ''}${(portfolioSummary?.unrealizedPnlPercent ?? 0).toFixed(2)}%`
+    : `+${(backtestResult?.btcPortfolio?.roiPercent ?? 140.5).toFixed(1)}%`;
+  const pnlSubtitle = hasUserPortfolio
+    ? (isVi ? 'danh mục' : 'portfolio')
+    : (isVi ? 'mô hình 3 năm' : '3Y model');
 
   // Local UI States
   const [currency, setCurrency] = useState<'USD' | 'VND'>('USD');
   const [ledgerTab, setLedgerTab] = useState<'recent' | 'triggers'>('recent');
   const [aiPrompt, setAiPrompt] = useState<string>('');
 
-  // 1. Spline Curve Interactive Tooltip State
+  // Half-Kelly Tactical Execution Sizing
+  const weeklyBaseUsd = (dcaBudget * 0.70) / 4.33;
+  const kelly = confluence?.kellyTactical;
+  const confluenceMultiplier = metrics.confluenceMultiplier;
+  const kellyMultiplier = kelly?.dcaMultiplier ?? confluenceMultiplier;
+  const tacticalTotalUsd = weeklyBaseUsd * kellyMultiplier;
+
+  const hurstVal = confluence?.regime?.hurstExponent ?? 0.44;
+  const atr14 = kelly?.atr14 ?? 2150;
+
+  const marketPct = kelly?.marketPct ?? (hurstVal > 0.55 ? 0.70 : hurstVal < 0.45 ? 0.30 : 0.50);
+  const limit1Pct = kelly?.limit1Pct ?? (hurstVal > 0.55 ? 0.20 : hurstVal < 0.45 ? 0.45 : 0.30);
+  const limit2Pct = kelly?.limit2Pct ?? (hurstVal > 0.55 ? 0.10 : hurstVal < 0.45 ? 0.25 : 0.20);
+  const tacticalMarketUsd = Number((tacticalTotalUsd * marketPct).toFixed(2));
+  const tacticalLimit1Usd = Number((tacticalTotalUsd * limit1Pct).toFixed(2));
+  const tacticalLimit2Usd = Number((tacticalTotalUsd - tacticalMarketUsd - tacticalLimit1Usd).toFixed(2));
+
+  const rawObWall = orderbookDepth?.largestBidWallPrice || Math.round(currentPrice * 0.985);
+  const obLargestWallPrice = rawObWall < currentPrice ? rawObWall : Math.floor((currentPrice * 0.988) / 25) * 25;
+  const limit1Price = Math.min(Math.round(currentPrice - 25), obLargestWallPrice + 25);
+  const rawLimit2 = orderbookDepth?.snappedLimit2Price ?? kelly?.limit2Price ?? Math.round(currentPrice - 1.6 * atr14);
+  const limit2Price = Math.min(Math.round(limit1Price - 150), rawLimit2);
+
+  // 1. DYNAMIC SPLINE CURVE COMPUTATION FROM REAL BACKTEST TIMELINE
+  const timeline = useMemo(() => backtestResult?.timeline || [], [backtestResult]);
+
+  const maxEquityVal = useMemo(() => {
+    if (timeline.length === 0) return 80000;
+    return Math.max(...timeline.map((p) => p.btcValue), 1000);
+  }, [timeline]);
+
+  const ceilingVal = useMemo(() => {
+    return Math.max(20000, Math.ceil(maxEquityVal / 20000) * 20000);
+  }, [maxEquityVal]);
+
+  const svgXMin = 50;
+  const svgXMax = 810;
+  const svgYMin = 20;
+  const svgYMax = 220;
+
+  const splinePoints = useMemo(() => {
+    if (timeline.length < 2) return [];
+    return timeline.map((pt, i) => {
+      const x = svgXMin + (i / (timeline.length - 1)) * (svgXMax - svgXMin);
+      const ratio = Math.max(0, Math.min(1, pt.btcValue / ceilingVal));
+      const y = svgYMax - ratio * (svgYMax - svgYMin);
+      return { x, y, pt };
+    });
+  }, [timeline, ceilingVal]);
+
+  const { pathLineD, pathAreaD, keypointMarkers } = useMemo(() => {
+    if (splinePoints.length < 2) {
+      return {
+        pathLineD: 'M 50,180 L 810,60',
+        pathAreaD: 'M 50,180 L 810,60 L 810,234 L 50,234 Z',
+        keypointMarkers: [],
+      };
+    }
+
+    let lineD = `M ${splinePoints[0].x.toFixed(1)},${splinePoints[0].y.toFixed(1)}`;
+    for (let i = 0; i < splinePoints.length - 1; i++) {
+      const p0 = splinePoints[Math.max(0, i - 1)];
+      const p1 = splinePoints[i];
+      const p2 = splinePoints[i + 1];
+      const p3 = splinePoints[Math.min(splinePoints.length - 1, i + 2)];
+
+      const tension = 0.25;
+      const cp1x = p1.x + (p2.x - p0.x) * tension;
+      const cp1y = p1.y + (p2.y - p0.y) * tension;
+      const cp2x = p2.x - (p3.x - p1.x) * tension;
+      const cp2y = p2.y - (p3.y - p1.y) * tension;
+
+      lineD += ` C ${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)}`;
+    }
+
+    const last = splinePoints[splinePoints.length - 1];
+    const first = splinePoints[0];
+    const areaD = `${lineD} L ${last.x.toFixed(1)},234 L ${first.x.toFixed(1)},234 Z`;
+
+    const step = Math.floor((splinePoints.length - 1) / 3);
+    const keypointMarkers = [
+      splinePoints[0],
+      splinePoints[step],
+      splinePoints[step * 2],
+      splinePoints[splinePoints.length - 1],
+    ];
+
+    return { pathLineD: lineD, pathAreaD: areaD, keypointMarkers };
+  }, [splinePoints]);
+
+  const xAxisLabels = useMemo(() => {
+    if (splinePoints.length === 0) return ['2022', '2023', '2024', '2025', '2026'];
+    const count = Math.min(6, splinePoints.length);
+    const labels: string[] = [];
+    for (let i = 0; i < count; i++) {
+      const idx = Math.round((i / (count - 1)) * (splinePoints.length - 1));
+      labels.push(splinePoints[idx].pt.date);
+    }
+    return labels;
+  }, [splinePoints]);
+
+  // Spline Tooltip State
   const [splineTooltip, setSplineTooltip] = useState<{
     visible: boolean;
     x: number;
@@ -91,77 +212,24 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     visible: false,
     x: 0,
     y: 0,
-    date: isVi ? '16 Tháng 6, 2026' : '16 Jun, 2026',
-    val: '$67,490.00',
-    chg: '+184.2%',
-    tag: isVi ? 'Vùng Đỉnh Chu Kỳ' : 'Peak Zone',
-  });
-
-  // 2. Bar Chart Interactive Tooltip State
-  const [barTooltip, setBarTooltip] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-    date: string;
-    amount: string;
-    type: string;
-    isNeg: boolean;
-  }>({
-    visible: false,
-    x: 0,
-    y: 0,
-    date: isVi ? '06 Tháng 6, 2026' : '06 Jun, 2026',
-    amount: '+$8,450k',
-    type: isVi ? 'Cá Voi Mua Gom Thỏa Thuận' : 'Whale Spot Absorption',
-    isNeg: false,
-  });
-
-  // 3. Radar Chart Interactive Tooltip State
-  const [radarTooltip, setRadarTooltip] = useState<{
-    visible: boolean;
-    x: number;
-    y: number;
-    metric: string;
-    type: string;
-    val: string;
-    delta: string;
-    isOrange: boolean;
-  }>({
-    visible: false,
-    x: 0,
-    y: 0,
-    metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV',
-    type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run',
-    val: '1.39',
-    delta: '+0.14',
-    isOrange: false,
+    date: '',
+    val: '',
+    chg: '',
+    tag: '',
   });
 
   const splineSvgRef = useRef<SVGSVGElement | null>(null);
-  const barSvgRef = useRef<SVGSVGElement | null>(null);
-  const radarSvgRef = useRef<SVGSVGElement | null>(null);
 
-  // Spline mouse move handler
   const handleSplineMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!splineSvgRef.current) return;
+    if (!splineSvgRef.current || splinePoints.length === 0) return;
     const rect = splineSvgRef.current.getBoundingClientRect();
     const clientX = e.clientX - rect.left;
-    const svgWidth = rect.width;
-    const normX = Math.max(0, Math.min(1, clientX / svgWidth));
-    const targetSvgX = normX * 820;
+    const normX = Math.max(0, Math.min(1, clientX / rect.width));
+    const targetSvgX = svgXMin + normX * (svgXMax - svgXMin);
 
-    const keypoints = [
-      { x: 60, y: 135, date: isVi ? '05 Tháng 6, 2026' : '05 Jun, 2026', val: '$14,200.00', chg: '+12.4%', tag: isVi ? 'Tích Lũy DCA' : 'DCA Accumulation' },
-      { x: 150, y: 75, date: isVi ? '09 Tháng 6, 2026' : '09 Jun, 2026', val: '$28,400.00', chg: '+38.5%', tag: isVi ? 'Nhịp Tăng Sóng' : 'Local High' },
-      { x: 310, y: 165, date: isVi ? '11 Tháng 6, 2026' : '11 Jun, 2026', val: '$25,710.00', chg: '+42.8%', tag: isVi ? 'Gom Khi Giá Dip' : 'Cycle Dip Buy' },
-      { x: 450, y: 55, date: isVi ? '16 Tháng 6, 2026' : '16 Jun, 2026', val: '$67,490.00', chg: '+184.2%', tag: isVi ? 'Vùng Đỉnh Chu Kỳ' : 'Peak Zone' },
-      { x: 605, y: 175, date: isVi ? '21 Tháng 6, 2026' : '21 Jun, 2026', val: '$22,180.00', chg: '+31.5%', tag: isVi ? 'Vùng Tích Lũy Phụ' : 'Secondary DCA' },
-      { x: 810, y: 105, date: isVi ? '25 Tháng 6, 2026' : '25 Jun, 2026', val: '$44,820.00', chg: '+115.6%', tag: isVi ? 'Bùng Nổ Chu Kỳ' : 'Macro Expansion' },
-    ];
-
-    let nearest = keypoints[0];
-    let minDist = Math.abs(keypoints[0].x - targetSvgX);
-    for (const kp of keypoints) {
+    let nearest = splinePoints[0];
+    let minDist = Math.abs(splinePoints[0].x - targetSvgX);
+    for (const kp of splinePoints) {
       const d = Math.abs(kp.x - targetSvgX);
       if (d < minDist) {
         minDist = d;
@@ -171,61 +239,82 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
     const tipX = (nearest.x / 820) * rect.width;
     const tipY = (nearest.y / 250) * rect.height - 12;
+    const pt = nearest.pt;
+    const profit = pt.btcValue - pt.cumulativeInvested;
+    const profitPct = pt.cumulativeInvested > 0 ? (profit / pt.cumulativeInvested) * 100 : 0;
+    const isProfitable = profit >= 0;
 
     setSplineTooltip({
       visible: true,
       x: tipX,
       y: tipY,
-      date: nearest.date,
-      val: nearest.val,
-      chg: nearest.chg,
-      tag: nearest.tag,
+      date: pt.date,
+      val: formatUSD(pt.btcValue),
+      chg: `${isProfitable ? '+' : ''}${profitPct.toFixed(1)}%`,
+      tag: profitPct > 50
+        ? (isVi ? 'Bùng Nổ Chu Kỳ' : 'Cycle Expansion')
+        : profitPct > 0
+        ? (isVi ? 'Lãi Vị Thế DCA' : 'In Profit')
+        : (isVi ? 'Vùng Gom Giá Rẻ' : 'Dip Accumulation'),
     });
-  }, [isVi]);
+  }, [splinePoints, isVi]);
 
   const handleSplineMouseLeave = useCallback(() => {
     setSplineTooltip((prev) => ({ ...prev, visible: false }));
   }, []);
 
-  // Spot Bar Data (19 Sessions)
-  const barData = [
-    { x: 58, y: 120, h: 24, amount: '-$1,820k', date: isVi ? '05/06/2026' : '05 Jun, 2026', type: isVi ? 'Chuyển Lên Sàn Xả Hàng' : 'Exchange Inflow Dump', isNeg: true },
-    { x: 78, y: 22, h: 98, amount: '+$8,450k', date: isVi ? '06/06/2026' : '06 Jun, 2026', type: isVi ? 'Cá Voi Hấp Thụ Lệnh' : 'Whale Spot Absorption', isNeg: false },
-    { x: 98, y: 102, h: 18, amount: '+$1,450k', date: isVi ? '07/06/2026' : '07 Jun, 2026', type: isVi ? 'Dòng Vốn DCA Nhỏ Lẻ' : 'Retail DCA Inflow', isNeg: false },
-    { x: 118, y: 120, h: 12, amount: '-$850k', date: isVi ? '08/06/2026' : '08 Jun, 2026', type: isVi ? 'Thợ Đào Chuyển Khỏi Ví' : 'Miner Treasury Outflow', isNeg: true },
-    { x: 138, y: 96, h: 24, amount: '+$1,920k', date: isVi ? '09/06/2026' : '09 Jun, 2026', type: isVi ? 'DCA Định Kỳ Thể Chế' : 'Institutional DCA', isNeg: false },
-    { x: 158, y: 120, h: 9, amount: '-$640k', date: isVi ? '10/06/2026' : '10 Jun, 2026', type: isVi ? 'Chốt Lời Ngắn Hạn' : 'Spot Profit Taking', isNeg: true },
-    { x: 178, y: 62, h: 58, amount: '+$4,820k', date: isVi ? '11/06/2026' : '11 Jun, 2026', type: isVi ? 'Dòng Tiền Quỹ Spot ETF' : 'ETF Net Accumulation', isNeg: false },
-    { x: 198, y: 82, h: 38, amount: '+$3,100k', date: isVi ? '12/06/2026' : '12 Jun, 2026', type: isVi ? 'Lực Gom Hấp Thụ Spot' : 'Spot Absorption', isNeg: false },
-    { x: 218, y: 36, h: 84, amount: '+$7,210k', date: isVi ? '13/06/2026' : '13 Jun, 2026', type: isVi ? 'Tường Mua Gom Cá Voi' : 'Whale Cluster Bid', isNeg: false },
-    { x: 238, y: 120, h: 32, amount: '-$2,410k', date: isVi ? '14/06/2026' : '14 Jun, 2026', type: isVi ? 'Bảo Hiểm Phái Sinh Rút Vốn' : 'Derivatives Hedging Outflow', isNeg: true },
-    { x: 258, y: 72, h: 48, amount: '+$3,950k', date: isVi ? '15/06/2026' : '15 Jun, 2026', type: isVi ? 'Hấp Thụ Sàn Đáy Sâu' : 'Dip Floor Absorption', isNeg: false },
-    { x: 278, y: 120, h: 18, amount: '-$1,340k', date: isVi ? '16/06/2026' : '16 Jun, 2026', type: isVi ? 'Tái Cân Bằng Danh Mục' : 'Rebalancing Outflow', isNeg: true },
-    { x: 298, y: 86, h: 34, amount: '+$2,840k', date: isVi ? '17/06/2026' : '17 Jun, 2026', type: isVi ? 'Tích Sản Có Hệ Thống' : 'Systematic DCA', isNeg: false },
-    { x: 318, y: 92, h: 28, amount: '+$2,200k', date: isVi ? '18/06/2026' : '18 Jun, 2026', type: isVi ? 'Rút Về Ví Lạnh (Tích Cực)' : 'Cold Wallet Outflow (Bullish)', isNeg: false },
-    { x: 338, y: 78, h: 42, amount: '+$3,450k', date: isVi ? '19/06/2026' : '19 Jun, 2026', type: isVi ? 'Làn Sóng Gom Spot' : 'Spot Inflow Wave', isNeg: false },
-    { x: 358, y: 70, h: 50, amount: '+$4,150k', date: isVi ? '20/06/2026' : '20 Jun, 2026', type: isVi ? 'Thanh Khoản ETF Đột Biến' : 'ETF High Volume', isNeg: false },
-    { x: 378, y: 120, h: 38, amount: '-$2,900k', date: isVi ? '21/06/2026' : '21 Jun, 2026', type: isVi ? 'Người Nắm Ngắn Hạn Bán' : 'Short-Term Holder Realization', isNeg: true },
-    { x: 398, y: 58, h: 62, amount: '+$5,200k', date: isVi ? '22/06/2026' : '22 Jun, 2026', type: isVi ? 'Lực Gom Cá Voi Chủ Động' : 'Aggressive Whale Buying', isNeg: false },
-    { x: 418, y: 120, h: 6, amount: '-$480k', date: isVi ? '23/06/2026' : '23 Jun, 2026', type: isVi ? 'Áp Lực Bán Nhẹ' : 'Minor Outflow', isNeg: true },
-  ];
+  // 2. DYNAMIC ETF & SPOT INFLOW BARS
+  const barSvgRef = useRef<SVGSVGElement | null>(null);
+  const [barTooltip, setBarTooltip] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    date: string;
+    amount: string;
+    type: string;
+    isNeg: boolean;
+    btcAbsorbed?: number;
+  }>({
+    visible: false,
+    x: 0,
+    y: 0,
+    date: '',
+    amount: '',
+    type: '',
+    isNeg: false,
+  });
 
-  // Radar Vertices Data
-  const radarVertices = [
-    { cx: 160, cy: 52, metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV', val: '1.39', delta: '+0.14', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    { cx: 230, cy: 98, metric: isVi ? 'Bội Số Mayer' : 'Mayer Multiple', val: '1.34', delta: '+0.16', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    { cx: 222, cy: 162, metric: isVi ? 'Phục Hồi Puell' : 'Puell Recovery', val: '0.88', delta: '+0.13', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    { cx: 154, cy: 202, metric: isVi ? 'Lãi/Lỗ STH' : 'STH Risk:Reward', val: '3.50', delta: '+0.85', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    { cx: 102, cy: 168, metric: isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown Safety', val: '-10.4%', delta: isVi ? '+8.1% (Chống Chịu Tốt)' : '+8.1% (Resilient)', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    { cx: 108, cy: 98, metric: isVi ? 'Ổn Định Hash Ribbon' : 'Hash Ribbon Consistency', val: '89.2', delta: '+7.2', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
-    // Benchmark
-    { cx: 165, cy: 35, metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV', val: '1.25', delta: isVi ? 'TB Chu Kỳ' : 'Cycle Avg', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-    { cx: 242, cy: 88, metric: isVi ? 'Bội Số Mayer' : 'Mayer Multiple', val: '1.18', delta: '200D SMA', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-    { cx: 238, cy: 168, metric: isVi ? 'Phục Hồi Puell' : 'Puell Recovery', val: '0.75', delta: isVi ? 'Hậu Halving' : 'Post-Halving', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-    { cx: 170, cy: 182, metric: isVi ? 'Lãi/Lỗ STH' : 'STH Risk:Reward', val: '2.65', delta: isVi ? 'Tiêu Chuẩn' : 'Standard', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-    { cx: 132, cy: 158, metric: isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown Safety', val: '-18.5%', delta: isVi ? 'Trung Bình' : 'Moderate', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-    { cx: 142, cy: 112, metric: isVi ? 'Ổn Định Hash Ribbon' : 'Hash Ribbon Consistency', val: '82.0', delta: isVi ? 'Nghịch Đảo Đào' : 'Miner Inversion', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
-  ];
+  const barData = useMemo(() => {
+    const flows = RECENT_ETF_DAILY_FLOWS;
+    const n = flows.length;
+    const xStart = 48;
+    const totalW = 390;
+    const step = totalW / n;
+    const maxFlow = Math.max(...flows.map((f) => Math.abs(f.netFlowMillionsUSD)), 500);
+
+    return flows.map((f, i) => {
+      const isNeg = f.netFlowMillionsUSD < 0;
+      const x = Math.round(xStart + i * step);
+      const absFlow = Math.abs(f.netFlowMillionsUSD);
+      const h = Math.max(4, Math.round((absFlow / maxFlow) * (isNeg ? 65 : 100)));
+      const y = isNeg ? 120 : 120 - h;
+      const formattedAmount = `${f.netFlowMillionsUSD >= 0 ? '+' : ''}$${f.netFlowMillionsUSD.toFixed(1)}M`;
+      const typeStr = isNeg
+        ? (isVi ? 'Thoái Vốn ETF / Áp Lực Bán' : 'ETF Net Outflow')
+        : (isVi ? 'Cá Voi & ETF Hấp Thụ Spot' : 'ETF & Whale Spot Inflow');
+
+      return {
+        x,
+        y,
+        h,
+        amount: formattedAmount,
+        date: f.date === 'Phiên gần nhất' ? (isVi ? 'Phiên gần nhất' : 'Latest') : f.date,
+        type: typeStr,
+        isNeg,
+        btcAbsorbed: f.btcAbsorbed,
+      };
+    });
+  }, [isVi]);
 
   const handleBarHover = (bar: typeof barData[0], e: React.MouseEvent) => {
     if (!barSvgRef.current) return;
@@ -243,10 +332,159 @@ export const BitcoinHorizonDashboard: React.FC = () => {
       amount: bar.amount,
       type: bar.type,
       isNeg: bar.isNeg,
+      btcAbsorbed: bar.btcAbsorbed,
     });
   };
 
-  const handleRadarHover = (v: typeof radarVertices[0], e: React.MouseEvent) => {
+  // 3. DYNAMIC QUANT RADAR DATA
+  const radarSvgRef = useRef<SVGSVGElement | null>(null);
+  const [radarTooltip, setRadarTooltip] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    metric: string;
+    type: string;
+    val: string;
+    delta: string;
+    isOrange: boolean;
+  }>({
+    visible: false,
+    x: 0,
+    y: 0,
+    metric: '',
+    type: '',
+    val: '',
+    delta: '',
+    isOrange: false,
+  });
+
+  const radarMetricsData = useMemo(() => {
+    const mvrvVal = mvrvScore;
+    const mvrvNorm = Math.max(0.18, Math.min(0.95, (mvrvVal - 0.5) / 2.5));
+    const mvrvBench = 1.25;
+    const mvrvBenchNorm = Math.max(0.18, Math.min(0.95, (mvrvBench - 0.5) / 2.5));
+
+    const mayerVal = metrics.mayerMultiple;
+    const mayerNorm = Math.max(0.18, Math.min(0.95, mayerVal / 2.0));
+    const mayerBench = 1.18;
+    const mayerBenchNorm = Math.max(0.18, Math.min(0.95, mayerBench / 2.0));
+
+    const puellVal = puellScore;
+    const puellNorm = Math.max(0.18, Math.min(0.95, puellVal / 1.8));
+    const puellBench = 0.75;
+    const puellBenchNorm = Math.max(0.18, Math.min(0.95, puellBench / 1.8));
+
+    const fgVal = metrics.fearGreedIndex;
+    const fgNorm = Math.max(0.18, Math.min(0.95, fgVal / 100));
+    const fgBench = 50;
+    const fgBenchNorm = 0.50;
+
+    const mddSafety = confluence?.downsideRisk?.riskScore !== undefined ? Math.max(0, 100 - confluence.downsideRisk.riskScore) : 89.6;
+    const mddNorm = Math.max(0.18, Math.min(0.95, mddSafety / 100));
+    const mddBench = 81.5;
+    const mddBenchNorm = 0.815;
+
+    const hashVal = macro?.hashRibbonsDiffPct !== undefined ? 80 + macro.hashRibbonsDiffPct * 5 : 88.5;
+    const hashNorm = Math.max(0.18, Math.min(0.95, hashVal / 100));
+    const hashBench = 82.0;
+    const hashBenchNorm = 0.82;
+
+    const list = [
+      {
+        name: isVi ? 'Thắng MVRV' : 'Win Rate MVRV',
+        liveVal: mvrvVal.toFixed(2),
+        liveNorm: mvrvNorm,
+        benchVal: mvrvBench.toFixed(2),
+        benchNorm: mvrvBenchNorm,
+        delta: `${mvrvVal >= mvrvBench ? '+' : ''}${(mvrvVal - mvrvBench).toFixed(2)}`,
+      },
+      {
+        name: isVi ? 'Bội Số Mayer' : 'Mayer Multiple',
+        liveVal: mayerVal.toFixed(2),
+        liveNorm: mayerNorm,
+        benchVal: mayerBench.toFixed(2),
+        benchNorm: mayerBenchNorm,
+        delta: `${mayerVal >= mayerBench ? '+' : ''}${(mayerVal - mayerBench).toFixed(2)}`,
+      },
+      {
+        name: isVi ? 'Phục Hồi Puell' : 'Puell Recovery',
+        liveVal: puellVal.toFixed(2),
+        liveNorm: puellNorm,
+        benchVal: puellBench.toFixed(2),
+        benchNorm: puellBenchNorm,
+        delta: `${puellVal >= puellBench ? '+' : ''}${(puellVal - puellBench).toFixed(2)}`,
+      },
+      {
+        name: isVi ? 'Chỉ Số F&G (STH)' : 'STH Risk:Reward',
+        liveVal: `${fgVal} / 100`,
+        liveNorm: fgNorm,
+        benchVal: `${fgBench} (TB)`,
+        benchNorm: fgBenchNorm,
+        delta: `${fgVal >= fgBench ? '+' : ''}${fgVal - fgBench}`,
+      },
+      {
+        name: isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown Safety',
+        liveVal: `-${(100 - mddSafety).toFixed(1)}%`,
+        liveNorm: mddNorm,
+        benchVal: '-18.5%',
+        benchNorm: mddBenchNorm,
+        delta: isVi ? '+8.1% (Chống Chịu Tốt)' : '+8.1% (Resilient)',
+      },
+      {
+        name: isVi ? 'Ổn Định Hash Ribbon' : 'Hash Ribbon Consistency',
+        liveVal: hashVal.toFixed(1),
+        liveNorm: hashNorm,
+        benchVal: hashBench.toFixed(1),
+        benchNorm: hashBenchNorm,
+        delta: `${hashVal >= hashBench ? '+' : ''}${(hashVal - hashBench).toFixed(1)}`,
+      },
+    ];
+
+    const cx = 160;
+    const cy = 125;
+    const maxR = 90;
+
+    const liveVertices = list.map((item, i) => {
+      const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 6;
+      const r = maxR * item.liveNorm;
+      return {
+        cx: Math.round(cx + r * Math.cos(angle)),
+        cy: Math.round(cy + r * Math.sin(angle)),
+        metric: item.name,
+        val: item.liveVal,
+        delta: item.delta,
+        type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run',
+        isOrange: false,
+      };
+    });
+
+    const benchVertices = list.map((item, i) => {
+      const angle = -Math.PI / 2 + (i * 2 * Math.PI) / 6;
+      const r = maxR * item.benchNorm;
+      return {
+        cx: Math.round(cx + r * Math.cos(angle)),
+        cy: Math.round(cy + r * Math.sin(angle)),
+        metric: item.name,
+        val: item.benchVal,
+        delta: isVi ? 'Mốc Thể Chế' : 'Benchmark',
+        type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark',
+        isOrange: true,
+      };
+    });
+
+    const livePointsStr = liveVertices.map((v) => `${v.cx},${v.cy}`).join(' ');
+    const benchPointsStr = benchVertices.map((v) => `${v.cx},${v.cy}`).join(' ');
+
+    return {
+      liveVertices,
+      benchVertices,
+      allVertices: [...liveVertices, ...benchVertices],
+      livePointsStr,
+      benchPointsStr,
+    };
+  }, [mvrvScore, metrics.mayerMultiple, metrics.fearGreedIndex, puellScore, confluence?.downsideRisk?.riskScore, macro?.hashRibbonsDiffPct, isVi]);
+
+  const handleRadarHover = (v: { cx: number; cy: number; metric: string; val: string; delta: string; type: string; isOrange: boolean }, e: React.MouseEvent) => {
     if (!radarSvgRef.current) return;
     const rect = radarSvgRef.current.getBoundingClientRect();
     const tipX = (v.cx / 320) * rect.width;
@@ -535,7 +773,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
         {/* TAB 1: SPOT ACCUMULATION & CYCLE DASHBOARD */}
         {activeNav === 'home' && (
-          <div className="space-y-6 animate-fadeIn">
+          <div className="space-y-6 animate-fadeIn pb-32 sm:pb-36">
             {/* GREETING & HERO ACTION BAR */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
               <div>
@@ -635,6 +873,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-1 text-[11px] font-medium text-gray-400">
                         <span>{isVi ? 'Lãi / Lỗ Ròng' : 'Net P&L'}</span>
+                        <span className="text-[9px] text-gray-400">({pnlSubtitle})</span>
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">
                         {currency === 'USD' ? `$${netPnlUsd.toLocaleString()}` : formatVND(netPnlUsd * 25850)}
@@ -656,7 +895,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{ahr999Score.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded border border-purple-100">
-                        {isVi ? '<0.45 Gom Mạnh, 0.45-1.2 Đều' : '<0.45 All-in, 0.45-1.2 DCA'}
+                        {ahr999Score < 0.45
+                          ? (isVi ? '<0.45 Gom Tất Tay' : '<0.45 All-in')
+                          : ahr999Score <= 1.2
+                          ? (isVi ? '0.45-1.2 Tích Sản Đều' : '0.45-1.2 DCA')
+                          : (isVi ? '>1.2 Vùng Chốt Lời' : '>1.2 Take Profit')}
                       </span>
                     </div>
                   </div>
@@ -672,7 +915,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{mvrvScore.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
-                        {isVi ? 'Định Giá Rẻ (vs Đỉnh 2.8)' : 'Undervalued (vs 2.8 Top)'}
+                        {mvrvScore < 1.0
+                          ? (isVi ? '<1.0 Đáy Lịch Sử' : '<1.0 Floor')
+                          : mvrvScore < 2.0
+                          ? (isVi ? 'Định Giá Rẻ (vs Đỉnh 2.8)' : 'Undervalued (vs 2.8)')
+                          : (isVi ? 'Vùng Định Giá Cao' : 'Overvalued')}
                       </span>
                     </div>
                   </div>
@@ -688,7 +935,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{puellScore.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
-                        {isVi ? 'Doanh Thu Đào Lành Mạnh' : 'Healthy Miner Issuance'}
+                        {puellScore < 0.5
+                          ? (isVi ? '<0.5 Thợ Đào Đầu Hàng' : '<0.5 Miner Capitulation')
+                          : puellScore < 1.2
+                          ? (isVi ? 'Doanh Thu Đào Lành Mạnh' : 'Healthy Issuance')
+                          : (isVi ? '>1.5 Áp Lực Bán Đào Lớn' : '>1.5 High Miner Selling')}
                       </span>
                     </div>
                   </div>
@@ -731,44 +982,47 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                       </pattern>
                     </defs>
 
-                    {/* Grid Lines */}
+                    {/* Dynamic Grid Lines */}
                     <g className="text-[10px] fill-gray-400 font-mono" stroke="#EEF0F5" strokeDasharray="4,4" strokeWidth="1">
-                      <text fill="#9CA3AF" stroke="none" x="5" y="24">$80k -</text>
+                      <text fill="#9CA3AF" stroke="none" x="5" y="24">${Math.round(ceilingVal / 1000)}k -</text>
                       <line x1="50" x2="820" y1="20" y2="20"></line>
-                      <text fill="#9CA3AF" stroke="none" x="5" y="78">$60k -</text>
+                      <text fill="#9CA3AF" stroke="none" x="5" y="78">${Math.round((ceilingVal * 0.75) / 1000)}k -</text>
                       <line x1="50" x2="820" y1="74" y2="74"></line>
-                      <text fill="#9CA3AF" stroke="none" x="5" y="132">$40k -</text>
+                      <text fill="#9CA3AF" stroke="none" x="5" y="132">${Math.round((ceilingVal * 0.5) / 1000)}k -</text>
                       <line x1="50" x2="820" y1="128" y2="128"></line>
-                      <text fill="#9CA3AF" stroke="none" x="5" y="184">$20k -</text>
+                      <text fill="#9CA3AF" stroke="none" x="5" y="184">${Math.round((ceilingVal * 0.25) / 1000)}k -</text>
                       <line x1="50" x2="820" y1="180" y2="180"></line>
                       <text fill="#9CA3AF" stroke="none" x="5" y="238">$0k -</text>
                       <line x1="50" x2="820" y1="234" y2="234"></line>
                     </g>
 
-                    {/* Vertical Hatched Accumulation Zones */}
-                    <path d="M 220,105 L 240,115 C 270,140 280,165 310,165 C 330,165 350,145 375,120 L 375,234 L 220,234 Z" fill="url(#dotPattern)"></path>
-                    <path d="M 525,115 C 560,150 580,175 605,175 C 630,175 660,140 685,145 L 685,234 L 525,234 Z" fill="url(#dotPattern)"></path>
-
                     {/* Gradient Area under wave */}
                     <path
-                      d="M 60,135 C 90,135 110,80 150,75 C 190,70 215,110 240,115 C 270,120 285,165 310,165 C 340,165 360,140 380,118 C 400,96 420,55 450,55 C 480,55 500,100 525,115 C 555,133 570,175 605,175 C 635,175 655,130 690,130 C 725,130 750,175 780,175 C 800,175 810,120 820,105 L 820,234 L 60,234 Z"
+                      d={pathAreaD}
                       fill="url(#purpleGradient)"
                     ></path>
 
                     {/* Main Spline Wave */}
                     <path
-                      d="M 60,135 C 90,135 110,80 150,75 C 190,70 215,110 240,115 C 270,120 285,165 310,165 C 340,165 360,140 380,118 C 400,96 420,55 450,55 C 480,55 500,100 525,115 C 555,133 570,175 605,175 C 635,175 655,130 690,130 C 725,130 750,175 780,175 C 800,175 810,120 820,105"
+                      d={pathLineD}
                       fill="none"
                       stroke="#7C3AED"
                       strokeLinecap="round"
                       strokeWidth="3.5"
                     ></path>
 
-                    {/* Key Points */}
-                    <circle cx="310" cy="165" fill="#FFFFFF" r="4" stroke="#7C3AED" strokeWidth="2.5"></circle>
-                    <circle cx="450" cy="55" fill="#7C3AED" r="5" stroke="#FFFFFF" strokeWidth="2.5"></circle>
-                    <circle cx="605" cy="175" fill="#FFFFFF" r="4" stroke="#7C3AED" strokeWidth="2.5"></circle>
-                    <circle cx="810" cy="120" fill="#FFFFFF" r="4" stroke="#7C3AED" strokeWidth="2.5"></circle>
+                    {/* Key Point Markers */}
+                    {keypointMarkers.map((m, idx) => (
+                      <circle
+                        key={idx}
+                        cx={m.x}
+                        cy={m.y}
+                        fill={idx === keypointMarkers.length - 1 ? "#7C3AED" : "#FFFFFF"}
+                        r={idx === keypointMarkers.length - 1 ? 5 : 4}
+                        stroke="#7C3AED"
+                        strokeWidth="2.5"
+                      />
+                    ))}
                   </svg>
 
                   {/* Floating Tooltip Card */}
@@ -793,20 +1047,17 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                   )}
                 </div>
 
-                {/* Timeline X-Axis Labels */}
+                {/* Timeline X-Axis Labels (Dynamic) */}
                 <div className="flex justify-between items-center text-[11px] text-gray-400 font-mono font-medium pl-10 pr-2 pt-2 border-t border-gray-100">
-                  <span>05 Jun, 2026</span>
-                  <span>09 Jun, 2026</span>
-                  <span>13 Jun, 2026</span>
-                  <span>17 Jun, 2026</span>
-                  <span>21 Jun, 2026</span>
-                  <span>25 Jun, 2026</span>
+                  {xAxisLabels.map((lbl, idx) => (
+                    <span key={idx}>{lbl}</span>
+                  ))}
                 </div>
               </div>
             </section>
 
             {/* BOTTOM ANALYTICS GRID (Bars + Radar + DCA Ledger) */}
-            <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch relative pb-32 sm:pb-36" data-purpose="secondary-confluence-analytics">
+            <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch relative" data-purpose="secondary-confluence-analytics">
               {/* Column 1: Net Daily Spot Inflows & Whale Absorption (4 cols) */}
               <div className="lg:col-span-4 bg-white border border-[#EEF0F5] rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="bar-card-container">
                 <div className="flex items-center justify-between mb-3">
@@ -816,7 +1067,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     </h3>
                   </div>
                   <span className="text-[10px] font-mono font-semibold text-gray-400">
-                    {isVi ? '19 Phiên Gần Nhất' : '19 Recorded Sessions'}
+                    {isVi ? `${barData.length} Phiên Gần Nhất` : `${barData.length} Recorded Sessions`}
                   </span>
                 </div>
 
@@ -824,15 +1075,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                 <div className="relative w-full h-[210px] bar-chart-group">
                   <svg ref={barSvgRef} className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 450 200">
                     <g className="text-[9px] fill-gray-400 font-mono pointer-events-none">
-                      <text x="5" y="16">+$10m</text>
+                      <text x="5" y="16">+$800m</text>
                       <line stroke="#EEF0F5" strokeDasharray="3,3" x1="42" x2="450" y1="12" y2="12"></line>
-                      <text x="5" y="52">+$6m</text>
+                      <text x="5" y="52">+$400m</text>
                       <line stroke="#EEF0F5" strokeDasharray="3,3" x1="42" x2="450" y1="48" y2="48"></line>
-                      <text x="5" y="88">+$3m</text>
-                      <line stroke="#EEF0F5" strokeDasharray="3,3" x1="42" x2="450" y1="84" y2="84"></line>
                       <text className="font-bold fill-gray-500" x="5" y="124">$0</text>
                       <line stroke="#D1D5DB" strokeWidth="1.2" x1="42" x2="450" y1="120" y2="120"></line>
-                      <text x="5" y="160">-$3m</text>
+                      <text x="5" y="160">-$300m</text>
                       <line stroke="#EEF0F5" strokeDasharray="3,3" x1="42" x2="450" y1="156" y2="156"></line>
                     </g>
 
@@ -873,16 +1122,21 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                         {barTooltip.amount}
                       </div>
                       <div className="text-[9px] text-gray-400 mt-0.5">{barTooltip.type}</div>
+                      {barTooltip.btcAbsorbed !== undefined && (
+                        <div className="text-[9px] font-mono text-emerald-400 mt-0.5">
+                          {barTooltip.btcAbsorbed >= 0 ? '+' : ''}{barTooltip.btcAbsorbed.toLocaleString()} BTC
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
 
                 <div className="flex justify-between text-[10px] text-gray-400 font-mono font-medium pl-8 pr-3 pt-1 border-t border-gray-100">
-                  <span>05 Jun, 2026</span>
-                  <span>09 Jun, 2026</span>
-                  <span>13 Jun, 2026</span>
-                  <span>17 Jun, 2026</span>
-                  <span>23 Jun, 2026</span>
+                  <span>{barData[0]?.date}</span>
+                  <span>{barData[Math.floor(barData.length * 0.25)]?.date}</span>
+                  <span>{barData[Math.floor(barData.length * 0.5)]?.date}</span>
+                  <span>{barData[Math.floor(barData.length * 0.75)]?.date}</span>
+                  <span>{barData[barData.length - 1]?.date}</span>
                 </div>
               </div>
 
@@ -913,10 +1167,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     <line stroke="#E2E8F0" strokeWidth="0.8" x1="160" x2="70" y1="125" y2="175"></line>
                     <line stroke="#E2E8F0" strokeWidth="0.8" x1="160" x2="70" y1="125" y2="75"></line>
 
-                    <polygon fill="#7C3AED" fillOpacity="0.2" points="160,52 230,98 222,162 154,202 102,168 108,98" stroke="#7C3AED" strokeLinejoin="round" strokeWidth="2.5"></polygon>
-                    <polygon fill="none" points="165,35 242,88 238,168 170,182 132,158 142,112" stroke="#F97316" strokeLinejoin="round" strokeWidth="2.2"></polygon>
+                    {/* Dynamic Live Quantitative Polygon */}
+                    <polygon fill="#7C3AED" fillOpacity="0.2" points={radarMetricsData.livePointsStr} stroke="#7C3AED" strokeLinejoin="round" strokeWidth="2.5"></polygon>
+                    {/* Dynamic Benchmark Polygon */}
+                    <polygon fill="none" points={radarMetricsData.benchPointsStr} stroke="#F97316" strokeLinejoin="round" strokeWidth="2.2"></polygon>
 
-                    {radarVertices.map((v, i) => (
+                    {radarMetricsData.allVertices.map((v, i) => (
                       <circle
                         key={i}
                         className={`radar-vertex ${v.isOrange ? 'vertex-orange' : ''}`}
@@ -1025,87 +1281,149 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-50 text-[11px] font-medium text-gray-700 font-mono">
-                        <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">19/06/2026</td>
-                          <td className="py-2.5">
-                            <div className="font-bold text-gray-900 flex items-center gap-1">
-                              BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.8x</span>
-                            </div>
-                            <div className="text-[9px] text-gray-400 font-sans">0.01350 BTC (1.35m sats)</div>
-                          </td>
-                          <td className="py-2.5 text-right font-semibold text-gray-800">$74,200</td>
-                          <td className="py-2.5 text-right">
-                            <div className="font-bold text-emerald-600">$1,001.70</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">16/06/2026</td>
-                          <td className="py-2.5">
-                            <div className="font-bold text-gray-900 flex items-center gap-1">
-                              BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.0x</span>
-                            </div>
-                            <div className="text-[9px] text-gray-400 font-sans">0.02100 BTC (2.10m sats)</div>
-                          </td>
-                          <td className="py-2.5 text-right font-semibold text-gray-800">$71,450</td>
-                          <td className="py-2.5 text-right">
-                            <div className="font-bold text-emerald-600">$1,500.45</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">12/06/2026</td>
-                          <td className="py-2.5">
-                            <div className="font-bold text-gray-900 flex items-center gap-1">
-                              BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.5x</span>
-                            </div>
-                            <div className="text-[9px] text-gray-400 font-sans">0.01250 BTC (1.25m sats)</div>
-                          </td>
-                          <td className="py-2.5 text-right font-semibold text-gray-800">$69,820</td>
-                          <td className="py-2.5 text-right">
-                            <div className="font-bold text-emerald-600">$872.75</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">08/06/2026</td>
-                          <td className="py-2.5">
-                            <div className="font-bold text-gray-900 flex items-center gap-1">
-                              BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.2x</span>
-                            </div>
-                            <div className="text-[9px] text-gray-400 font-sans">0.01800 BTC (1.80m sats)</div>
-                          </td>
-                          <td className="py-2.5 text-right font-semibold text-gray-800">$68,500</td>
-                          <td className="py-2.5 text-right">
-                            <div className="font-bold text-emerald-600">$1,233.00</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
-                          </td>
-                        </tr>
-                        <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">05/06/2026</td>
-                          <td className="py-2.5">
-                            <div className="font-bold text-gray-900 flex items-center gap-1">
-                              BTC/USDT <span className="text-[9px] font-medium text-gray-500 bg-gray-100 px-1 py-0.2 rounded">1.0x Base</span>
-                            </div>
-                            <div className="text-[9px] text-gray-400 font-sans">0.01050 BTC (1.05m sats)</div>
-                          </td>
-                          <td className="py-2.5 text-right font-semibold text-gray-800">$72,110</td>
-                          <td className="py-2.5 text-right">
-                            <div className="font-bold text-emerald-600">$757.15</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
-                          </td>
-                        </tr>
+                        {/* Tab 1: Recent DCA Transactions */}
+                        {ledgerTab === 'recent' && (
+                          <>
+                            {transactions && transactions.length > 0 ? (
+                              transactions.slice(-5).reverse().map((tx) => (
+                                <tr key={tx.id} className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+                                  <td className="py-2.5 text-gray-500 text-[10px]">
+                                    {new Date(tx.date).toLocaleDateString(isVi ? 'vi-VN' : 'en-US', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                  </td>
+                                  <td className="py-2.5">
+                                    <div className="font-bold text-gray-900 flex items-center gap-1">
+                                      BTC/USDT <span className="text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-100">Spot</span>
+                                    </div>
+                                    <div className="text-[9px] text-gray-400 font-sans">{formatSats(tx.amountBtc)}</div>
+                                  </td>
+                                  <td className="py-2.5 text-right font-semibold text-gray-800">{formatUSD(tx.priceUsd)}</td>
+                                  <td className="py-2.5 text-right">
+                                    <div className="font-bold text-emerald-600">{formatUSD(tx.amountBtc * tx.priceUsd)}</div>
+                                    <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : backtestResult?.executionLedger && backtestResult.executionLedger.length > 0 ? (
+                              backtestResult.executionLedger.slice(-5).reverse().map((item) => (
+                                <tr key={item.periodIndex} className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+                                  <td className="py-2.5 text-gray-500 text-[10px]">{item.monthLabel}</td>
+                                  <td className="py-2.5">
+                                    <div className="font-bold text-gray-900 flex items-center gap-1">
+                                      BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+{item.multiplier}x</span>
+                                    </div>
+                                    <div className="text-[9px] text-gray-400 font-sans">{item.satsBought.toLocaleString()} sats</div>
+                                  </td>
+                                  <td className="py-2.5 text-right font-semibold text-gray-800">{formatUSD(item.btcPrice)}</td>
+                                  <td className="py-2.5 text-right">
+                                    <div className="font-bold text-emerald-600">{formatUSD(item.investedUsd)}</div>
+                                    <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp (Mô hình)' : 'Settled (Backtest)'}</div>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={4} className="py-6 text-center text-gray-400 text-xs font-sans">
+                                  {isVi ? 'Chưa có lệnh tích sản nào. Nhấp bên dưới để thêm.' : 'No DCA transactions yet. Click below to add.'}
+                                </td>
+                              </tr>
+                            )}
+                          </>
+                        )}
+
+                        {/* Tab 2: Live Half-Kelly Open Triggers */}
+                        {ledgerTab === 'triggers' && (
+                          <>
+                            {/* Trigger 1: Market Order */}
+                            <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+                              <td className="py-2.5 text-gray-500 text-[10px]">
+                                <span className="px-1.5 py-0.5 rounded font-bold text-[9px] bg-amber-50 text-amber-700 border border-amber-200">
+                                  {isVi ? 'Tức thì' : 'Immediate'}
+                                </span>
+                              </td>
+                              <td className="py-2.5">
+                                <div className="font-bold text-gray-900 flex items-center gap-1">
+                                  BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">Market</span>
+                                </div>
+                                <div className="text-[9px] text-gray-400 font-sans">
+                                  {formatSats(tacticalMarketUsd / currentPrice)}
+                                </div>
+                              </td>
+                              <td className="py-2.5 text-right font-semibold text-gray-800">{formatUSD(currentPrice)}</td>
+                              <td className="py-2.5 text-right">
+                                <div className="font-bold text-purple-700">{formatUSD(tacticalMarketUsd)}</div>
+                                <div className="text-[9px] text-emerald-600 font-sans font-semibold">{isVi ? '100% Khớp Ngay' : '100% Immediate'}</div>
+                              </td>
+                            </tr>
+
+                            {/* Trigger 2: Limit 1 Whale Bid Wall */}
+                            <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+                              <td className="py-2.5 text-gray-500 text-[10px]">
+                                <span className="px-1.5 py-0.5 rounded font-bold text-[9px] bg-sky-50 text-sky-700 border border-sky-200">
+                                  {isVi ? 'Chờ Khớp' : 'Standing'}
+                                </span>
+                              </td>
+                              <td className="py-2.5">
+                                <div className="font-bold text-gray-900 flex items-center gap-1">
+                                  BTC/USDT <span className="text-[9px] font-medium text-sky-600 bg-sky-50 px-1 py-0.2 rounded">Limit 1</span>
+                                </div>
+                                <div className="text-[9px] text-gray-400 font-sans">
+                                  {formatSats(tacticalLimit1Usd / limit1Price)}
+                                </div>
+                              </td>
+                              <td className="py-2.5 text-right font-semibold text-gray-800">{formatUSD(limit1Price)}</td>
+                              <td className="py-2.5 text-right">
+                                <div className="font-bold text-sky-700">{formatUSD(tacticalLimit1Usd)}</div>
+                                <div className="text-[9px] text-sky-600 font-sans font-semibold">
+                                  {isVi ? `~68% (Đón Tường $${Math.round(obLargestWallPrice).toLocaleString()})` : `~68% (Whale Wall $${Math.round(obLargestWallPrice).toLocaleString()})`}
+                                </div>
+                              </td>
+                            </tr>
+
+                            {/* Trigger 3: Limit 2 Deep Dip */}
+                            <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
+                              <td className="py-2.5 text-gray-500 text-[10px]">
+                                <span className="px-1.5 py-0.5 rounded font-bold text-[9px] bg-purple-50 text-purple-700 border border-purple-200">
+                                  {isVi ? 'Dự Phòng' : 'Deep Dip'}
+                                </span>
+                              </td>
+                              <td className="py-2.5">
+                                <div className="font-bold text-gray-900 flex items-center gap-1">
+                                  BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">Limit 2</span>
+                                </div>
+                                <div className="text-[9px] text-gray-400 font-sans">
+                                  {formatSats(tacticalLimit2Usd / limit2Price)}
+                                </div>
+                              </td>
+                              <td className="py-2.5 text-right font-semibold text-gray-800">{formatUSD(limit2Price)}</td>
+                              <td className="py-2.5 text-right">
+                                <div className="font-bold text-purple-700">{formatUSD(tacticalLimit2Usd)}</div>
+                                <div className="text-[9px] text-purple-600 font-sans font-semibold">
+                                  {isVi ? '~35% (Bắt Đáy -1.6 ATR)' : '~35% (-1.6 ATR Dip)'}
+                                </div>
+                              </td>
+                            </tr>
+                          </>
+                        )}
                       </tbody>
                     </table>
                   </div>
                 </div>
 
-                <div className="pt-2 text-right border-t border-gray-100">
+                <div className="pt-2 text-right border-t border-gray-100 flex items-center justify-between">
+                  <span className="text-[10px] text-gray-400 font-sans">
+                    {ledgerTab === 'triggers'
+                      ? (isVi ? `Ngân sách tuần: ${formatUSD(tacticalTotalUsd)} (Kelly ${kellyMultiplier.toFixed(2)}x)` : `Weekly budget: ${formatUSD(tacticalTotalUsd)} (${kellyMultiplier.toFixed(2)}x)`)
+                      : (isVi ? `${transactions.length} giao dịch đã ghi nhận` : `${transactions.length} recorded trades`)}
+                  </span>
                   <button
-                    onClick={handleOpenDca}
+                    onClick={ledgerTab === 'recent' ? handleOpenDca : () => handleNavChange('models')}
                     className="text-[11px] font-semibold text-[#7C3AED] hover:underline inline-flex items-center gap-1 group font-sans"
                   >
-                    <span>{isVi ? 'Thêm giao dịch tích sản mới' : 'Add new DCA transaction'}</span>
+                    <span>
+                      {ledgerTab === 'recent'
+                        ? (isVi ? 'Thêm giao dịch tích sản mới' : 'Add new DCA transaction')
+                        : (isVi ? 'Xem chi tiết định lượng radar' : 'View full quant models')}
+                    </span>
                     <span className="group-hover:translate-x-0.5 transition-transform font-bold">→</span>
                   </button>
                 </div>
