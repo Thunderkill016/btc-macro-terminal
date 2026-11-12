@@ -40,10 +40,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
   const liveCoinMetrics = useTerminalStore((s) => s.liveCoinMetrics);
   const portfolioSummary = useTerminalStore((s) => s.portfolioSummary);
   const locale = useTerminalStore((s) => s.locale);
+  const setLocale = useTerminalStore((s) => s.setLocale);
   const setCommandPaletteOpen = useTerminalStore((s) => s.setCommandPaletteOpen);
   const setAddTransactionModalOpen = useTerminalStore((s) => s.setAddTransactionModalOpen);
-  const setBinanceModalOpen = useTerminalStore((s) => s.setBinanceModalOpen);
   const setSelfCustodyModalOpen = useTerminalStore((s) => s.setSelfCustodyModalOpen);
+
+  const isVi = locale === 'vi';
 
   // Active navigation view state
   const [activeNav, setActiveNav] = useState<HorizonTab>('home');
@@ -68,7 +70,6 @@ export const BitcoinHorizonDashboard: React.FC = () => {
   const mvrvScore = liveCoinMetrics?.mvrv ?? 1.39;
   const ahr999Score = 0.48;
   const puellScore = 0.88;
-  const mayerScore = 1.34;
   const netPnlUsd = portfolioSummary?.unrealizedPnlUsd ? Math.round(portfolioSummary.unrealizedPnlUsd) : 14742;
   const netPnlPercent = portfolioSummary?.unrealizedPnlPercent ? `${portfolioSummary.unrealizedPnlPercent.toFixed(2)}%` : '+31.79%';
 
@@ -90,10 +91,10 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     visible: false,
     x: 0,
     y: 0,
-    date: '16 Jun, 2026',
+    date: isVi ? '16 Tháng 6, 2026' : '16 Jun, 2026',
     val: '$67,490.00',
     chg: '+184.2%',
-    tag: 'Peak Zone',
+    tag: isVi ? 'Vùng Đỉnh Chu Kỳ' : 'Peak Zone',
   });
 
   // 2. Bar Chart Interactive Tooltip State
@@ -109,9 +110,9 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     visible: false,
     x: 0,
     y: 0,
-    date: '06 Jun, 2026',
+    date: isVi ? '06 Tháng 6, 2026' : '06 Jun, 2026',
     amount: '+$8,450k',
-    type: 'Whale Spot Absorption',
+    type: isVi ? 'Cá Voi Mua Gom Thỏa Thuận' : 'Whale Spot Absorption',
     isNeg: false,
   });
 
@@ -129,8 +130,8 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     visible: false,
     x: 0,
     y: 0,
-    metric: 'Win Rate MVRV',
-    type: 'Current Run',
+    metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV',
+    type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run',
     val: '1.39',
     delta: '+0.14',
     isOrange: false,
@@ -150,12 +151,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
     const targetSvgX = normX * 820;
 
     const keypoints = [
-      { x: 60, y: 135, date: '05 Jun, 2026', val: '$14,200.00', chg: '+12.4%', tag: 'DCA Accumulation' },
-      { x: 150, y: 75, date: '09 Jun, 2026', val: '$28,400.00', chg: '+38.5%', tag: 'Local High' },
-      { x: 310, y: 165, date: '11 Jun, 2026', val: '$25,710.00', chg: '+42.8%', tag: 'Cycle Dip Buy' },
-      { x: 450, y: 55, date: '16 Jun, 2026', val: '$67,490.00', chg: '+184.2%', tag: 'Peak Zone' },
-      { x: 605, y: 175, date: '21 Jun, 2026', val: '$22,180.00', chg: '+31.5%', tag: 'Secondary DCA' },
-      { x: 810, y: 105, date: '25 Jun, 2026', val: '$44,820.00', chg: '+115.6%', tag: 'Macro Expansion' },
+      { x: 60, y: 135, date: isVi ? '05 Tháng 6, 2026' : '05 Jun, 2026', val: '$14,200.00', chg: '+12.4%', tag: isVi ? 'Tích Lũy DCA' : 'DCA Accumulation' },
+      { x: 150, y: 75, date: isVi ? '09 Tháng 6, 2026' : '09 Jun, 2026', val: '$28,400.00', chg: '+38.5%', tag: isVi ? 'Nhịp Tăng Sóng' : 'Local High' },
+      { x: 310, y: 165, date: isVi ? '11 Tháng 6, 2026' : '11 Jun, 2026', val: '$25,710.00', chg: '+42.8%', tag: isVi ? 'Gom Khi Giá Dip' : 'Cycle Dip Buy' },
+      { x: 450, y: 55, date: isVi ? '16 Tháng 6, 2026' : '16 Jun, 2026', val: '$67,490.00', chg: '+184.2%', tag: isVi ? 'Vùng Đỉnh Chu Kỳ' : 'Peak Zone' },
+      { x: 605, y: 175, date: isVi ? '21 Tháng 6, 2026' : '21 Jun, 2026', val: '$22,180.00', chg: '+31.5%', tag: isVi ? 'Vùng Tích Lũy Phụ' : 'Secondary DCA' },
+      { x: 810, y: 105, date: isVi ? '25 Tháng 6, 2026' : '25 Jun, 2026', val: '$44,820.00', chg: '+115.6%', tag: isVi ? 'Bùng Nổ Chu Kỳ' : 'Macro Expansion' },
     ];
 
     let nearest = keypoints[0];
@@ -180,7 +181,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
       chg: nearest.chg,
       tag: nearest.tag,
     });
-  }, []);
+  }, [isVi]);
 
   const handleSplineMouseLeave = useCallback(() => {
     setSplineTooltip((prev) => ({ ...prev, visible: false }));
@@ -188,42 +189,42 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
   // Spot Bar Data (19 Sessions)
   const barData = [
-    { x: 58, y: 120, h: 24, amount: '-$1,820k', date: '05 Jun, 2026', type: 'Exchange Inflow Dump', isNeg: true },
-    { x: 78, y: 22, h: 98, amount: '+$8,450k', date: '06 Jun, 2026', type: 'Whale Spot Absorption', isNeg: false },
-    { x: 98, y: 102, h: 18, amount: '+$1,450k', date: '07 Jun, 2026', type: 'Retail DCA Inflow', isNeg: false },
-    { x: 118, y: 120, h: 12, amount: '-$850k', date: '08 Jun, 2026', type: 'Miner Treasury Outflow', isNeg: true },
-    { x: 138, y: 96, h: 24, amount: '+$1,920k', date: '09 Jun, 2026', type: 'Institutional DCA', isNeg: false },
-    { x: 158, y: 120, h: 9, amount: '-$640k', date: '10 Jun, 2026', type: 'Spot Profit Taking', isNeg: true },
-    { x: 178, y: 62, h: 58, amount: '+$4,820k', date: '11 Jun, 2026', type: 'ETF Net Accumulation', isNeg: false },
-    { x: 198, y: 82, h: 38, amount: '+$3,100k', date: '12 Jun, 2026', type: 'Spot Absorption', isNeg: false },
-    { x: 218, y: 36, h: 84, amount: '+$7,210k', date: '13 Jun, 2026', type: 'Whale Cluster Bid', isNeg: false },
-    { x: 238, y: 120, h: 32, amount: '-$2,410k', date: '14 Jun, 2026', type: 'Derivatives Hedging Outflow', isNeg: true },
-    { x: 258, y: 72, h: 48, amount: '+$3,950k', date: '15 Jun, 2026', type: 'Dip Floor Absorption', isNeg: false },
-    { x: 278, y: 120, h: 18, amount: '-$1,340k', date: '16 Jun, 2026', type: 'Rebalancing Outflow', isNeg: true },
-    { x: 298, y: 86, h: 34, amount: '+$2,840k', date: '17 Jun, 2026', type: 'Systematic DCA', isNeg: false },
-    { x: 318, y: 92, h: 28, amount: '+$2,200k', date: '18 Jun, 2026', type: 'Cold Wallet Outflow (Bullish)', isNeg: false },
-    { x: 338, y: 78, h: 42, amount: '+$3,450k', date: '19 Jun, 2026', type: 'Spot Inflow Wave', isNeg: false },
-    { x: 358, y: 70, h: 50, amount: '+$4,150k', date: '20 Jun, 2026', type: 'ETF High Volume', isNeg: false },
-    { x: 378, y: 120, h: 38, amount: '-$2,900k', date: '21 Jun, 2026', type: 'Short-Term Holder Realization', isNeg: true },
-    { x: 398, y: 58, h: 62, amount: '+$5,200k', date: '22 Jun, 2026', type: 'Aggressive Whale Buying', isNeg: false },
-    { x: 418, y: 120, h: 6, amount: '-$480k', date: '23 Jun, 2026', type: 'Minor Outflow', isNeg: true },
+    { x: 58, y: 120, h: 24, amount: '-$1,820k', date: isVi ? '05/06/2026' : '05 Jun, 2026', type: isVi ? 'Chuyển Lên Sàn Xả Hàng' : 'Exchange Inflow Dump', isNeg: true },
+    { x: 78, y: 22, h: 98, amount: '+$8,450k', date: isVi ? '06/06/2026' : '06 Jun, 2026', type: isVi ? 'Cá Voi Hấp Thụ Lệnh' : 'Whale Spot Absorption', isNeg: false },
+    { x: 98, y: 102, h: 18, amount: '+$1,450k', date: isVi ? '07/06/2026' : '07 Jun, 2026', type: isVi ? 'Dòng Vốn DCA Nhỏ Lẻ' : 'Retail DCA Inflow', isNeg: false },
+    { x: 118, y: 120, h: 12, amount: '-$850k', date: isVi ? '08/06/2026' : '08 Jun, 2026', type: isVi ? 'Thợ Đào Chuyển Khỏi Ví' : 'Miner Treasury Outflow', isNeg: true },
+    { x: 138, y: 96, h: 24, amount: '+$1,920k', date: isVi ? '09/06/2026' : '09 Jun, 2026', type: isVi ? 'DCA Định Kỳ Thể Chế' : 'Institutional DCA', isNeg: false },
+    { x: 158, y: 120, h: 9, amount: '-$640k', date: isVi ? '10/06/2026' : '10 Jun, 2026', type: isVi ? 'Chốt Lời Ngắn Hạn' : 'Spot Profit Taking', isNeg: true },
+    { x: 178, y: 62, h: 58, amount: '+$4,820k', date: isVi ? '11/06/2026' : '11 Jun, 2026', type: isVi ? 'Dòng Tiền Quỹ Spot ETF' : 'ETF Net Accumulation', isNeg: false },
+    { x: 198, y: 82, h: 38, amount: '+$3,100k', date: isVi ? '12/06/2026' : '12 Jun, 2026', type: isVi ? 'Lực Gom Hấp Thụ Spot' : 'Spot Absorption', isNeg: false },
+    { x: 218, y: 36, h: 84, amount: '+$7,210k', date: isVi ? '13/06/2026' : '13 Jun, 2026', type: isVi ? 'Tường Mua Gom Cá Voi' : 'Whale Cluster Bid', isNeg: false },
+    { x: 238, y: 120, h: 32, amount: '-$2,410k', date: isVi ? '14/06/2026' : '14 Jun, 2026', type: isVi ? 'Bảo Hiểm Phái Sinh Rút Vốn' : 'Derivatives Hedging Outflow', isNeg: true },
+    { x: 258, y: 72, h: 48, amount: '+$3,950k', date: isVi ? '15/06/2026' : '15 Jun, 2026', type: isVi ? 'Hấp Thụ Sàn Đáy Sâu' : 'Dip Floor Absorption', isNeg: false },
+    { x: 278, y: 120, h: 18, amount: '-$1,340k', date: isVi ? '16/06/2026' : '16 Jun, 2026', type: isVi ? 'Tái Cân Bằng Danh Mục' : 'Rebalancing Outflow', isNeg: true },
+    { x: 298, y: 86, h: 34, amount: '+$2,840k', date: isVi ? '17/06/2026' : '17 Jun, 2026', type: isVi ? 'Tích Sản Có Hệ Thống' : 'Systematic DCA', isNeg: false },
+    { x: 318, y: 92, h: 28, amount: '+$2,200k', date: isVi ? '18/06/2026' : '18 Jun, 2026', type: isVi ? 'Rút Về Ví Lạnh (Tích Cực)' : 'Cold Wallet Outflow (Bullish)', isNeg: false },
+    { x: 338, y: 78, h: 42, amount: '+$3,450k', date: isVi ? '19/06/2026' : '19 Jun, 2026', type: isVi ? 'Làn Sóng Gom Spot' : 'Spot Inflow Wave', isNeg: false },
+    { x: 358, y: 70, h: 50, amount: '+$4,150k', date: isVi ? '20/06/2026' : '20 Jun, 2026', type: isVi ? 'Thanh Khoản ETF Đột Biến' : 'ETF High Volume', isNeg: false },
+    { x: 378, y: 120, h: 38, amount: '-$2,900k', date: isVi ? '21/06/2026' : '21 Jun, 2026', type: isVi ? 'Người Nắm Ngắn Hạn Bán' : 'Short-Term Holder Realization', isNeg: true },
+    { x: 398, y: 58, h: 62, amount: '+$5,200k', date: isVi ? '22/06/2026' : '22 Jun, 2026', type: isVi ? 'Lực Gom Cá Voi Chủ Động' : 'Aggressive Whale Buying', isNeg: false },
+    { x: 418, y: 120, h: 6, amount: '-$480k', date: isVi ? '23/06/2026' : '23 Jun, 2026', type: isVi ? 'Áp Lực Bán Nhẹ' : 'Minor Outflow', isNeg: true },
   ];
 
   // Radar Vertices Data
   const radarVertices = [
-    { cx: 160, cy: 52, metric: 'Win Rate MVRV', val: '1.39', delta: '+0.14', type: 'Current Run', isOrange: false },
-    { cx: 230, cy: 98, metric: 'Mayer Multiple', val: '1.34', delta: '+0.16', type: 'Current Run', isOrange: false },
-    { cx: 222, cy: 162, metric: 'Puell Recovery', val: '0.88', delta: '+0.13', type: 'Current Run', isOrange: false },
-    { cx: 154, cy: 202, metric: 'STH Risk:Reward', val: '3.50', delta: '+0.85', type: 'Current Run', isOrange: false },
-    { cx: 102, cy: 168, metric: 'Max Drawdown Safety', val: '-10.4%', delta: '+8.1% (Resilient)', type: 'Current Run', isOrange: false },
-    { cx: 108, cy: 98, metric: 'Hash Ribbon Consistency', val: '89.2', delta: '+7.2', type: 'Current Run', isOrange: false },
+    { cx: 160, cy: 52, metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV', val: '1.39', delta: '+0.14', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
+    { cx: 230, cy: 98, metric: isVi ? 'Bội Số Mayer' : 'Mayer Multiple', val: '1.34', delta: '+0.16', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
+    { cx: 222, cy: 162, metric: isVi ? 'Phục Hồi Puell' : 'Puell Recovery', val: '0.88', delta: '+0.13', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
+    { cx: 154, cy: 202, metric: isVi ? 'Lãi/Lỗ STH' : 'STH Risk:Reward', val: '3.50', delta: '+0.85', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
+    { cx: 102, cy: 168, metric: isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown Safety', val: '-10.4%', delta: isVi ? '+8.1% (Chống Chịu Tốt)' : '+8.1% (Resilient)', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
+    { cx: 108, cy: 98, metric: isVi ? 'Ổn Định Hash Ribbon' : 'Hash Ribbon Consistency', val: '89.2', delta: '+7.2', type: isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run', isOrange: false },
     // Benchmark
-    { cx: 165, cy: 35, metric: 'Win Rate MVRV', val: '1.25', delta: 'Cycle Avg', type: 'Institutional Benchmark', isOrange: true },
-    { cx: 242, cy: 88, metric: 'Mayer Multiple', val: '1.18', delta: '200D SMA', type: 'Institutional Benchmark', isOrange: true },
-    { cx: 238, cy: 168, metric: 'Puell Recovery', val: '0.75', delta: 'Post-Halving', type: 'Institutional Benchmark', isOrange: true },
-    { cx: 170, cy: 182, metric: 'STH Risk:Reward', val: '2.65', delta: 'Standard', type: 'Institutional Benchmark', isOrange: true },
-    { cx: 132, cy: 158, metric: 'Max Drawdown Safety', val: '-18.5%', delta: 'Moderate', type: 'Institutional Benchmark', isOrange: true },
-    { cx: 142, cy: 112, metric: 'Hash Ribbon Consistency', val: '82.0', delta: 'Miner Inversion', type: 'Institutional Benchmark', isOrange: true },
+    { cx: 165, cy: 35, metric: isVi ? 'Tỷ Lệ Thắng MVRV' : 'Win Rate MVRV', val: '1.25', delta: isVi ? 'TB Chu Kỳ' : 'Cycle Avg', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
+    { cx: 242, cy: 88, metric: isVi ? 'Bội Số Mayer' : 'Mayer Multiple', val: '1.18', delta: '200D SMA', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
+    { cx: 238, cy: 168, metric: isVi ? 'Phục Hồi Puell' : 'Puell Recovery', val: '0.75', delta: isVi ? 'Hậu Halving' : 'Post-Halving', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
+    { cx: 170, cy: 182, metric: isVi ? 'Lãi/Lỗ STH' : 'STH Risk:Reward', val: '2.65', delta: isVi ? 'Tiêu Chuẩn' : 'Standard', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
+    { cx: 132, cy: 158, metric: isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown Safety', val: '-18.5%', delta: isVi ? 'Trung Bình' : 'Moderate', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
+    { cx: 142, cy: 112, metric: isVi ? 'Ổn Định Hash Ribbon' : 'Hash Ribbon Consistency', val: '82.0', delta: isVi ? 'Nghịch Đảo Đào' : 'Miner Inversion', type: isVi ? 'Đối Sánh Thể Chế' : 'Institutional Benchmark', isOrange: true },
   ];
 
   const handleBarHover = (bar: typeof barData[0], e: React.MouseEvent) => {
@@ -282,12 +283,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
       <aside className="fixed left-4 sm:left-5 top-1/2 -translate-y-1/2 flex flex-col gap-3.5 z-40" aria-label="Sidebar Rail">
         {/* Main Horizon Active Icon: Home Dashboard */}
         <button
-          aria-label="Terminal Home"
+          aria-label={isVi ? 'Tín hiệu Tích sản Spot' : 'Terminal Home'}
           onClick={() => handleNavChange('home')}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-transform duration-200 ${
             activeNav === 'home' ? 'bg-[#111827] text-white scale-105' : 'bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5]'
           }`}
-          title="Tín hiệu Tích sản Spot (Dashboard)"
+          title={isVi ? 'Tín hiệu Tích sản Spot (Dashboard)' : 'Spot Accumulation Signals'}
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
@@ -296,58 +297,58 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
         {/* Cycle Valuation Models */}
         <button
-          aria-label="Cycle Models"
+          aria-label={isVi ? 'Mô Hình Chu Kỳ' : 'Cycle Models'}
           onClick={() => handleNavChange('models')}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group ${
             activeNav === 'models' ? 'bg-[#7C3AED] text-white' : 'bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5]'
           }`}
-          title="Mô Hình Định Giá & Radar Đỉnh Đáy Chu Kỳ"
+          title={isVi ? 'Mô Hình Định Giá & Radar Đỉnh Đáy Chu Kỳ' : 'Cycle Valuation Models & Peak Radar'}
         >
           <BarChart2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
         </button>
 
         {/* Candlestick & Technicals */}
         <button
-          aria-label="Candlestick Chart"
+          aria-label={isVi ? 'Biểu Đồ Kỹ Thuật' : 'Technical Chart'}
           onClick={() => handleNavChange('candles')}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group ${
             activeNav === 'candles' ? 'bg-[#7C3AED] text-white' : 'bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5]'
           }`}
-          title="Biểu Đồ Kỹ Thuật Đa Khung Thời Gian"
+          title={isVi ? 'Biểu Đồ Kỹ Thuật Đa Khung Thời Gian' : 'Multi-Timeframe Technical Charts'}
         >
           <LineChart className="w-5 h-5 group-hover:scale-110 transition-transform" />
         </button>
 
         {/* Portfolio & DCA Ledger */}
         <button
-          aria-label="Portfolio & DCA Ledger"
+          aria-label={isVi ? 'Danh Mục & Sổ Lệnh' : 'Portfolio & DCA Ledger'}
           onClick={() => handleNavChange('portfolio')}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group ${
             activeNav === 'portfolio' ? 'bg-[#7C3AED] text-white' : 'bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5]'
           }`}
-          title="Danh Mục & Sổ Lệnh Tích Sản"
+          title={isVi ? 'Danh Mục & Sổ Lệnh Tích Sản' : 'Portfolio & DCA Ledger'}
         >
           <PieChart className="w-5 h-5 group-hover:scale-110 transition-transform" />
         </button>
 
         {/* AI Quant Insights & Research */}
         <button
-          aria-label="Research & AI Quant"
+          aria-label={isVi ? 'Nghiên Cứu Vĩ Mô' : 'Macro Research'}
           onClick={() => handleNavChange('research')}
           className={`w-12 h-12 rounded-full flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group ${
             activeNav === 'research' ? 'bg-[#7C3AED] text-white' : 'bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5]'
           }`}
-          title="Nghiên Cứu Vĩ Mô & AI Quant Insights"
+          title={isVi ? 'Nghiên Cứu Vĩ Mô & AI Quant Insights' : 'Macro Research & AI Quant Insights'}
         >
           <Globe className="w-5 h-5 group-hover:scale-110 transition-transform" />
         </button>
 
         {/* Vault & Security Audit */}
         <button
-          aria-label="Vault & Security"
+          aria-label={isVi ? 'Bảo Mật Ví Lạnh' : 'Cold Storage Vault'}
           onClick={() => setSelfCustodyModalOpen(true)}
           className="w-12 h-12 rounded-full bg-white text-gray-500 hover:text-[#7C3AED] border border-[#EEF0F5] flex items-center justify-center shadow-sm hover:shadow transition-all duration-200 group"
-          title="Bảo Mật Ví Lạnh & Vault"
+          title={isVi ? 'Bảo Mật Ví Lạnh & Quản Lý Khóa' : 'Cold Storage Security & Key Vault'}
         >
           <Shield className="w-5 h-5 group-hover:scale-110 transition-transform" />
         </button>
@@ -375,7 +376,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                   </span>
                 </div>
                 <div className="text-[10px] text-gray-400 font-medium">
-                  {locale === 'vi' ? 'Định lượng Chu kỳ On-Chain' : 'Quantitative Cycle Intelligence'}
+                  {isVi ? 'Trạm Định Lượng Chu Kỳ On-Chain' : 'Quantitative Cycle Intelligence'}
                 </div>
               </div>
             </div>
@@ -406,7 +407,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               }`}
             >
               <Zap className="w-3.5 h-3.5 text-amber-400" />
-              <span>Tín Hiệu Spot</span>
+              <span>{isVi ? 'Tín Hiệu Spot' : 'Spot Signals'}</span>
             </button>
 
             <button
@@ -418,7 +419,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               }`}
             >
               <BarChart2 className="w-3.5 h-3.5 text-[#7C3AED]" />
-              <span>Mô Hình Chu Kỳ</span>
+              <span>{isVi ? 'Mô Hình Chu Kỳ' : 'Cycle Models'}</span>
             </button>
 
             <button
@@ -430,7 +431,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               }`}
             >
               <LineChart className="w-3.5 h-3.5 text-emerald-500" />
-              <span>Biểu Đồ Nến</span>
+              <span>{isVi ? 'Biểu Đồ Nến' : 'Candle Chart'}</span>
             </button>
 
             <button
@@ -442,7 +443,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               }`}
             >
               <PieChart className="w-3.5 h-3.5 text-sky-500" />
-              <span>Danh Mục &amp; Ví</span>
+              <span>{isVi ? 'Danh Mục & Ví' : 'Portfolio & Wallet'}</span>
             </button>
 
             <button
@@ -454,16 +455,40 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               }`}
             >
               <Globe className="w-3.5 h-3.5 text-purple-500" />
-              <span>Nghiên Cứu Vĩ Mô</span>
+              <span>{isVi ? 'Nghiên Cứu Vĩ Mô' : 'Macro Research'}</span>
             </button>
           </nav>
 
-          {/* Right Controls: Halving, Currency, Search, Profile */}
-          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+          {/* Right Controls: Language Capsule, Halving, Currency, Search, Profile */}
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            {/* Language Switcher Capsule */}
+            <div className="flex items-center bg-white border border-[#EEF0F5] rounded-full p-0.5 text-xs font-semibold shadow-sm">
+              <button
+                type="button"
+                onClick={() => setLocale('vi')}
+                className={`px-2.5 py-1 rounded-full transition-all ${
+                  isVi ? 'bg-[#7C3AED] text-white shadow-sm font-bold' : 'text-gray-500 hover:text-gray-900'
+                }`}
+                title="Chuyển sang Tiếng Việt"
+              >
+                🇻🇳 VI
+              </button>
+              <button
+                type="button"
+                onClick={() => setLocale('en')}
+                className={`px-2.5 py-1 rounded-full transition-all ${
+                  !isVi ? 'bg-[#7C3AED] text-white shadow-sm font-bold' : 'text-gray-500 hover:text-gray-900'
+                }`}
+                title="Switch to English"
+              >
+                🇺🇸 EN
+              </button>
+            </div>
+
             {/* Cycle Halving Pill */}
             <div className="hidden xl:flex items-center gap-2 bg-white border border-[#EEF0F5] text-gray-700 px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-sm">
               <Calendar className="w-3.5 h-3.5 text-[#7C3AED]" />
-              <span>1W Cycle - Halving 5</span>
+              <span>{isVi ? 'Chu Kỳ 1 Tuần - Halving 5' : '1W Cycle - Halving 5'}</span>
             </div>
 
             {/* Currency Selector Pill */}
@@ -489,10 +514,10 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
             {/* Command Palette Trigger */}
             <button
-              aria-label="Open Command Palette"
+              aria-label={isVi ? 'Mở tìm kiếm và AI' : 'Open Command Palette'}
               onClick={handleOpenAi}
               className="w-9 h-9 rounded-full bg-white border border-[#EEF0F5] flex items-center justify-center text-gray-600 hover:text-[#7C3AED] shadow-sm transition-colors"
-              title="Tìm kiếm & AI Command Palette (⌘K)"
+              title={isVi ? 'Tìm kiếm & AI Command Palette (⌘K)' : 'Search & Command Palette (⌘K)'}
             >
               <Search className="w-4 h-4" />
             </button>
@@ -514,11 +539,16 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             {/* GREETING & HERO ACTION BAR */}
             <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
               <div>
-                <p className="text-xs font-medium text-gray-400 tracking-wide">
-                  {new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}
+                <p className="text-xs font-medium text-gray-400 tracking-wide capitalize">
+                  {new Date().toLocaleDateString(isVi ? 'vi-VN' : 'en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: isVi ? 'numeric' : 'short',
+                    day: 'numeric',
+                  })}
                 </p>
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-[#111827] tracking-tight mt-0.5">
-                  Bitcoin Cycle &amp; Spot Accumulation Terminal
+                  {isVi ? 'Trạm Định Lượng Chu Kỳ & Tích Sản Spot Bitcoin' : 'Bitcoin Cycle & Spot Accumulation Terminal'}
                 </h1>
               </div>
 
@@ -529,13 +559,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                   className="bg-[#111827] hover:bg-black text-white px-5 py-2.5 rounded-full text-xs font-semibold flex items-center gap-2 shadow-sm transition-all hover:scale-[1.02]"
                 >
                   <span className="text-amber-400 font-bold">⚡</span>
-                  <span>Execute Dynamic DCA</span>
+                  <span>{isVi ? 'Kích Hoạt Lệnh Tích Sản DCA' : 'Execute Dynamic DCA'}</span>
                 </button>
                 <button
                   onClick={handleOpenAi}
-                  aria-label="Perspective View"
+                  aria-label={isVi ? 'Góc nhìn đa chiều' : 'Perspective View'}
                   className="w-10 h-10 rounded-full bg-white border border-[#EEF0F5] flex items-center justify-center text-gray-600 hover:text-black shadow-sm transition-colors"
-                  title="Chế độ phân tích 3D / Đa góc nhìn"
+                  title={isVi ? 'Chế độ phân tích 3D / Đa góc nhìn' : '3D Multi-Perspective Mode'}
                 >
                   <Box className="w-4 h-4" />
                 </button>
@@ -549,9 +579,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                 {/* Score & Spectrum Bar Card */}
                 <div className="group relative bg-white border border-[#EEF0F5] hover:border-purple-200 transition-all duration-200 rounded-2xl p-5 shadow-card cursor-pointer">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-gray-500">Cycle Confluence Score</span>
+                    <span className="text-xs font-medium text-gray-500">
+                      {isVi ? 'Điểm Tích Sản Chu Kỳ (Confluence Score)' : 'Cycle Confluence Score'}
+                    </span>
                     <span className="text-[10px] font-semibold text-gray-400 group-hover:text-[#7C3AED] transition-colors">
-                      Top 4% Cycle Quantile
+                      {isVi ? 'Top 4% Chu Kỳ Tốt Nhất' : 'Top 4% Cycle Quantile'}
                     </span>
                   </div>
                   <div className="mt-1 flex items-baseline gap-2">
@@ -561,7 +593,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     <span className="text-[11px] text-gray-400 font-mono">/ 100</span>
                     <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1.5 ml-auto">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                      Optimal Buy Zone
+                      {isVi ? 'Vùng Mua Gom Tối Ưu' : 'Optimal Buy Zone'}
                     </span>
                   </div>
 
@@ -586,7 +618,9 @@ export const BitcoinHorizonDashboard: React.FC = () => {
 
                   {/* Tooltip on hover */}
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[11px] py-1 px-3 rounded-lg shadow-lg whitespace-nowrap z-30">
-                    Composite Quant Confluence: {confluenceScore.toFixed(2)} / 100 (Deep DCA Accumulation)
+                    {isVi
+                      ? `Điểm Tích Sản Định Lượng: ${confluenceScore.toFixed(2)} / 100 (Vùng Gom Hàng Mạnh)`
+                      : `Composite Quant Confluence: ${confluenceScore.toFixed(2)} / 100 (Deep DCA Accumulation)`}
                     <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
                   </div>
                 </div>
@@ -600,13 +634,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-1 text-[11px] font-medium text-gray-400">
-                        <span>Net P&amp;L</span>
+                        <span>{isVi ? 'Lãi / Lỗ Ròng' : 'Net P&L'}</span>
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">
                         {currency === 'USD' ? `$${netPnlUsd.toLocaleString()}` : formatVND(netPnlUsd * 25850)}
                       </p>
                       <span className="inline-block mt-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
-                        {netPnlPercent} spot yield
+                        {netPnlPercent} {isVi ? 'tỷ suất spot' : 'spot yield'}
                       </span>
                     </div>
                   </div>
@@ -618,11 +652,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-1 text-[11px] font-medium text-gray-400">
-                        <span>ahr999 DCA Index</span>
+                        <span>{isVi ? 'Chỉ Số ahr999' : 'ahr999 DCA Index'}</span>
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{ahr999Score.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-purple-700 bg-purple-50 px-1.5 py-0.5 rounded border border-purple-100">
-                        &lt;0.45 All-in, 0.45-1.2 DCA
+                        {isVi ? '<0.45 Gom Mạnh, 0.45-1.2 Đều' : '<0.45 All-in, 0.45-1.2 DCA'}
                       </span>
                     </div>
                   </div>
@@ -634,11 +668,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-1 text-[11px] font-medium text-gray-400">
-                        <span>MVRV Z-Score</span>
+                        <span>{isVi ? 'Điểm MVRV Z-Score' : 'MVRV Z-Score'}</span>
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{mvrvScore.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
-                        Undervalued (vs 2.8 Top)
+                        {isVi ? 'Định Giá Rẻ (vs Đỉnh 2.8)' : 'Undervalued (vs 2.8 Top)'}
                       </span>
                     </div>
                   </div>
@@ -650,11 +684,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-1 text-[11px] font-medium text-gray-400">
-                        <span>Puell Multiple</span>
+                        <span>{isVi ? 'Bội Số Puell Multiple' : 'Puell Multiple'}</span>
                       </div>
                       <p className="text-xl font-bold text-[#111827] mt-0.5 font-mono">{puellScore.toFixed(2)}</p>
                       <span className="inline-block mt-1 text-[9px] font-medium text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">
-                        Healthy Miner Issuance
+                        {isVi ? 'Doanh Thu Đào Lành Mạnh' : 'Healthy Miner Issuance'}
                       </span>
                     </div>
                   </div>
@@ -665,14 +699,16 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               <div className="lg:col-span-8 bg-white border border-[#EEF0F5] rounded-2xl p-6 shadow-card flex flex-col justify-between relative overflow-hidden" id="spline-card-container">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-semibold text-[#111827]">Daily Net Cumulative P&amp;L &amp; Spot DCA Valuation Curve</h2>
+                    <h2 className="text-sm font-semibold text-[#111827]">
+                      {isVi ? 'Đường Cong Giá Vốn & Lợi Nhuận Tích Lũy Spot DCA' : 'Daily Net Cumulative P&L & Spot DCA Valuation Curve'}
+                    </h2>
                   </div>
                   <div className="flex items-center gap-3 text-[11px] text-gray-400">
                     <span className="flex items-center gap-1.5 font-medium text-gray-600">
-                      <span className="w-2.5 h-1 rounded-full bg-[#7C3AED]"></span> Cumulative P&amp;L
+                      <span className="w-2.5 h-1 rounded-full bg-[#7C3AED]"></span> {isVi ? 'Lợi Nhuận Tích Lũy' : 'Cumulative P&L'}
                     </span>
                     <span className="hidden sm:inline-block text-[10px] bg-purple-50 text-[#7C3AED] px-2.5 py-0.5 rounded-full font-semibold border border-purple-100">
-                      Hover across curve
+                      {isVi ? 'Rê chuột dọc đường cong' : 'Hover across curve'}
                     </span>
                   </div>
                 </div>
@@ -746,11 +782,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                         <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-purple-50 text-[#7C3AED]">{splineTooltip.tag}</span>
                       </div>
                       <div className="flex items-baseline justify-between">
-                        <span className="text-gray-400 text-[11px]">Net Spot Value</span>
+                        <span className="text-gray-400 text-[11px]">{isVi ? 'Giá Trị Danh Mục' : 'Net Spot Value'}</span>
                         <span className="text-sm font-extrabold text-[#111827] font-mono">{splineTooltip.val}</span>
                       </div>
                       <div className="flex items-center justify-between text-[10px] mt-1 pt-1 border-t border-dashed border-gray-100 text-emerald-600 font-medium">
-                        <span>Cycle Return</span>
+                        <span>{isVi ? 'Lợi Nhuận Chu Kỳ' : 'Cycle Return'}</span>
                         <span className="font-mono font-bold">{splineTooltip.chg}</span>
                       </div>
                     </div>
@@ -775,9 +811,13 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               <div className="lg:col-span-4 bg-white border border-[#EEF0F5] rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="bar-card-container">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-[#111827]">Net Daily Spot Inflows &amp; Whale Absorption</h3>
+                    <h3 className="text-sm font-semibold text-[#111827]">
+                      {isVi ? 'Dòng Tiền Mua Ròng Spot & Hấp Thụ Cá Voi' : 'Net Daily Spot Inflows & Whale Absorption'}
+                    </h3>
                   </div>
-                  <span className="text-[10px] font-mono font-semibold text-gray-400">19 Recorded Sessions</span>
+                  <span className="text-[10px] font-mono font-semibold text-gray-400">
+                    {isVi ? '19 Phiên Gần Nhất' : '19 Recorded Sessions'}
+                  </span>
                 </div>
 
                 {/* Bar Chart Component */}
@@ -826,7 +866,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                               : 'bg-emerald-950 text-emerald-300 border border-emerald-800/50'
                           }`}
                         >
-                          {barTooltip.isNeg ? 'Outflow' : 'Whale Absorption'}
+                          {barTooltip.isNeg ? (isVi ? 'Dòng Tiền Bán' : 'Outflow') : (isVi ? 'Cá Voi Hấp Thụ' : 'Whale Absorption')}
                         </span>
                       </div>
                       <div className={`font-bold font-mono text-sm tracking-tight ${barTooltip.isNeg ? 'text-red-400' : 'text-emerald-400'}`}>
@@ -850,7 +890,9 @@ export const BitcoinHorizonDashboard: React.FC = () => {
               <div className="lg:col-span-3 bg-white border border-[#EEF0F5] rounded-2xl p-5 shadow-card flex flex-col justify-between relative overflow-hidden" id="radar-card-container">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-[#111827]">Overall Cycle Score Radar</h3>
+                    <h3 className="text-sm font-semibold text-[#111827]">
+                      {isVi ? 'Radar Đánh Giá Đa Chiều Chu Kỳ' : 'Overall Cycle Score Radar'}
+                    </h3>
                   </div>
                   <span className="text-[10px] font-semibold text-[#7C3AED] bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
                     Radar v2.4
@@ -889,12 +931,24 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                       />
                     ))}
 
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="middle" x="160" y="16">Win Rate MVRV</text>
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="start" x="256" y="78">Mayer Multiple</text>
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="start" x="256" y="180">Puell Recovery</text>
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="middle" x="160" y="238">STH Risk:Reward</text>
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="end" x="62" y="180">Max Drawdown</text>
-                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="end" x="62" y="78">Hash Ribbon</text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="middle" x="160" y="16">
+                      {isVi ? 'Thắng MVRV' : 'Win Rate MVRV'}
+                    </text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="start" x="256" y="78">
+                      {isVi ? 'Bội Số Mayer' : 'Mayer Multiple'}
+                    </text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="start" x="256" y="180">
+                      {isVi ? 'Phục Hồi Puell' : 'Puell Recovery'}
+                    </text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="middle" x="160" y="238">
+                      {isVi ? 'Lãi/Lỗ STH' : 'STH Risk:Reward'}
+                    </text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="end" x="62" y="180">
+                      {isVi ? 'An Toàn Sụt Giảm' : 'Max Drawdown'}
+                    </text>
+                    <text className="text-[9px] fill-gray-500 font-semibold" textAnchor="end" x="62" y="78">
+                      {isVi ? 'Ổn Định Hash' : 'Hash Ribbon'}
+                    </text>
                   </svg>
 
                   {radarTooltip.visible && (
@@ -909,11 +963,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex items-baseline justify-between text-xs">
-                        <span className="text-gray-400 text-[10px]">Quant Value</span>
+                        <span className="text-gray-400 text-[10px]">{isVi ? 'Giá Trị Lượng Tử' : 'Quant Value'}</span>
                         <span className="font-extrabold text-[#111827] text-sm font-mono">{radarTooltip.val}</span>
                       </div>
                       <div className="flex items-center justify-between text-[10px] text-gray-500 mt-1 pt-1 border-t border-dashed border-gray-100">
-                        <span>Benchmark / Delta</span>
+                        <span>{isVi ? 'So Với Chuẩn' : 'Benchmark / Delta'}</span>
                         <span className={`font-semibold font-mono ${radarTooltip.isOrange ? 'text-orange-600' : 'text-emerald-600'}`}>
                           {radarTooltip.delta}
                         </span>
@@ -923,8 +977,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                 </div>
 
                 <div className="flex items-center justify-center gap-5 text-[10px] text-gray-400 font-medium pt-1 border-t border-gray-100">
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#7C3AED]"></span> Current Run</span>
-                  <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#F97316]"></span> Benchmark</span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#7C3AED]"></span> {isVi ? 'Chu Kỳ Hiện Tại' : 'Current Run'}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#F97316]"></span> {isVi ? 'Đối Sánh Thể Chế' : 'Benchmark'}
+                  </span>
                 </div>
               </div>
 
@@ -939,7 +997,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           ledgerTab === 'recent' ? 'font-bold text-[#111827] border-b-2 border-[#111827]' : 'font-semibold text-gray-400 hover:text-gray-600'
                         }`}
                       >
-                        Recent Spot DCA
+                        {isVi ? 'Lệnh Tích Sản Gần Đây' : 'Recent Spot DCA'}
                       </button>
                       <button
                         onClick={() => setLedgerTab('triggers')}
@@ -947,11 +1005,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           ledgerTab === 'triggers' ? 'font-bold text-[#111827] border-b-2 border-[#111827]' : 'font-semibold text-gray-400 hover:text-gray-600'
                         }`}
                       >
-                        Open DCA Triggers
+                        {isVi ? 'Điểm Kích Hoạt Mở' : 'Open DCA Triggers'}
                       </button>
                     </div>
                     <span className="text-[10px] font-mono font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
-                      Kelly Sized DCA
+                      {isVi ? 'Tỷ Trọng Kelly Tối Ưu' : 'Kelly Sized DCA'}
                     </span>
                   </div>
 
@@ -960,15 +1018,15 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     <table className="w-full text-left text-xs">
                       <thead>
                         <tr className="text-[9px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-50">
-                          <th className="py-2 font-medium">Date</th>
-                          <th className="py-2 font-medium">Pair &amp; Sats</th>
-                          <th className="py-2 font-medium text-right">Fill Price</th>
-                          <th className="py-2 font-medium text-right">Net USD / Status</th>
+                          <th className="py-2 font-medium">{isVi ? 'Ngày Khớp' : 'Date'}</th>
+                          <th className="py-2 font-medium">{isVi ? 'Cặp & Số Sats' : 'Pair & Sats'}</th>
+                          <th className="py-2 font-medium text-right">{isVi ? 'Giá Khớp' : 'Fill Price'}</th>
+                          <th className="py-2 font-medium text-right">{isVi ? 'Tổng USD / Trạng Thái' : 'Net USD / Status'}</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-50 text-[11px] font-medium text-gray-700 font-mono">
                         <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">06/19/2026</td>
+                          <td className="py-2.5 text-gray-500 text-[10px]">19/06/2026</td>
                           <td className="py-2.5">
                             <div className="font-bold text-gray-900 flex items-center gap-1">
                               BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.8x</span>
@@ -978,11 +1036,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           <td className="py-2.5 text-right font-semibold text-gray-800">$74,200</td>
                           <td className="py-2.5 text-right">
                             <div className="font-bold text-emerald-600">$1,001.70</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
                           </td>
                         </tr>
                         <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">06/16/2026</td>
+                          <td className="py-2.5 text-gray-500 text-[10px]">16/06/2026</td>
                           <td className="py-2.5">
                             <div className="font-bold text-gray-900 flex items-center gap-1">
                               BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.0x</span>
@@ -992,11 +1050,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           <td className="py-2.5 text-right font-semibold text-gray-800">$71,450</td>
                           <td className="py-2.5 text-right">
                             <div className="font-bold text-emerald-600">$1,500.45</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
                           </td>
                         </tr>
                         <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">06/12/2026</td>
+                          <td className="py-2.5 text-gray-500 text-[10px]">12/06/2026</td>
                           <td className="py-2.5">
                             <div className="font-bold text-gray-900 flex items-center gap-1">
                               BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+1.5x</span>
@@ -1006,11 +1064,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           <td className="py-2.5 text-right font-semibold text-gray-800">$69,820</td>
                           <td className="py-2.5 text-right">
                             <div className="font-bold text-emerald-600">$872.75</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
                           </td>
                         </tr>
                         <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">06/08/2026</td>
+                          <td className="py-2.5 text-gray-500 text-[10px]">08/06/2026</td>
                           <td className="py-2.5">
                             <div className="font-bold text-gray-900 flex items-center gap-1">
                               BTC/USDT <span className="text-[9px] font-medium text-purple-600 bg-purple-50 px-1 py-0.2 rounded">+2.2x</span>
@@ -1020,11 +1078,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           <td className="py-2.5 text-right font-semibold text-gray-800">$68,500</td>
                           <td className="py-2.5 text-right">
                             <div className="font-bold text-emerald-600">$1,233.00</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
                           </td>
                         </tr>
                         <tr className="hover:bg-purple-50/40 transition-colors group cursor-pointer">
-                          <td className="py-2.5 text-gray-500 text-[10px]">06/05/2026</td>
+                          <td className="py-2.5 text-gray-500 text-[10px]">05/06/2026</td>
                           <td className="py-2.5">
                             <div className="font-bold text-gray-900 flex items-center gap-1">
                               BTC/USDT <span className="text-[9px] font-medium text-gray-500 bg-gray-100 px-1 py-0.2 rounded">1.0x Base</span>
@@ -1034,7 +1092,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                           <td className="py-2.5 text-right font-semibold text-gray-800">$72,110</td>
                           <td className="py-2.5 text-right">
                             <div className="font-bold text-emerald-600">$757.15</div>
-                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">Settled</div>
+                            <div className="text-[9px] text-emerald-500 font-sans font-semibold">{isVi ? 'Đã Khớp' : 'Settled'}</div>
                           </td>
                         </tr>
                       </tbody>
@@ -1047,7 +1105,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
                     onClick={handleOpenDca}
                     className="text-[11px] font-semibold text-[#7C3AED] hover:underline inline-flex items-center gap-1 group font-sans"
                   >
-                    <span>Thêm giao dịch tích sản mới</span>
+                    <span>{isVi ? 'Thêm giao dịch tích sản mới' : 'Add new DCA transaction'}</span>
                     <span className="group-hover:translate-x-0.5 transition-transform font-bold">→</span>
                   </button>
                 </div>
@@ -1062,10 +1120,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-[#111827] tracking-tight">
-                  Mô Hình Định Giá &amp; Chu Kỳ Lượng Tử
+                  {isVi ? 'Mô Hình Định Giá & Chu Kỳ Lượng Tử' : 'Cycle Valuation Models & Quantitative Metrics'}
                 </h1>
                 <p className="text-xs text-gray-500 mt-1">
-                  Đánh giá đa chiều định lượng: Pi Cycle Top, MVRV Z-Score, ahr999, Mayer Multiple, và mô hình Cointime Economics
+                  {isVi
+                    ? 'Đánh giá đa chiều định lượng: Pi Cycle Top, MVRV Z-Score, ahr999, Mayer Multiple, và mô hình Cointime Economics'
+                    : 'Multi-model valuation: Pi Cycle Top, MVRV Z-Score, ahr999, Mayer Multiple, and Cointime Economics'}
                 </p>
               </div>
             </div>
@@ -1082,10 +1142,12 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl lg:text-3xl font-extrabold text-[#111827] tracking-tight">
-                  Biểu Đồ Kỹ Thuật Đa Khung Thời Gian
+                  {isVi ? 'Biểu Đồ Kỹ Thuật Đa Khung Thời Gian' : 'Multi-Timeframe Technical Chart'}
                 </h1>
                 <p className="text-xs text-gray-500 mt-1">
-                  TradingView Pro tích hợp các dải Power Law Quantiles, 200-Week Floor, Pi Cycle, và Sàn Giá Vốn On-Chain
+                  {isVi
+                    ? 'TradingView Pro tích hợp các dải Power Law Quantiles, 200-Week Floor, Pi Cycle, và Sàn Giá Vốn On-Chain'
+                    : 'TradingView Pro integrated with Power Law Quantiles, 200-Week Floor, Pi Cycle, and On-Chain Realized Cost Basis'}
                 </p>
               </div>
             </div>
@@ -1099,7 +1161,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
         {/* TAB 4: PORTFOLIO & ASSET ALLOCATION */}
         {activeNav === 'portfolio' && (
           <div className="space-y-6 animate-fadeIn pb-16">
-            <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">Đang tải Danh Mục Tích Sản...</div>}>
+            <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">{isVi ? 'Đang tải Danh Mục Tích Sản...' : 'Loading Portfolio...'}</div>}>
               <PortfolioTab />
             </Suspense>
           </div>
@@ -1108,7 +1170,7 @@ export const BitcoinHorizonDashboard: React.FC = () => {
         {/* TAB 5: AI QUANT INSIGHTS & RESEARCH HUB */}
         {activeNav === 'research' && (
           <div className="space-y-6 animate-fadeIn pb-16">
-            <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">Đang tải Nghiên Cứu & Backtest...</div>}>
+            <Suspense fallback={<div className="p-12 text-center text-gray-400 font-mono text-xs animate-pulse">{isVi ? 'Đang tải Nghiên Cứu & Backtest...' : 'Loading Macro Research...'}</div>}>
               <ResearchTab />
             </Suspense>
           </div>
@@ -1124,7 +1186,11 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             </div>
             <input
               className="bg-transparent border-0 focus:ring-0 p-0 text-xs text-gray-700 placeholder-gray-400 font-medium w-full outline-none"
-              placeholder="Hỏi AI Quant về chu kỳ Bitcoin, Kelly DCA sizing, hoặc thanh khoản vĩ mô..."
+              placeholder={
+                isVi
+                  ? 'Hỏi AI Quant về chu kỳ Bitcoin, điểm mua Kelly DCA, hoặc thanh khoản vĩ mô...'
+                  : 'Ask AI Quant about Bitcoin cycle, Kelly DCA sizing, or macro liquidity...'
+              }
               value={aiPrompt}
               onChange={(e) => setAiPrompt(e.target.value)}
               onKeyDown={(e) => {
@@ -1133,9 +1199,9 @@ export const BitcoinHorizonDashboard: React.FC = () => {
             />
             <button
               onClick={handleOpenAi}
-              className="text-[10px] font-bold text-white bg-[#7C3AED] hover:bg-purple-800 px-3 py-1 rounded-full transition-colors flex-shrink-0 shadow-sm"
+              className="text-[10px] font-bold text-white bg-[#7C3AED] hover:bg-purple-800 px-3.5 py-1 rounded-full transition-colors flex-shrink-0 shadow-sm"
             >
-              AI
+              {isVi ? 'Hỏi AI' : 'AI'}
             </button>
           </div>
         </div>
