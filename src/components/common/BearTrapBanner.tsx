@@ -17,8 +17,8 @@ export const BearTrapBanner: React.FC = () => {
   const factors = locale === 'vi' ? alert.triggerFactorsVi : alert.triggerFactorsEn;
 
   return (
-    <div className="w-full bg-purple-50 border-b border-purple-200 px-4 py-2.5 shadow-sm relative z-30 text-xs font-mono">
-      <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+    <div className="w-full bg-purple-50 border-b border-purple-200 py-2.5 shadow-sm relative z-30 text-xs font-mono">
+      <div className="ml-20 sm:ml-24 mr-4 sm:mr-6 lg:mr-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
         <div className="flex items-start gap-3">
           <div className="p-2 rounded-xl bg-purple-100 border border-purple-200 text-[#7C3AED] shrink-0 mt-0.5">
             <ShieldAlert className="w-5 h-5 text-[#7C3AED]" />

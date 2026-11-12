@@ -355,9 +355,9 @@ export const BitcoinHorizonDashboard: React.FC = () => {
       </aside>
 
       {/* ======================================================== */}
-      {/* 2. MAIN CONTENT WRAPPER                                 */}
+      {/* 2. MAIN CONTENT WRAPPER (Full-Width Responsive Fluid)   */}
       {/* ======================================================== */}
-      <div className="flex-1 ml-20 sm:ml-24 mr-4 sm:mr-6 my-5 max-w-[1440px] flex flex-col gap-6">
+      <div className="flex-1 ml-20 sm:ml-24 mr-4 sm:mr-6 lg:mr-8 my-5 flex flex-col gap-6 min-w-0">
         {/* TOP BAR */}
         <header className="flex flex-wrap items-center justify-between gap-4 py-1" data-purpose="top-navigation">
           {/* Brand Logo & Live BTC Spot Ticker */}
